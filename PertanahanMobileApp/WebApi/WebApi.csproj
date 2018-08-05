@@ -14,14 +14,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\build\**" />
     <Compile Remove="wwwroot\docs\**" />
     <Compile Remove="wwwroot\production\**" />
+    <Compile Remove="wwwroot\vendors\**" />
+    <Content Remove="wwwroot\build\**" />
     <Content Remove="wwwroot\docs\**" />
     <Content Remove="wwwroot\production\**" />
+    <Content Remove="wwwroot\vendors\**" />
+    <EmbeddedResource Remove="wwwroot\build\**" />
     <EmbeddedResource Remove="wwwroot\docs\**" />
     <EmbeddedResource Remove="wwwroot\production\**" />
+    <EmbeddedResource Remove="wwwroot\vendors\**" />
+    <None Remove="wwwroot\build\**" />
     <None Remove="wwwroot\docs\**" />
     <None Remove="wwwroot\production\**" />
+    <None Remove="wwwroot\vendors\**" />
   </ItemGroup>
 
   <ItemGroup>
