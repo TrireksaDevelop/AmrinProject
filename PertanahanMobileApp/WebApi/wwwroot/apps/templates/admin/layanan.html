@@ -1,0 +1,233 @@
+<div class="col-md-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>
+                <i class="fa fa-bars"></i> DAFTAR LAYAAN
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a>
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="x_panel" ng-repeat="item in Layanans">
+                    <div class="x_title">
+                        <h2>
+                            {{item.nama}}
+                            <small>{{item.kategori.nama}}</small>
+                        </h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapsed" id="headingOne{{item.id}}" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{item.id}}"
+                                   aria-expanded="false" aria-controls="collapseOne{{item.id}}">
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="close-link"><i class="fa fa-plus"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div id="collapseOne{{item.id}}" class="x_content panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne{{item.id}}">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                            <li role="presentation" class="active">
+                                                <a href="#tab_{{item.id}}content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Tahapan</a>
+                                            </li>
+                                            <li role="presentation" class="">
+                                                <a href="#tab_{{item.id}}content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Persyaratan</a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                        <div id="myTabContent" class="tab-content">
+                                            <div role="tabpanel" class="tab-pane fade active in" id="tab_{{item.id}}content1" aria-labelledby="home-tab">
+                                                <div class="col-md-12">
+                                                    <div class="x_panel">
+                                                        <div class="x_title">
+                                                            <ul class="nav navbar-right panel_toolbox">
+                                                                <li>
+                                                                    <a ng-click="SelectedLayanan(item,true)" data-toggle="modal" data-target=".addTahapan"><i class="fa fa-plus"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        <div class="x_content">
+                                                            <ul class="list-unstyled timeline">
+                                                                <li ng-repeat="tahapan in item.tahapans">
+                                                                    <div class="block">
+                                                                        <div class="tags">
+                                                                            <a href="" class="tag">
+                                                                                <span>Tahapan {{tahapan.urutan}}</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="block_content">
+                                                                            <h2 class="title">
+                                                                                <a>{{tahapan.nama}}</a>
+                                                                            </h2>
+                                                                            <p class="excerpt">
+                                                                                {{tahapan.keterangan}}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane fade" id="tab_{{item.id}}content2" aria-labelledby="profile-tab">
+                                                <div class="col-md-12">
+                                                    <div class="x_panel">
+                                                        <div class="x_title">
+                                                            <ul class="nav navbar-right panel_toolbox">
+                                                                <li>
+                                                                    <a ng-click="SelectedLayanan(item)" data-toggle="modal" data-target=".addPersyaratan"><i class="fa fa-plus"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        <div class="x_content">
+                                                            <ul class="messages">
+                                                                <li ng-repeat="persyaratan in item.persyaratans">
+                                                                    <div class="message_date">
+                                                                        <ul class="nav navbar-right panel_toolbox">
+                                                                            <li>
+                                                                                <a ng-click="EditPersyaratan(persyaratan)" data-toggle="modal" data-target=".addPersyaratan"><i class="fa fa-edit"></i></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a ng-click="DeletePersyaratan( item.persyaratans,persyaratan)"><i class="fa fa-remove"></i></a>
+                                                                            </li>
+                                                                        </ul>
+                                                                        <div class="clearfix"></div>
+                                                                    </div>
+                                                                    <div class="message_wrapper">
+                                                                        <h3 class="heading">{{persyaratan.nama}}</h3>
+                                                                        <blockquote><h6>{{persyaratan.keterangan}}</h6></blockquote>
+
+                                                                    </div>
+                                                                </li>
+
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade addPersyaratan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">{{modalTitlePersayaratan}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <form ng-submit="SavePersyaratan(modelPersyaratan)" class="form-horizontal form-label-left input_mask">
+                            <div class="col-md-12 col-sm-6 col-xs-12 form-group has-feedback">
+                                <input required type="text" class="form-control has-feedback-left" ng-model="modelPersyaratan.nama" placeholder="Nama Persyaratan">
+                                <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                            <div class="col-md-12 col-sm-6 col-xs-12 form-group has-feedback">
+                                <textarea required style="height:200px" class="form-control has-feedback-left" ng-model="modelPersyaratan.keterangan" placeholder="Deskripsi Persyaratan"></textarea>
+                                <span class="fa fa-info form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade addTahapan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">{{modalTitlePersayaratan}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <form ng-submit="SaveTahapan(Tahapans)" class="form-horizontal form-label-left input_mask">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nama</th>
+                                        <th>Urutan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in Tahapans|orderBy:'urutan'">
+                                        <td scope="row">{{$index+1}}</td>
+                                        <td>{{item.nama}}</td>
+                                        <td><input type="number" style="width:70px" class="form-control" ng-model="item.urutan" /></td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<script src="../build/js/custom.min.js"></script>
