@@ -97,7 +97,7 @@ namespace WebApi
                 app.UseDeveloperExceptionPage();
             }
             // ===== Use Authentication ======
-            app.UseIdentity();
+        //    app.UseIdentity();
             app.UseAuthentication();
           //  app.UseDefaultFiles();
             app.UseStaticFiles();

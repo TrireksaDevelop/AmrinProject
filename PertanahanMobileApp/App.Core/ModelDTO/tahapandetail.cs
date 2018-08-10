@@ -28,7 +28,6 @@ namespace AppCore.ModelDTO
             }
         }
 
-        private int _id;
         private int _idbidang;
         private int _idtahapan;
     }

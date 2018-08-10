@@ -4,16 +4,20 @@ angular.module("home.controllers", [])
     ;
 
 function LoginController($scope, AuthServices) {
-    sessionStorage.clear();
+ //   sessionStorage.clear();
     $scope.Login = function(model)
     {
         AuthServices.login(model);
     }
 }
 
-function RegisterController(UserServices) {
-    var res = UserServices.getToken();
-    var res1 = UserServices.getUser();
+function RegisterController($scope, AuthServices) {
+    $scope.model = {};
+    $scope.register = function (model) {
+        AuthServices.register(model).then(function (response) {
+            $scope.model={};
+        });
+    }
 }
 
 ;

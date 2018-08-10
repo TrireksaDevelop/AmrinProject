@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using AppCore.ModelDTO;
+using System.Threading.Tasks;
 
 namespace AppCore.Services
 {
@@ -172,6 +173,7 @@ namespace AppCore.Services
                                       Jabatan = a.Jabatan,
                                       Nama = a.Nama,
                                       NIP = a.NIP,
+                                      Email = a.Email,
                                       UserId = a.UserId,
                                       Bidangs = bGroup
                                   };
@@ -179,6 +181,39 @@ namespace AppCore.Services
                     if (results.Count() <= 0)
                         throw new SystemException("Data Tidak Ditemukan");
                     return results.FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+
+                    throw new SystemException(ex.Message);
+                }
+
+            }
+        }
+
+        public Task<petugas> GetPetugasByUserId(string userid)
+        {
+            using (var db = new OcphDbContext())
+            {
+                try
+                {
+                    var results = from a in db.Petugas.Where(O => O.UserId == userid)
+                                  join b in db.Bidangs.Select() on a.Id equals b.PetugasId into bGroup
+                                  from b in bGroup.DefaultIfEmpty()
+                                  select new petugas
+                                  {
+                                      Alamat = a.Alamat,
+                                      Id = b.Id,
+                                      Jabatan = a.Jabatan,
+                                      Nama = a.Nama,
+                                      NIP = a.NIP, Email=a.Email,
+                                      UserId = a.UserId,
+                                      Bidangs = bGroup
+                                  };
+
+                    if (results.Count() <= 0)
+                        throw new SystemException("Data Tidak Ditemukan");
+                    return Task.FromResult(results.FirstOrDefault());
                 }
                 catch (Exception ex)
                 {

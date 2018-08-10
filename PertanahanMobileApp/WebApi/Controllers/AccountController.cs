@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
@@ -18,15 +19,17 @@ namespace WebApi.Controllers
     public class AccountController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
 
         public AccountController(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager,
             IConfiguration configuration
             )
         {
+            _roleManager = roleManager;
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
@@ -40,29 +43,73 @@ namespace WebApi.Controllers
             if (result.Succeeded)
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
-                return await GenerateJwtToken(model.Email, appUser);
+                var roles = await _userManager.GetRolesAsync(appUser);
+                var token = await GenerateJwtToken(model.Email, appUser);
+                var data = new { roles,token };
+                return data;
             }
 
             throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
         }
 
+
+        [HttpGet]
+        [Authorize]
+        public async Task<object> PetugasProfile()
+        {
+            try
+            {
+               var user= await _userManager.FindByNameAsync(User.Identity.Name);
+                if (user == null)
+                    throw new SystemException("Anda Tidak Memiliki Akses");
+                else
+                {
+
+                    var profile=await User.GetPetugas(user.Id);
+                    return Ok(profile);
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
         [HttpPost]
         public async Task<object> Register([FromBody] RegisterDto model)
         {
-            var user = new IdentityUser
+            try
             {
-                UserName = model.Email,
-                Email = model.Email
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
+                Console.WriteLine(model.Email);
+                Console.WriteLine(model.UserName);
+                var role = "Admin";
+                if (!await _roleManager.RoleExistsAsync(role))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(role));
+                }
 
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, false);
-                return await GenerateJwtToken(model.Email, user);
+                var user = new IdentityUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+                    await _userManager.AddToRoleAsync(user, role);
+                    return await GenerateJwtToken(model.Email, user);
+                }
+
+                throw new ApplicationException("UNKNOWN_ERROR");
             }
-
-            throw new ApplicationException("UNKNOWN_ERROR");
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         private Task<object> GenerateJwtToken(string email, IdentityUser user)

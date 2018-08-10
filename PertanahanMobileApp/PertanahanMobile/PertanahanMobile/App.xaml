@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:local="clr-namespace:PertanahanMobile"
+			 x:Class="PertanahanMobile.App">
+	<Application.Resources>
+		<Color x:Key="black">#090a0a</Color>
+		<Color x:Key="red">#A50104</Color>
+		<Color x:Key="white">#FDFFFF</Color>
+		<Color x:Key="blue">#054A91</Color>
+		<Color x:Key="green">#136F63</Color>
+		<Style x:Key="contentStyle" TargetType="ContentPage">
+			<Setter Property="BackgroundColor" Value="{StaticResource red}" />
+		</Style>
+	</Application.Resources>
+</Application>
+

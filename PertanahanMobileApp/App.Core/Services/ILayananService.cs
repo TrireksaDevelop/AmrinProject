@@ -1,6 +1,5 @@
 ﻿using AppCore.ModelDTO;
 using AppCore.UnitOfWorks.InterfaceUnitOfWork;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;

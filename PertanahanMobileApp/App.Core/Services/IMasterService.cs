@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AppCore.Services
 {
@@ -19,6 +20,7 @@ namespace AppCore.Services
         bool DeleteBidang(int item);
         List<bidang> GetBidang();
         bidang GetBidangById(int id);
+        Task<petugas> GetPetugasByUserId(string userid);
 
 
         /// Tahapan

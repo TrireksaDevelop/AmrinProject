@@ -1,5 +1,4 @@
 
-
 angular.module("home.services", [])
     .factory('AuthServices', AuthServices)
     .factory('MessageServices', MessageServices)
@@ -51,41 +50,76 @@ function MessageServices() {
 
 
 function AuthServices($http, $state, $rootScope, MessageServices, $q) {
-    var def = $q.defer();
+    //var def = $q.defer();
 
+    var service = {
+        login:login,register:register
+    };
 
 
     function login(user) {
-      //  var data = "grant_type=password&username=" + user.Email + "&password=" + user.Password;
-
+    var data = "grant_type=password&username=" + user.Email + "&password=" + user.Password;
         var data = {};
         data.email = user.Email;
         data.username = user.Email;
         data.password = user.Password;
         $http({
             method: 'POST',
-          
             url: '/account/login',
             data: data
         }).then(function successCallback(response) {
-            sessionStorage.setItem("AuthToken", response.data);
+            var result = response.data;
+            sessionStorage.setItem("AuthToken", result.token);
+            sessionStorage.setItem("UserRoles", result.roles);
             sessionStorage.setItem("TokenType", "bearer");
             sessionStorage.setItem("UserName", user.Email);
-            $state.go('admin');
+            if (result.roles[0] != null || result.roles[1] != undefined) {
+                var state = result.roles[0];
+                $state.go(state);
+            } else {
+                MessageServices.error("Anda Tidak Memiliki Akses");
+                $state.go("/");
+            }
+         
         }, function errorCallback(response) {
             MessageServices.error(response.data);
         });
     }
 
 
-    function register(registerModel) {
-
+    function register(model) {
+        var def = $q.defer();
+        $http({
+            method: 'Post',
+            url: '/account/register',
+            data: model
+        }).then(function successCallback(response) {
+            MessageServices.success("Register Success, Silahkan Login");
+            def.resolve(response);
+        }, function errorCallback(response) {
+            MessageServices.error(response.data);
+            def.reject();
+            });
+        return def.promise;
     }
 
 
-    return {
-        login: login, register: register
+    function getProfile() {
+        $http({
+            method: '',
+
+            url: '/account/PetugasProfile',
+            data: data
+        }).then(function successCallback(response) {
+         
+        }, function errorCallback(response) {
+            MessageServices.error(response.data);
+        });
     }
+
+
+
+    return service;
 }
 
 
