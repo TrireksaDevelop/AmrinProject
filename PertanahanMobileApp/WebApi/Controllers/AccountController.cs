@@ -84,7 +84,7 @@ namespace WebApi.Controllers
             {
                 Console.WriteLine(model.Email);
                 Console.WriteLine(model.UserName);
-                var role = "Admin";
+                var role = "admin";
                 if (!await _roleManager.RoleExistsAsync(role))
                 {
                     await _roleManager.CreateAsync(new IdentityRole(role));

@@ -14,22 +14,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\build\**" />
     <Compile Remove="wwwroot\docs\**" />
     <Compile Remove="wwwroot\production\**" />
     <Compile Remove="wwwroot\vendors\**" />
-    <Content Remove="wwwroot\build\**" />
     <Content Remove="wwwroot\docs\**" />
     <Content Remove="wwwroot\production\**" />
     <Content Remove="wwwroot\vendors\**" />
-    <EmbeddedResource Remove="wwwroot\build\**" />
     <EmbeddedResource Remove="wwwroot\docs\**" />
     <EmbeddedResource Remove="wwwroot\production\**" />
     <EmbeddedResource Remove="wwwroot\vendors\**" />
-    <None Remove="wwwroot\build\**" />
     <None Remove="wwwroot\docs\**" />
     <None Remove="wwwroot\production\**" />
     <None Remove="wwwroot\vendors\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\.bowerrc" />
+    <Content Remove="wwwroot\.gitignore" />
+    <Content Remove="wwwroot\bower.json" />
+    <Content Remove="wwwroot\changelog.md" />
+    <Content Remove="wwwroot\gulpfile.js" />
+    <Content Remove="wwwroot\LICENSE.txt" />
+    <Content Remove="wwwroot\package.json" />
+    <Content Remove="wwwroot\README.md" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +49,11 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
 	   <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\build\js\custom.js" />
+    <None Include="wwwroot\build\js\custom.min.js" />
   </ItemGroup>
 
   <ItemGroup>

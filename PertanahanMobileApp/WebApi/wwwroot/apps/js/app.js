@@ -4,5 +4,9 @@
     'admin.controllers',
     'home.routes',
     'home.services',
-    'home.controllers'
+    'home.controllers',
+    'petugas.routes',
+    'petugas.services',
+    'petugas.controllers'
+
 ]);

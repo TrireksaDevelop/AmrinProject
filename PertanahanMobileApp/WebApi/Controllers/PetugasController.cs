@@ -63,7 +63,7 @@ namespace WebApi.Controllers
             {
                 if(value!=null)
                 {
-                    var result= await Register(value, "Petugas");
+                    var result= await Register(value, "petugas");
                     return Ok(result);
                 }
                 throw new SystemException("Data Tidak Valid");
