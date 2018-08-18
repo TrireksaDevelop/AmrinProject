@@ -1,12 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" Title="INBOX"
+             BackgroundColor="{StaticResource colorPrimaryDark}"
              x:Class="MobileApp.Views.Contents.InboxView">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ListView ItemsSource="{Binding SourceView}" RefreshCommand="{Binding RefreshCommand}" HasUnevenRows="True" IsRefreshing="{Binding IsBusy}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell Height="185">
+                        <StackLayout HeightRequest="185">
+                            <Grid BackgroundColor="#424544">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="75"/>
+                                    <RowDefinition Height="60"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid   Padding="10" >
+                                    <StackLayout HorizontalOptions="Start" Spacing="0" >
+                                        <StackLayout Orientation="Horizontal" Spacing="5">
+                                            <Image Source="message.png" HeightRequest="25"/>
+                                            <Label TextColor="{StaticResource colorTextAccent}" Margin="0" VerticalOptions="Center" FontSize="12" Text="Chandra saputra" HorizontalOptions="Start"/>
+                                        </StackLayout>
+                                        <Label FontSize="12" TextColor="{StaticResource colorPrimary }" Text="Admin" Margin="28,0" HorizontalOptions="Start" VerticalOptions="End"/>
+                                    </StackLayout>
+                                    <Label FontSize="12" Text="17/08/2018 10:30" HorizontalOptions="End"/>
+                                </Grid>
+                                <StackLayout Grid.Row="1" Padding="10">
+                                    <Label  Margin="30,0,0,0"  Text="Pesan Yang Diterima" TextColor="{StaticResource colorPrimary}" />
+                                </StackLayout>
+                                <StackLayout Padding="10" Orientation="Horizontal" Grid.Row="2" BackgroundColor="#5B5E5D">
+                                    <Image Source="replay.png" HeightRequest="25"/>
+                                    <Label  Text="Balas" VerticalOptions="CenterAndExpand"></Label>
+                                </StackLayout>
+                            </Grid>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </ContentPage.Content>
 </ContentPage>

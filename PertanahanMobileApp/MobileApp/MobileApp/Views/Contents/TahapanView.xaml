@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Tahapan" BackgroundColor="{StaticResource colorPrimaryDark}"
+             x:Class="MobileApp.Views.Contents.TahapanView">
+    <ContentPage.Content>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Margin="10" Text="{Binding Title,StringFormat=LAYANAN '{0}'}" FontSize="30" FontAttributes="Bold"/>
+            <ListView Grid.Row="1" Margin="10" ItemsSource="{Binding SourceView}"   RefreshCommand="{Binding RefreshCommand}" HasUnevenRows="True" IsRefreshing="{Binding IsBusy}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Spacing="0" Orientation="Horizontal">
+                                <StackLayout Spacing="0">
+                                    <Grid WidthRequest="40" HeightRequest="40" HorizontalOptions="Start">
+                                        <Image WidthRequest="40" HeightRequest="40" Source="Circle.png" HorizontalOptions="Start" Margin="0"/>
+                                        <Label Text="{Binding Urutan}" HorizontalOptions="Center" VerticalOptions="Center" TextColor="{StaticResource colorPrimary}" FontSize="18" FontAttributes="Bold"/>
+
+                                    </Grid>
+                                    <StackLayout WidthRequest="5" HeightRequest="100" Margin="18,0" BackgroundColor="{StaticResource colorTextAccent}" HorizontalOptions="Start"></StackLayout>
+                                </StackLayout>
+                                <StackLayout HorizontalOptions="StartAndExpand" HeightRequest="140" VerticalOptions="StartAndExpand">
+                                    <Label Text="{Binding Nama}" FontSize="25" TextColor="{StaticResource colorPrimary}"/>
+                                    <Label Text="{Binding Keterangan}"/>
+                                </StackLayout>
+                            </StackLayout>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+        </Grid>
+        
+        
+    </ContentPage.Content>
+</ContentPage>

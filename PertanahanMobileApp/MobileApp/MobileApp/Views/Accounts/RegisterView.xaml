@@ -1,12 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MobileApp.Views.Accounts.RegisterView">
+             x:Class="MobileApp.Views.Accounts.RegisterView" BackgroundColor="{StaticResource colorPrimaryDark}" >
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="70*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center"  >
+                <Image Source="bpn1.png" VerticalOptions="Center" WidthRequest="130" HeightRequest="130" />
+            </StackLayout>
+            <StackLayout Margin="40" Spacing="2"   Grid.Row="1">
+                <Label  Text="REGISTER" HorizontalOptions="Start"  FontSize="20"/>
+                <StackLayout Orientation="Horizontal"  Padding="10,0">
+                  
+                    <Entry 
+                    HeightRequest="50" 
+                    HorizontalOptions="FillAndExpand"          
+                    Text="{Binding Nama}"
+                    Placeholder="Nama">
+                    </Entry>
+
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"  Padding="10,0">
+                  
+                    <Entry 
+                    HeightRequest="50" 
+                    HorizontalOptions="FillAndExpand"          
+                    Text="{Binding Gender}"
+                    Placeholder="Jenis Kelamin">
+                    </Entry>
+
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"  Padding="10,0">
+                 
+                    <Entry 
+                    x:Name="email"  
+                    HeightRequest="50" 
+                    HorizontalOptions="FillAndExpand"          
+                    Text="{Binding Email}"
+                    Placeholder="Email">
+                    </Entry>
+
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"  Padding="10,0">
+                 
+                    <Entry 
+                    HeightRequest="50" IsPassword="True"
+                    HorizontalOptions="FillAndExpand"          
+                    Text="{Binding Password}"
+                    Placeholder="Password">
+                    </Entry>
+
+                </StackLayout>
+                <StackLayout Orientation="Horizontal"  Padding="10,0">
+                  
+                    <Entry 
+                    HeightRequest="50" IsPassword="True"
+                    HorizontalOptions="FillAndExpand"          
+                    Text="{Binding ConfirmPassword}"
+                    Placeholder="Confirm Password">
+                    </Entry>
+
+                </StackLayout>
+
+
+                <Button Text="Register" Command="{Binding LoginCommand}"/>
+
+
+            </StackLayout>
+            <StackLayout Grid.Row="2" Orientation="Vertical" HorizontalOptions="Start" VerticalOptions="End" Margin="10">
+               
+                <Label Text="Have Account ? Login Here">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding  RegisterCommand}"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </Grid>
+
     </ContentPage.Content>
 </ContentPage>

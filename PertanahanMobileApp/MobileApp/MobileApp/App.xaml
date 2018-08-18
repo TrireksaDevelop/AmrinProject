@@ -5,20 +5,28 @@
 	<Application.Resources>
 		<ResourceDictionary>
             <!--Global Styles-->
-            <Color x:Key="NavigationPrimary">#a50104</Color>
-            <Color x:Key="redColor">#a50104</Color>
+            <Color x:Key="colorPrimary">#FFFFFF</Color>
+            <Color x:Key="colorPrimaryDark">#202423</Color>
+            <Color x:Key="colorTextAccent">#BBDB9B</Color>
+            <Color x:Key="colorTextBrown">#AA8F66</Color>
+            <Color x:Key="NavigationPrimary">#B3001B</Color>
+            
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
-                <Setter Property="BarTextColor" Value="White" />
+                <Setter Property="BarTextColor" Value="{StaticResource colorPrimary}" />
             </Style>
 
             <Style TargetType="Button">
-                <Setter Property="BackgroundColor" Value="White"/>
-                <Setter Property="HeightRequest" Value="70"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource NavigationPrimary}"/>
+                <Setter Property="HeightRequest" Value="60"/>
+                <Setter Property="TextColor" Value="{StaticResource colorPrimary}"/>
             </Style>
-            
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="{StaticResource colorPrimary}"/>
+                <Setter Property="PlaceholderColor" Value="#6A7E79"/>
+            </Style>
             <Style TargetType="Label">
-                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="TextColor" Value="{StaticResource colorTextBrown}"/>
             </Style>
         </ResourceDictionary>
 	</Application.Resources>
