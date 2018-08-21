@@ -40,7 +40,7 @@ namespace MobileApp.Views.Contents
                 await Navigation.PushAsync(new Contents.TahapanView(l));
             }else if(result=="Persyaratan")
             {
-                await Navigation.PushAsync(new Contents.PersyaratanView());
+                await Navigation.PushAsync(new Contents.PersyaratanView(l));
             }
         }
     }

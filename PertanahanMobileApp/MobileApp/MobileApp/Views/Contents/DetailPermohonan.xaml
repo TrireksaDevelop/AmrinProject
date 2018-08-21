@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" BackgroundColor="{StaticResource colorPrimaryDark}"
+             x:Class="MobileApp.Views.Contents.DetailPermohonan">
+    <ContentPage.Content>
+        <Grid RowSpacing="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="60*"/>
+            </Grid.RowDefinitions>
+            <StackLayout BackgroundColor="{StaticResource NavigationPrimary}" Grid.Row="0">
+                <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand" Text="LAYANAN HIBAH" TextColor="{StaticResource colorPrimary}" FontSize="Large" />
+            </StackLayout>
+
+           
+            <ScrollView Margin="0" Grid.Row="1" Grid.RowSpan="2">
+                <StackLayout Spacing="1">
+                    <StackLayout HeightRequest="50" Padding="15,8" BackgroundColor="#424544">
+                        <Label Text="ID PENDAFTARAN" TextColor="{StaticResource colorTextAccent}" FontSize="10"/>
+                        <Label Text="1232212" TextColor="{StaticResource colorPrimary}" FontSize="15"/>
+                    </StackLayout>
+                    <StackLayout HeightRequest="50" Padding="15,8" BackgroundColor="#424544">
+                        <Label Text="KATEGORI" TextColor="{StaticResource colorTextAccent}" FontSize="10"/>
+                        <Label Text="PERALIHAN" TextColor="{StaticResource colorPrimary}" FontSize="15"/>
+                    </StackLayout>
+                    <StackLayout HeightRequest="50" Padding="15,8" BackgroundColor="#424544">
+                        <Label Text="TANGGAL DAFTAR" TextColor="{StaticResource colorTextAccent}" FontSize="10"/>
+                        <Label Text="20 AGUSTUS 2018" TextColor="{StaticResource colorPrimary}" FontSize="15"/>
+                    </StackLayout>
+                    <StackLayout HeightRequest="50" Padding="15,8" BackgroundColor="#424544">
+                        <Label Text="STATUS" TextColor="{StaticResource colorTextAccent}" FontSize="10"/>
+                        <Label Text="SELESAI" TextColor="{StaticResource colorPrimary}" FontSize="15"/>
+                    </StackLayout>
+                   
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

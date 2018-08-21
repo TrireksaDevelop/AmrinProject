@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="launcher_background">#B3001B</color>
+    <color name="launcher_background">#202423</color>
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#202423</color>
     <color name="colorAccent">#BBDB9B</color>
- <color name="splash_background">#B3001B</color>
+ <color name="splash_background">#202423</color>
 </resources>

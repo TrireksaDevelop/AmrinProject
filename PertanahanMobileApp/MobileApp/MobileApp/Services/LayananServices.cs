@@ -38,13 +38,24 @@ namespace MobileApp.Services
                 list = new List<layanan>() {
                     new layanan{Nama="Waris", Kategori=new kategorilayanan{ Nama="Peralihan" }, Keterangan="Layanan Memberikan Warisan " },
                      new layanan{Nama="Hiba", Kategori=new kategorilayanan{ Nama="Peralihan" }, Keterangan="Layanan Hiba " },
-                      new layanan{Nama="Pemecahan", Kategori=new kategorilayanan{ Nama="Peralihan" }, Keterangan="Layanan Pemecahan " , Tahapans=new List<tahapan>{
+                      new layanan{Nama="Pemecahan", Kategori=new kategorilayanan{ Nama="Peralihan" }, Keterangan="Layanan Pemecahan " ,
+                          Tahapans =new List<tahapan>{
                            new tahapan{ Nama="Pendaftaran", Keterangan="apakek" , Urutan=1},
                            new tahapan{ Nama="Validasi", Keterangan="apakek", Urutan=2 },
                            new tahapan{ Nama="Pengukuran", Keterangan="apakek", Urutan=3 },
                            new tahapan{ Nama="Pencetakan", Keterangan="apakek",Urutan=4 }
 
-                      } }
+                      },
+                          Persyaratans = new List<persyaratan>
+                          {
+                              new persyaratan{ Nama="Kartu Keluarga", Keterangan="Foto Copy Kartu Keluarga Yang telah di sahkan oleh kelurhan atau apa kek" },
+                               new persyaratan{ Nama="Kartu Tanda Penduduk", Keterangan="Foto Copy Kartu Keluarga Yang telah di sahkan oleh kelurhan atau apa kek" },
+                                new persyaratan{ Nama="Kartu Surat Ukur", Keterangan="Foto Copy Kartu Keluarga Yang telah di sahkan oleh kelurhan atau apa kek" }
+                          }
+
+
+
+                      }
                 };
 
 

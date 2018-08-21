@@ -5,7 +5,6 @@
     
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="down.png" Clicked="ToolbarItem_Clicked" ></ToolbarItem>
-        
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ListView ItemsSource="{Binding SourceView}" ItemTapped="ListView_ItemTapped"  RefreshCommand="{Binding RefreshCommand}" HasUnevenRows="True" IsRefreshing="{Binding IsBusy}">
@@ -13,15 +12,16 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout>
-                            <Grid HeightRequest="130" BackgroundColor="#424544">
+                            <Grid BackgroundColor="#424544">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="50"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid Padding="10" >
                                     <StackLayout HorizontalOptions="Start" Spacing="0" >
                                         <StackLayout Orientation="Horizontal" Spacing="5">
-                                            <Image Source="task.png" HeightRequest="35" WidthRequest="35" Aspect="Fill"/>
-                                            <StackLayout>
+                                            <Image Source="task.png" HeightRequest="25" WidthRequest="35" Aspect="Fill"/>
+                                            <StackLayout Spacing="0">
                                                 <Label TextColor="{StaticResource colorTextAccent}" Margin="0" VerticalOptions="Center" FontSize="20" Text="{Binding Nama}" HorizontalOptions="Start"/>
                                                 <Label FontSize="12" TextColor="{StaticResource colorTextAccent }" Text="{Binding Kategori.Nama}" HorizontalOptions="Start" VerticalOptions="End"/>
                                             </StackLayout>

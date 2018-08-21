@@ -5,10 +5,32 @@
              Title="Persyaratan"
              x:Class="MobileApp.Views.Contents.PersyaratanView">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+      
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Margin="10" Text="{Binding Title,StringFormat=LAYANAN '{0}'}" FontSize="30" FontAttributes="Bold"/>
+            <ListView Grid.Row="1" Margin="10" ItemsSource="{Binding SourceView}"   RefreshCommand="{Binding RefreshCommand}" HasUnevenRows="True" IsRefreshing="{Binding IsBusy}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Spacing="0" Orientation="Horizontal">
+                                <StackLayout Spacing="0" HorizontalOptions="StartAndExpand" HeightRequest="140" VerticalOptions="StartAndExpand">
+                                    <Label Text="Kartu Keluarga" FontSize="Small"  TextColor="{StaticResource colorPrimary}"/>
+                                    <Label FontSize="Micro" Text="Ini Adalah Keterangan Yang Ini Adalah Keterangan Yang Ini Adalah Keterangan Yang Ini Adalah Keterangan Yang Ini Adalah Keterangan Yang Ini Adalah Keterangan Yang  "/>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+        </Grid>
+
     </ContentPage.Content>
 </ContentPage>

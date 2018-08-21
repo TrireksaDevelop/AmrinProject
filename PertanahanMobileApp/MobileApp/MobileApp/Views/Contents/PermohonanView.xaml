@@ -1,12 +1,103 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MobileApp.Views.Contents.PermohonanView">
+             xmlns:local="clr-namespace:MobileApp"
+             x:Class="MobileApp.Views.Contents.PermohonanView" BackgroundColor="{StaticResource colorPrimaryDark}">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid RowSpacing="2" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="25*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="8*"/>
+            </Grid.RowDefinitions>
+            <StackLayout BackgroundColor="#424544" Padding="10" Spacing="0">
+                <Label Text="000012525" HorizontalOptions="End" FontSize="Large" TextColor="{StaticResource colorPrimary}"></Label>
+                <Label Text="ID PENDAFTARAN" HorizontalOptions="End"/>
+                <StackLayout VerticalOptions="Center" Spacing="0">
+                    <Label Text="Layanan Hibah" TextColor="{StaticResource colorPrimary}" FontSize="Large"/>
+                    <Label Text="PERALIHAN"/>
+                </StackLayout>
+                <StackLayout  VerticalOptions="FillAndExpand" Padding="0" HorizontalOptions="Center">
+                    <StackLayout VerticalOptions="EndAndExpand" >
+                        <local:StepProgressBarControl  StepColor="{StaticResource NavigationPrimary}" Steps="6" StepSelected="1" x:Name="stepBar"/>
+                        <Label BindingContext="{x:Reference stepBar}"
+               FontAttributes="Bold"
+               FontSize="Large"
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand" />
+
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            <Grid Grid.Row="1" ColumnSpacing="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60*"/>
+                    <ColumnDefinition Width="40*"/>
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Column="0" Padding="10" BackgroundColor="#424544">
+                    <Label Text="Tahapan Selanjutnya"/>
+                    <Label Text="Layanan Hibah" TextColor="{StaticResource colorPrimary}" FontSize="Large"/>
+                    <Label VerticalOptions="EndAndExpand" FontSize="Micro" Text="Tahapan Selanjutnya Tahapan SelanjutnyaTahapan SelanjutnyaTahapan SelanjutnyaTahapan SelanjutnyaTahapan SelanjutnyaTahapan Selanjutnya"/>
+                </StackLayout>
+                <StackLayout Grid.Column="1" BackgroundColor="#424544">
+                    <Label Text="Permohonan"/>
+                    <ListView  ItemsSource="{Binding Permohonans}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Padding="5" BackgroundColor="{StaticResource colorTextBrown}" RowSpacing="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout VerticalOptions="Center">
+                                            <Label Text="{Binding Layanan.Nama }" FontSize="Micro" TextColor="{StaticResource colorPrimary}"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="0">
+                                            <Label HorizontalTextAlignment="End" Text="text" FontSize="Micro" TextColor="{StaticResource colorPrimary}"/>
+                                            <Label Text="{Binding Id}" HorizontalTextAlignment="End" FontSize="Micro" TextColor="{StaticResource colorPrimary}"/>
+                                        </StackLayout>
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        
+                    </ListView>
+                </StackLayout>
+            </Grid>
+
+            <StackLayout Grid.Row="2" BackgroundColor="#424544">
+                <Grid BackgroundColor="#424544">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50*"/>
+                        <RowDefinition Height="75*"/>
+                        <RowDefinition Height="30*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Padding="10" >
+                        <StackLayout HorizontalOptions="Start" Spacing="0" >
+                            <StackLayout Orientation="Horizontal" Spacing="5">
+                                <Image Source="message.png" HeightRequest="25"/>
+                                <Label TextColor="{StaticResource colorTextAccent}" Margin="0" VerticalOptions="Center" FontSize="12" Text="Chandra saputra" HorizontalOptions="Start"/>
+                            </StackLayout>
+                            <Label FontSize="12" TextColor="{StaticResource colorPrimary }" Text="Admin" Margin="28,0" HorizontalOptions="Start" VerticalOptions="End"/>
+                        </StackLayout>
+                        <Label FontSize="12" Text="17/08/2018 10:30" HorizontalOptions="End"/>
+                    </Grid>
+                    <StackLayout Grid.Row="1" Padding="5">
+                        <Label  Margin="30,0,0,0"  Text="Pesan Yang Diterima" TextColor="{StaticResource colorPrimary}" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Grid.Row="2" BackgroundColor="#5B5E5D">
+                        <Image Source="replay.png" HeightRequest="25"/>
+                        <Label  Text="Balas" VerticalOptions="CenterAndExpand"></Label>
+                    </StackLayout>
+                </Grid>
+            </StackLayout>
+            <StackLayout Grid.Row="3" Padding="3" BackgroundColor="#424544">
+                <Button Text="Buat  Baru" HorizontalOptions="End"  FontSize="Micro"/>
+            </StackLayout>
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
