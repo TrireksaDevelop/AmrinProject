@@ -83,12 +83,20 @@ function DashboardController(UserServices) {
         $state.go("login");
 }
 
-function LayananController($scope, LayananServices,TahapanServices, PersyaratanServices,MessageServices) {
+function LayananController($scope, LayananServices, TahapanServices, PersyaratanServices, MessageServices, KategoriServices) {
+    $scope.Kategories = KategoriServices.Kategories;
+    $scope.tahapans = TahapanController.Tahapans;
     $scope.modalTitlePersayaratan = "Tambah Persyaratan";
    
     $scope.Layanans = LayananServices.Layanans;
     $scope.SelectedLayananItem = {};
-
+    $scope.Save = function (item) {
+        if (item.id == undefined) {
+            item.idKategoriLayanan = item.kategori.id;
+            LayananServices.post(item).then(function (response) { })
+        } else
+            LayananServices.put(item).then(function (response) { })
+    }
 
     $scope.SelectedLayanan = function (item,item1) {
         $scope.SelectedLayananItem = item;
