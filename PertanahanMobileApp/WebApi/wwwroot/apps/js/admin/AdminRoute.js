@@ -43,7 +43,7 @@ angular.module('admin.routes', [])
             })
 
 
-            .state('petugas', {
+            .state('admin-petugas', {
                 url: '/petugas',
                 parent: 'admin',
                 templateUrl: 'apps/templates/admin/petugas.html',

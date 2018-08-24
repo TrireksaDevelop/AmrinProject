@@ -274,11 +274,11 @@ function LayananServices($http,$state,$rootScope,$q,UserServices,MessageServices
     function post(data) {
         $http({
             method: 'Post',
-            url: '/Api/Supplier',
+            url: '/api/Layanan',
             data: data,
             headers: UserServices.getHeaders()
         }).then(function (response) {
-            service.Suppliers.push(response.data);
+            service.Layanans.push(response.data);
             def.resolve(response.data);
             MessageServices.success("Data Berhasil Disimpan");
         }, function (response) {
