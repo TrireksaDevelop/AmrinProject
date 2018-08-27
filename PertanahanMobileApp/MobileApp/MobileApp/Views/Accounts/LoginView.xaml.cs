@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MobileApp.Models;
+using MobileApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,55 @@ namespace MobileApp.Views.Accounts
 		public LoginView ()
 		{
 			InitializeComponent ();
+            BindingContext = new LoginViewModel();
 		}
 	}
+
+
+    public class LoginViewModel:BaseViewModel
+    {
+        private LoginDto _model;
+
+        public LoginDto Model { get { return _model; } set { SetProperty(ref _model, value); } }
+
+        public LoginViewModel()
+        {
+            LoginCommand = new Command(LoginAction);
+            Model = new LoginDto() { Email="ocph23@gmail.com", Password="Sony@77" };
+        }
+
+        public Command LoginCommand { get; }
+
+        private async void LoginAction(object obj)
+        {
+            try
+            {
+                if (IsBusy)
+                    return;
+                IsBusy = true;
+                using (var res = new RestServices())
+                {
+                    var result = await res.Post<AuthenticationToken>("Account/Login", Model);
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.ShowMessageError(ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private bool Valid()
+        {
+            var result = true;
+            if (string.IsNullOrEmpty(Model.Email) || string.IsNullOrEmpty(Model.Password))
+                result = false;
+            return result;
+
+                
+        }
+    }
 }

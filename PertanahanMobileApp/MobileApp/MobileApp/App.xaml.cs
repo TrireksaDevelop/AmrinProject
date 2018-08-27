@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using MobileApp.Views;
 using Xamarin.Forms.Xaml;
+using System.Threading.Tasks;
 
 [assembly: XamlCompilation (XamlCompilationOptions.Compile)]
 namespace MobileApp
@@ -12,9 +13,12 @@ namespace MobileApp
 		public App ()
 		{
 			InitializeComponent();
+            MessagingCenter.Subscribe<MessagingCenterAlert>(this, "message", async (message) =>
+            {
+                await Current.MainPage.DisplayAlert(message.Title, message.Message, message.Cancel);
 
-
-			MainPage = new MainPage();
+            });
+            ChangeScreen(new Views.Accounts.LoginView());
 		}
 
 		protected override void OnStart ()
@@ -31,5 +35,17 @@ namespace MobileApp
 		{
 			// Handle when your app resumes
 		}
-	}
+
+        public void ChangeScreen(Page page)
+        {
+            Current.MainPage = new NavigationPage(page);
+        }
+
+
+        internal Task<AuthenticationToken> GetToken()
+        {
+            return null;
+        }
+
+    }
 }

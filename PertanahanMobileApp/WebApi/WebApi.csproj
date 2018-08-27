@@ -29,14 +29,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\.bowerrc" />
     <Content Remove="wwwroot\.gitignore" />
-    <Content Remove="wwwroot\bower.json" />
     <Content Remove="wwwroot\changelog.md" />
     <Content Remove="wwwroot\gulpfile.js" />
     <Content Remove="wwwroot\LICENSE.txt" />
     <Content Remove="wwwroot\package.json" />
     <Content Remove="wwwroot\README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove=".bowerrc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".bowerrc">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

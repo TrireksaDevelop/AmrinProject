@@ -59,6 +59,7 @@ namespace WebApi.Controllers
         {
             try
             {
+               
                var user= await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new SystemException("Anda Tidak Memiliki Akses");
@@ -111,6 +112,44 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        public async Task<object> UserRegister([FromBody] RegisterDto model)
+        {
+            try
+            {
+                Console.WriteLine(model.Email);
+                Console.WriteLine(model.UserName);
+                var role = "pemohon";
+                if (!await _roleManager.RoleExistsAsync(role))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(role));
+                }
+
+                var user = new IdentityUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email
+                };
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+                    await _userManager.AddToRoleAsync(user, role);
+                    return await GenerateJwtToken(model.Email, user);
+                }
+
+                throw new ApplicationException("UNKNOWN_ERROR");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
 
         private Task<object> GenerateJwtToken(string email, IdentityUser user)
         {

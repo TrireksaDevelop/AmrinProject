@@ -13,6 +13,7 @@
                 <Image Source="bpn1.png" VerticalOptions="Center" WidthRequest="130" HeightRequest="130" />
             </StackLayout>
             <StackLayout Margin="40" Spacing="2"   Grid.Row="1">
+                <ActivityIndicator Color="White" IsRunning="{Binding IsBusy}"></ActivityIndicator>
                 <Label  Text="LOGIN" HorizontalOptions="Start"  FontSize="20"/>
                 <StackLayout Orientation="Horizontal"  Padding="10,0">
                 
@@ -20,7 +21,7 @@
                     x:Name="email"  
                     HeightRequest="50" 
                     HorizontalOptions="FillAndExpand"          
-                    Text="{Binding Email}"
+                    Text="{Binding Model.Email}"
                     Placeholder="Email">
                     </Entry>
 
@@ -31,7 +32,7 @@
                     x:Name="entryPassword"  
                     HeightRequest="50" IsPassword="True"
                     HorizontalOptions="FillAndExpand"          
-                    Text="{Binding Password}"
+                    Text="{Binding Model.Password}"
                     Placeholder="Password">
                     </Entry>
 
