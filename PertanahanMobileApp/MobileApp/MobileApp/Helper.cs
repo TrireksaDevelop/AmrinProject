@@ -10,7 +10,7 @@ namespace MobileApp
 {
   public  class Helper
     {
-        private static string _server = "http://192.168.1.16:4255/";
+        private static string _server = "http://192.168.1.2/";
 
         public static async Task<AuthenticationToken> GetToken()
         {
@@ -55,6 +55,17 @@ namespace MobileApp
 
         }
 
+        internal static void ShowMessage(string v)
+        {
+            MessagingCenter.Send(new MessagingCenterAlert
+            {
+                Title = "Info",
+                Message = v,
+                Cancel = "OK"
+            }, "message");
+
+        }
+
 
         public static StringContent Content(object str)
         {
@@ -66,10 +77,11 @@ namespace MobileApp
 
     public class AuthenticationToken
     {
-        public string access_token { get; set; }
+        public List<string> roles { get; set; }
+        public string token { get; set; }
         public string token_type { get; set; }
         public int expires_in { get; set; }
-        public string Email { get; internal set; }
+        public string Email { get;  set; }
     }
 
 

@@ -38,9 +38,28 @@ namespace MobileApp.Services
             }
         }
 
-        public Task<bool> Register()
+        public async Task<bool> Register(UserRegister model)
         {
-            throw new NotImplementedException();
+            using (var res = new RestServices())
+            {
+                try
+                {
+                    var result = await res.Post<AuthenticationToken>("/account/UserRegister", model);
+                    if (result != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw new SystemException(ex.Message);
+                }
+            }
         }
 
         public Task<bool> SaveProfileProfile()

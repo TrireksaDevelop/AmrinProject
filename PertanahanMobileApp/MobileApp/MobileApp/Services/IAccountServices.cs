@@ -10,7 +10,7 @@ namespace MobileApp.Services
     {
         pemohon Pemohon { get; set; }
         Task<bool> Login(LoginDto model);
-        Task<bool> Register();
+        Task<bool> Register(UserRegister model);
         Task<bool> SaveProfileProfile();
     }
 }

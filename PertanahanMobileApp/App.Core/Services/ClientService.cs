@@ -8,6 +8,30 @@ namespace AppCore.Services
 {
     public class ClientService
     {
+
+        public ClientService()
+        {
+
+        }
+
+        public bool CreatePemohon(pemohon item)
+        {
+
+            using (var db = new OcphDbContext())
+            {
+                try
+                {
+                    var result = db.Pemohons.Insert(item);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+
+                    throw new SystemException(ex.Message);
+                }
+            }
+        }
+
         public ClientService(string userId)
         {
             Pemohon = GetPemohonBy(userId);

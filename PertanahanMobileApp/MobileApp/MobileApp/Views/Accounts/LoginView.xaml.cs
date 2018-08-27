@@ -17,55 +17,72 @@ namespace MobileApp.Views.Accounts
 		public LoginView ()
 		{
 			InitializeComponent ();
-            BindingContext = new LoginViewModel();
+			BindingContext = new LoginViewModel();
 		}
 	}
 
+	public class LoginViewModel:BaseViewModel
+	{
+		private LoginDto _model;
 
-    public class LoginViewModel:BaseViewModel
-    {
-        private LoginDto _model;
+		public LoginDto Model { get { return _model; } set { SetProperty(ref _model, value); } }
 
-        public LoginDto Model { get { return _model; } set { SetProperty(ref _model, value); } }
+		public LoginViewModel()
+		{
+			LoginCommand = new Command(LoginAction);
+            RegisterCommand = new Command(RegisterAction);
+			Model = new LoginDto() { Email="ocph23@gmail.com", Password="Sony@77" };
+		}
 
-        public LoginViewModel()
+        private async void RegisterAction(object obj)
         {
-            LoginCommand = new Command(LoginAction);
-            Model = new LoginDto() { Email="ocph23@gmail.com", Password="Sony@77" };
+            var app = await Helper.GetBaseApp();
+            app.ChangeScreen(new Accounts.RegisterView());
         }
 
         public Command LoginCommand { get; }
+        public Command RegisterCommand { get; }
 
         private async void LoginAction(object obj)
-        {
-            try
-            {
-                if (IsBusy)
-                    return;
-                IsBusy = true;
-                using (var res = new RestServices())
-                {
-                    var result = await res.Post<AuthenticationToken>("Account/Login", Model);
-                }
-            }
-            catch (Exception ex)
-            {
-                Helper.ShowMessageError(ex.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
+		{
+			try
+			{
+				if (IsBusy)
+					return;
+				IsBusy = true;
+				using (var res = new RestServices())
+				{
+					var result = await res.Post<AuthenticationToken>("Account/Login", Model);
+                    if(result!=null && result.roles!=null && result.roles.Where(O=> O.ToUpper()=="PEMOHON").FirstOrDefault()!=null)
+                    {
+                        var app =await Helper.GetBaseApp();
+                        app.SetToken(result);
+                        app.ChangeScreen(new MainPage());
+                    }
+                    else
+                    {
+                        throw new SystemException("Anda Tidak Memiliki Akses");
+                    }
+				}
+			}
+			catch (Exception ex)
+			{
+				Helper.ShowMessageError(ex.Message);
+			}
+			finally
+			{
+				IsBusy = false;
+			}
+		}
 
-        private bool Valid()
-        {
-            var result = true;
-            if (string.IsNullOrEmpty(Model.Email) || string.IsNullOrEmpty(Model.Password))
-                result = false;
-            return result;
+		private bool Valid()
+		{
+			var result = true;
+			if (string.IsNullOrEmpty(Model.Email) || string.IsNullOrEmpty(Model.Password))
+				result = false;
+			return result;
 
-                
-        }
-    }
+				
+		}
+	}
 }

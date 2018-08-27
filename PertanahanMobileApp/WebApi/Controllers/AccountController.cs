@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using AppCore;
+using AppCore.Services;
 
 namespace WebApi.Controllers
 {
@@ -114,12 +116,10 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<object> UserRegister([FromBody] RegisterDto model)
+        public async Task<object> UserRegister([FromBody] UserRegisterDto model)
         {
             try
             {
-                Console.WriteLine(model.Email);
-                Console.WriteLine(model.UserName);
                 var role = "pemohon";
                 if (!await _roleManager.RoleExistsAsync(role))
                 {
@@ -137,6 +137,9 @@ namespace WebApi.Controllers
                 {
                     await _signInManager.SignInAsync(user, false);
                     await _userManager.AddToRoleAsync(user, role);
+                    ClientService service = new ClientService();
+                    service.CreatePemohon(new AppCore.ModelDTO.pemohon { NIK=model.NIK, UserId = user.Id, Nama = model.Nama });
+
                     return await GenerateJwtToken(model.Email, user);
                 }
 
@@ -201,6 +204,17 @@ namespace WebApi.Controllers
             [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
             public string Password { get; set; }
         }
+
+
+
+        public class UserRegisterDto : RegisterDto
+        {
+            public string Nama { get; set; }
+            public Gender Gender { get; set; }
+            public string NIK { get; set; }
+        }
+
+
 
         [HttpGet]
         public IActionResult SignInWithGoogle()

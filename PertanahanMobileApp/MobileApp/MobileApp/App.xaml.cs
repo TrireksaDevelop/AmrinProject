@@ -9,8 +9,9 @@ namespace MobileApp
 {
 	public partial class App : Application
 	{
-		
-		public App ()
+        public AuthenticationToken Token { get;  set; }
+
+        public App ()
 		{
 			InitializeComponent();
             MessagingCenter.Subscribe<MessagingCenterAlert>(this, "message", async (message) =>
@@ -41,10 +42,14 @@ namespace MobileApp
             Current.MainPage = new NavigationPage(page);
         }
 
+        internal void SetToken(AuthenticationToken token)
+        {
+            this.Token = token;
+        }
 
         internal Task<AuthenticationToken> GetToken()
         {
-            return null;
+            return Task.FromResult( Token);
         }
 
     }

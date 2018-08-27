@@ -41,16 +41,21 @@ namespace AppCore.Services
                 {
                     var layanans = (from a in db.Layanans.Select()
                                    join b in db.Kategories.Select() on a.IdKategoriLayanan equals b.Id
-                                   join d in db.Persyaratans.Select() on a.Id equals d.IdLayanan into dGroup
-                                   from d in dGroup.DefaultIfEmpty()
+                               
                                    select new layanan
                                    {
                                        Id = a.Id,
                                        IdKategoriLayanan = a.Id,
                                        Nama = a.Nama,
-                                       Kategori = b,
-                                       Persyaratans = dGroup.ToList()
+                                       Kategori = b
                                    }).ToList();
+
+
+                    foreach(var item in layanans)
+                    {
+                        item.Persyaratans = db.Persyaratans.Where(O => O.IdLayanan == item.Id).ToList();
+                    }
+
 
                     foreach(var item in layanans)
                     {

@@ -9,17 +9,18 @@
                 <RowDefinition Height="70*"/>
                 <RowDefinition Height="10*"/>
             </Grid.RowDefinitions>
+            <ActivityIndicator  Color="White" IsRunning="{Binding IsBusy}"></ActivityIndicator>
             <StackLayout Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center"  >
                 <Image Source="bpn1.png" VerticalOptions="Center" WidthRequest="130" HeightRequest="130" />
             </StackLayout>
-            <StackLayout Margin="40" Spacing="2"   Grid.Row="1">
+            <StackLayout Margin="40" Spacing="2"  Grid.Row="1">
                 <Label  Text="REGISTER" HorizontalOptions="Start"  FontSize="20"/>
                 <StackLayout Orientation="Horizontal"  Padding="10,0">
                   
                     <Entry 
                     HeightRequest="50" 
                     HorizontalOptions="FillAndExpand"          
-                    Text="{Binding Nama}"
+                    Text="{Binding Model.Nama}"
                     Placeholder="Nama">
                     </Entry>
 
@@ -29,7 +30,7 @@
                     <Entry 
                     HeightRequest="50" 
                     HorizontalOptions="FillAndExpand"          
-                    Text="{Binding Gender}"
+                    Text="{Binding Model.NIK}"
                     Placeholder="Jenis Kelamin">
                     </Entry>
 
@@ -40,7 +41,7 @@
                     x:Name="email"  
                     HeightRequest="50" 
                     HorizontalOptions="FillAndExpand"          
-                    Text="{Binding Email}"
+                    Text="{Binding Model.Email}"
                     Placeholder="Email">
                     </Entry>
 
@@ -50,7 +51,7 @@
                     <Entry 
                     HeightRequest="50" IsPassword="True"
                     HorizontalOptions="FillAndExpand"          
-                    Text="{Binding Password}"
+                    Text="{Binding Model.Password}"
                     Placeholder="Password">
                     </Entry>
 
@@ -60,22 +61,19 @@
                     <Entry 
                     HeightRequest="50" IsPassword="True"
                     HorizontalOptions="FillAndExpand"          
-                    Text="{Binding ConfirmPassword}"
+                    Text="{Binding Model.ConfirmPassword}"
                     Placeholder="Confirm Password">
                     </Entry>
 
                 </StackLayout>
 
-
-                <Button Text="Register" Command="{Binding LoginCommand}"/>
-
-
+                <Button Text="Register" Command="{Binding RegisterCommand}"/>
             </StackLayout>
             <StackLayout Grid.Row="2" Orientation="Vertical" HorizontalOptions="Start" VerticalOptions="End" Margin="10">
                
                 <Label Text="Have Account ? Login Here">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding  RegisterCommand}"/>
+                        <TapGestureRecognizer Command="{Binding  LoginCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
             </StackLayout>

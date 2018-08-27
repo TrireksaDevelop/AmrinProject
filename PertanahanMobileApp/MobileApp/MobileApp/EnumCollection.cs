@@ -14,4 +14,9 @@ namespace MobileApp.Models
     {
         Tidak, Ada
     }
+
+    public enum Gender
+    {
+        Pria,Wanita
+    }
 }

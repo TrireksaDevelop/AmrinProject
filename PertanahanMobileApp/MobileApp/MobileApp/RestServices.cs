@@ -33,6 +33,9 @@ namespace MobileApp
                 if (result.IsSuccessStatusCode)
                 {
                     obj = JsonConvert.DeserializeObject<T>(responseText);
+                }else
+                {
+                    throw new SystemException(responseText);
                 }
                 return obj;
             }

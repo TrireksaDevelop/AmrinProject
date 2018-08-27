@@ -14,4 +14,10 @@ namespace AppCore
     {
         Tidak, Ada
     }
+
+
+    public enum Gender
+    {
+        Pria,Wanita
+    }
 }

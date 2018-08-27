@@ -23,4 +23,12 @@ namespace MobileApp.Models
         public string Password { get; set; }
     }
 
+    public class UserRegister:RegisterDto
+    {
+        public string   Nama { get; set; }
+        public Gender Gender { get; set; }
+        public string NIK { get; set; }
+
+    }
+
 }
