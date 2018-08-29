@@ -37,7 +37,7 @@ namespace AppCore.Services
             Pemohon = GetPemohonBy(userId);
         }
 
-        private pemohon GetPemohonBy(string userId)
+        public pemohon GetPemohonBy(string userId)
         {
             using (var db = new OcphDbContext())
             {

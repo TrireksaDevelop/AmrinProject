@@ -31,7 +31,7 @@ namespace MobileApp.Views.Accounts
 		{
 			LoginCommand = new Command(LoginAction);
             RegisterCommand = new Command(RegisterAction);
-			Model = new LoginDto() { Email="ocph23@gmail.com", Password="Sony@77" };
+			Model = new LoginDto() { Email="test2@gmail.com", Password="Sony@77" };
 		}
 
         private async void RegisterAction(object obj)

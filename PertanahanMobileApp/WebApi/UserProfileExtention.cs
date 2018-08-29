@@ -28,7 +28,21 @@ namespace WebApi
             }
         }
 
-       
+        public static async Task<petugas> GetPemohon(this IPrincipal user, string uid)
+        {
+            try
+            {
+
+                IMasterService domain = new MasterService();
+                var result = await domain.
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw new SystemException(ex.Message);
+            }
+        }
 
 
     }

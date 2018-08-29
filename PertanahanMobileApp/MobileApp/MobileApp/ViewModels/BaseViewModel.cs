@@ -16,6 +16,7 @@ namespace MobileApp.ViewModels
         public IDataStore<InboxItem> InboxServices => DependencyService.Get<IDataStore<InboxItem>>() ?? new InboxServices();
         public IDataStore<layanan> LayananServices => DependencyService.Get<IDataStore<layanan>>() ?? new LayananServices();
         public IAccountServices AccountService => DependencyService.Get<IAccountServices>() ?? new AccountServices();
+        public IPermohonanServices PermohonanService => DependencyService.Get<IPermohonanServices>() ?? new PermohonanServices();
 
         bool isBusy = false;
         public bool IsBusy

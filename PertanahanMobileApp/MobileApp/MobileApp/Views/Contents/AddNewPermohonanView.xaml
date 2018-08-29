@@ -5,20 +5,20 @@
              x:Class="MobileApp.Views.Contents.AddNewPermohonanView">
     <ContentPage.Content>
         <StackLayout Margin="40,50" Spacing="2"   Grid.Row="1">
+            <ActivityIndicator IsRunning="{Binding IsBusy}" Color="{StaticResource colorPrimary}"/>
             <StackLayout Padding="10,0">
                 <Label Text="Kategori" FontSize="Micro" TextColor="{StaticResource colorTextAccent}"></Label>
                 <Picker
-                    HeightRequest="50" 
-                    HorizontalOptions="FillAndExpand"          
-                    >
+                    HeightRequest="50" Title="Kategori" TextColor="{StaticResource colorPrimary}" FontSize="Small"
+                    HorizontalOptions="FillAndExpand"  ItemsSource="{Binding Kategories}"  SelectedItem="{Binding SelectedCategory}">
                 </Picker>
 
             </StackLayout>
             <StackLayout Padding="10,0">
                 <Label Text="Layanan" FontSize="Micro" TextColor="{StaticResource colorTextAccent}"></Label>
                 <Picker
-                    HeightRequest="50" 
-                    HorizontalOptions="FillAndExpand">
+                    HeightRequest="50" ItemsSource="{Binding SourceView}" ItemDisplayBinding="{Binding Nama}"  SelectedItem="{Binding SelectedItem}"
+                    HorizontalOptions="FillAndExpand" TextColor="{StaticResource colorPrimary}" FontSize="Small" Title="Layanan">
                 </Picker>
 
             </StackLayout>
@@ -26,14 +26,14 @@
                 <Label Text="Keterangan" FontSize="Micro" TextColor="{StaticResource colorTextAccent}"></Label>
                 <Entry 
                     HeightRequest="100"  FontSize="Small"
-                    HorizontalOptions="FillAndExpand"          
-                    Text="{Binding ConfirmPassword}">
+                    HorizontalOptions="FillAndExpand"       
+                    Text="{Binding Keterangan}">
                 </Entry>
 
             </StackLayout>
 
 
-            <Button Text="DAFTAR" Command="{Binding LoginCommand}"/>
+            <Button Text="DAFTAR" Command="{Binding DaftarCommand}"/>
 
 
         </StackLayout>

@@ -35,7 +35,7 @@ namespace MobileApp.Views.Contents
         public TahapanViewModel(layanan item)
         {
             Title = item.Nama.ToUpper();
-            SourceView = new ObservableCollection<tahapan>(item.Tahapans);
+            SourceView = new ObservableCollection<tahapan>(item.Tahapans.OrderBy(O=>O.Urutan));
         }
 
     }

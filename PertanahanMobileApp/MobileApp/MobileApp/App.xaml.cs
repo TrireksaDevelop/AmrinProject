@@ -37,9 +37,11 @@ namespace MobileApp
 			// Handle when your app resumes
 		}
 
+        
+
         public void ChangeScreen(Page page)
         {
-            Current.MainPage = new NavigationPage(page);
+            Current.MainPage =page;
         }
 
         internal void SetToken(AuthenticationToken token)

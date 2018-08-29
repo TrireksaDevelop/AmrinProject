@@ -8,6 +8,7 @@ using AppCore.UnitOfWorks.InterfaceUnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using AppCore.ModelDTO;
 
 namespace WebApi.Controllers
 {
@@ -48,9 +49,24 @@ namespace WebApi.Controllers
         
         // POST: api/Permohonan
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]permohonan value)
         {
-
+            try
+            {
+                var id = UserManager.GetUserId(User);
+                var client = new ClientService(id);
+                if (client.Pemohon == null)
+                {
+                    throw new SystemException("Maaf Anda Belum Terdaftar");
+                }
+                var service = new PermohonanService(client.Pemohon, new UOWPermohonan());
+              var result =  service.CreatePermohonan(new layanan { Id = value.IdLayanan});
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         
         // PUT: api/Permohonan/5

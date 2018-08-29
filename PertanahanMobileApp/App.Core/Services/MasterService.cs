@@ -73,22 +73,25 @@ namespace AppCore.Services
 
                 try
                 {
-                    var results = from a in db.Bidangs.Select()
+                    var results = (from a in db.Bidangs.Select()
                                   join p in db.Petugas.Select() on a.PetugasId equals p.Id
-                                  join c in db.Tahapans.Select() on a.Id equals c.BidangId into cGroup
-                                  from c in cGroup.DefaultIfEmpty()
                                   select new bidang
                                   {
                                       Id = a.Id,
                                       Nama = a.Nama,
                                       Petugas = p,
                                       Descripsi = a.Descripsi,
-                                      PetugasId = a.PetugasId, Tahapans=cGroup.ToList()
-                                  };
+                                      PetugasId = a.PetugasId
+                                  }).ToList();
 
+
+                    foreach(var item in results)
+                    {
+                        item.Tahapans = db.Tahapans.Where(O => O.BidangId == item.Id).ToList();
+                    }
                    
 
-                    return results.ToList();
+                    return results;
                 }
                 catch (Exception ex)
                 {

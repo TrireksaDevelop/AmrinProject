@@ -29,39 +29,21 @@ namespace MobileApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<layanan>> GetItemsAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<layanan>> GetItemsAsync(bool forceRefresh = false)
         {
             if (isInstance)
-                return Task.FromResult(list.AsEnumerable());
+                return list;
             else
             {
-                list = new List<layanan>() {
-                    new layanan{Nama="Waris", Kategori=new kategorilayanan{ Nama="Peralihan" }, Keterangan="Layanan Memberikan Warisan " },
-                     new layanan{Nama="Hiba", Kategori=new kategorilayanan{ Nama="Peralihan" }, Keterangan="Layanan Hiba " },
-                      new layanan{Nama="Pemecahan", Kategori=new kategorilayanan{ Nama="Peralihan" }, Keterangan="Layanan Pemecahan " ,
-                          Tahapans =new List<tahapan>{
-                           new tahapan{ Nama="Pendaftaran", Keterangan="apakek" , Urutan=1},
-                           new tahapan{ Nama="Validasi", Keterangan="apakek", Urutan=2 },
-                           new tahapan{ Nama="Pengukuran", Keterangan="apakek", Urutan=3 },
-                           new tahapan{ Nama="Pencetakan", Keterangan="apakek",Urutan=4 }
-
-                      },
-                          Persyaratans = new List<persyaratan>
-                          {
-                              new persyaratan{ Nama="Kartu Keluarga", Keterangan="Foto Copy Kartu Keluarga Yang telah di sahkan oleh kelurhan atau apa kek" },
-                               new persyaratan{ Nama="Kartu Tanda Penduduk", Keterangan="Foto Copy Kartu Keluarga Yang telah di sahkan oleh kelurhan atau apa kek" },
-                                new persyaratan{ Nama="Kartu Surat Ukur", Keterangan="Foto Copy Kartu Keluarga Yang telah di sahkan oleh kelurhan atau apa kek" }
-                          }
-
-
-
-                      }
-                };
-
-
-                return Task.FromResult(list.AsEnumerable<layanan>());
-
+                isInstance = true;
+                using (var res = new RestServices())
+                {
+                    list = await res.Get<List<layanan>>("api/layanan");
+                    return list;
+                }
             }
+
+
         }
 
         public Task<bool> UpdateItemAsync(layanan item)
