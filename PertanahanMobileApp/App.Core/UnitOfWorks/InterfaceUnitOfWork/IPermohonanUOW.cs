@@ -11,5 +11,8 @@ namespace AppCore.UnitOfWorks.InterfaceUnitOfWork
         List<permohonan> GetDaftarPermohonan(pemohon t);
         List<kelengkapan> GetKelengkapan(permohonan item);
         pemohon GetPemohon(int id);
+        tahapan GetCurrentTahapan(permohonan permohonan);
+        tahapan GetNextTahapan(permohonan permohonan);
+        bool SetNextStep(permohonan p, tahapan nextTahapan);
     }
 }

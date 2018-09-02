@@ -8,9 +8,10 @@ namespace AppCore.Services
 {
     public class AdminService : IAdminService
     {
-        public petugas Petugas { get; }
+        private petugas Petugas { get; }
         public IPermohonanService PermohonanService { get; set; }
         public IBidangUOW BidangUnitOfWork { get; set; }
+        public List<bidang> ListBidangTugas { get; }
         public bidang BidangTugas { get; set; }
 
         public AdminService( petugas admin,IPermohonanService permohonanService,IBidangUOW bidangUow)
@@ -18,9 +19,16 @@ namespace AppCore.Services
             this.Petugas = admin;
             PermohonanService = permohonanService;
             BidangUnitOfWork = bidangUow;
-            BidangTugas = BidangUnitOfWork.GetBidangTugas(Petugas);
+            ListBidangTugas = BidangUnitOfWork.GetBidangTugas();
             
         }
+
+        public permohonan GetPermohonanById(int id)
+        {
+            var result = PermohonanService.GetPermohonan(id);
+            return result;
+        }
+
 
         public List<tahapan> GetTahapans()
         {
@@ -64,6 +72,10 @@ namespace AppCore.Services
         {
             throw new NotImplementedException();
         }
-        
+
+        public void SetBidangTugas(bidang bidang)
+        {
+            BidangTugas = bidang;
+        }
     }
 }

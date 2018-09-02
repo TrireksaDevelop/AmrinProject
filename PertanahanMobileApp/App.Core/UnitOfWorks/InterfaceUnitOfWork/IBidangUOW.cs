@@ -7,7 +7,7 @@ namespace AppCore.UnitOfWorks.InterfaceUnitOfWork
 {
     public interface IBidangUOW
     {
-        bidang GetBidangTugas(petugas petugas);
+        List<bidang> GetBidangTugas();
         List<tahapan> GetTahapanTugasBidang(bidang bidangTugas);
         List<permohonan> GetAllPermohonan(bidang bidangTugas);
         bool ChangeWork(permohonan permohonan, progress tahapan);

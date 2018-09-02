@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AppCore.Services;
 using AppCore.UnitOfWorks;
-using AppCore.UnitOfWorks.InterfaceUnitOfWork;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using AppCore.ModelDTO;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace WebApi.Controllers
 {
@@ -16,13 +14,11 @@ namespace WebApi.Controllers
     [Route("api/Permohonan")]
     public class PermohonanController : Controller
     {
-
+        
         public PermohonanController(UserManager<IdentityUser> userManager)
         {
             UserManager = userManager;
         }
-
-
         IPermohonanService service;
 
         private UserManager<IdentityUser> UserManager { get; }
@@ -40,27 +36,18 @@ namespace WebApi.Controllers
                 return NotFound();
         }
 
+
+
+
         // GET: api/Permohonan/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
-        }
-        
-        // POST: api/Permohonan
-        [HttpPost]
-        public IActionResult Post([FromBody]permohonan value)
-        {
+
             try
             {
-                var id = UserManager.GetUserId(User);
-                var client = new ClientService(id);
-                if (client.Pemohon == null)
-                {
-                    throw new SystemException("Maaf Anda Belum Terdaftar");
-                }
-                var service = new PermohonanService(client.Pemohon, new UOWPermohonan());
-              var result =  service.CreatePermohonan(new layanan { Id = value.IdLayanan});
+                service = new PermohonanService(new UOWPermohonan());
+               var result= service.GetPermohonan(id);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -69,6 +56,7 @@ namespace WebApi.Controllers
             }
         }
         
+       
         // PUT: api/Permohonan/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
@@ -87,6 +75,41 @@ namespace WebApi.Controllers
         ///
         [HttpGet("admin")]
         public async Task<IActionResult> GetAdminWork()
+        {   
+            try
+            {
+                var id = UserManager.GetUserId(User);
+                if (id == null)
+                    throw new SystemException("Anda Belum Login");
+                var profile = await User.GetPetugas(id);
+                if (profile != null)
+                {
+                    var service = new PermohonanService(new UOWPermohonan());
+                    var adminService = new AdminService(profile, new PermohonanService(new UOWPermohonan()), new BidangUOW(profile));
+                    adminService.SetBidangTugas(profile.Bidangs.FirstOrDefault());
+                    var result = adminService.GetPermohonans();
+                    var list = new List<permohonan>();
+                    foreach(var item in result)
+                    {
+                        service.SetCurrentPermohonan(item);
+                        item.CurrentTahapan = service.GetCurrentTahapan();
+                        item.NextTahapan = service.GetNextTahapan();
+                        if (item.NextTahapan != null && item.NextTahapan.Id == profile.Bidangs.FirstOrDefault().Id)
+                            list.Add(item);
+                    }
+                    return Ok(list);
+                }
+                else
+                    throw new SystemException("Anda Tidak Memiliki Akses");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message.ToString());
+            }
+        }
+
+        [HttpPost("CompleteStep")]
+        public async Task<IActionResult> NextStep(permohonan item)
         {
             try
             {
@@ -96,8 +119,13 @@ namespace WebApi.Controllers
                 var profile = await User.GetPetugas(id);
                 if (profile != null)
                 {
-                    var result = service.GetPermohonans();
-                    return Ok(result);
+                    var service = new PermohonanService(new UOWPermohonan());
+                   
+                    item.NextTahapan = service.GetNextTahapan();
+                    service.SetCurrentPermohonan(item);
+                   bool success= service.SetNextStep();
+
+                    return Ok(success);
                 }
                 else
                     throw new SystemException("Anda Tidak Memiliki Akses");
@@ -106,8 +134,6 @@ namespace WebApi.Controllers
             {
                 return BadRequest(ex.Message.ToString());
             }
-
-
         }
             
         

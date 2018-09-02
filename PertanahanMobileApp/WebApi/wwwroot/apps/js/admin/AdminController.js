@@ -73,6 +73,7 @@ function UserController(UserServices,$state) {
     var res1 = UserServices.getUser();
     if (res == null)
         $state.go("login");
+    NProgress.done();
 }
 
 function DashboardController(UserServices) {

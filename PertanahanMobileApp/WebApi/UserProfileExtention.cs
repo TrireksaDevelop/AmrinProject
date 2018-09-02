@@ -28,14 +28,15 @@ namespace WebApi
             }
         }
 
-        public static async Task<petugas> GetPemohon(this IPrincipal user, string uid)
+        public static  Task<pemohon> GetPemohon(this IPrincipal user, string uid)
         {
             try
             {
-
-                IMasterService domain = new MasterService();
-                var result = await domain.
-                return result;
+                ClientService client = new ClientService();
+                var result = client.GetPemohonBy(uid);
+                if (result == null)
+                    throw new SystemException("Anda Tidak Memiliki Akses");
+                return Task.FromResult(result);
             }
             catch (Exception ex)
             {

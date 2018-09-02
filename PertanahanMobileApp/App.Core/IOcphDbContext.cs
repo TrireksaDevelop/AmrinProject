@@ -14,7 +14,7 @@ namespace AppCore
         { get; }
         IRepository<kelengkapan> Kelengkapans { get; }
         IRepository<layanan> Layanans { get; }
-        IRepository<permohonan> Permohonans { get; set; }
+        IRepository<permohonan> Permohonans { get;  }
         IRepository<persyaratan> Persyaratans { get; }
         IRepository<petugas> Petugas { get; }
         IRepository<petugasdetail> PetugasDetails { get; }

@@ -11,7 +11,7 @@ namespace AppCore.Services
         void SendMessageToPemohon(string message);
         IPermohonanService PermohonanService { get; set; }
         bidang BidangTugas { get; set; }
-
+        void SetBidangTugas(bidang bidang);
 
     }
 }
