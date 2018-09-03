@@ -60,7 +60,6 @@ namespace AppCore.Services
         public tahapan GetNextTahapan()
         {
             return UnitWorkPermohonan.GetNextTahapan(Permohonan);
-
         }
 
         
@@ -182,16 +181,39 @@ namespace AppCore.Services
                         {
                             var result = dbKelengkapan.Where(O => O.IdPersyaratan == data.IdPersyaratan && O.IdPermohonan == item.Id).FirstOrDefault();
                             if (result == null)
+                            {
                                 if (!db.Kelengkapans.Insert(data))
                                     throw new SystemException("Data Tidak Tersimpan");
+                            }else
+                            {
+                                if(!db.Kelengkapans.Update(O=> new { O.Status },data, O=>O.IdPermohonan==data.IdPermohonan && O.IdPersyaratan==data.IdPersyaratan))
+                                {
+                                    throw new SystemException("Data Tidak Tersimpan");
+                                }
+                            }
                         }
                     }
-                   
+
+                    var dbTahapans = db.Kelengkapans.Where(O => O.IdPermohonan == item.Id).ToList();
 
 
-
-
+                    if (item.Tahapans!=null )
+                    {
+                        if (item.Tahapans != null)
+                        {
+                            foreach (var data in item.Tahapans)
+                            {
+                                var result = dbTahapans.Where(O => O.Id == data.IdTahapan && O.IdPermohonan == item.Id).FirstOrDefault();
+                                if (result == null)
+                                {
+                                    if (!db.Progress.Insert(data))
+                                        throw new SystemException("Data Tidak Tersimpan");
+                                }
+                            }
+                        }
+                    }
                     trans.Commit();
+                    return Task.FromResult(true);
                 }
                 catch (Exception ex)
                 {
@@ -200,7 +222,7 @@ namespace AppCore.Services
                 }
             }
 
-            return Task.FromResult(true);
+           
         }
     }
 }
