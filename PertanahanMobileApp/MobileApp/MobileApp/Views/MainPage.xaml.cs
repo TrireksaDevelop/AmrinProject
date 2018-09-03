@@ -36,7 +36,7 @@ namespace MobileApp.Views
             {
                 Title = "Permohonan",
                 Icon = "ic_send_white.png",
-                TargetType = typeof(PermohonanView)
+                TargetType = typeof(PermohonanHome)
             });
             menuList.Add(new MasterPageItem()
             {
@@ -48,13 +48,12 @@ namespace MobileApp.Views
             {
                 Title = "About",
                 Icon = "ic_help_white_48dp.png",
-                TargetType = typeof(Home)
+                TargetType = typeof(AboutPage)
             });
             menuList.Add(new MasterPageItem()
             {
                 Title = "Logout",
                 Icon = "ic_lock_white_48dp.png",
-                TargetType = typeof(Home)
             });
 
 
@@ -65,23 +64,24 @@ namespace MobileApp.Views
             Detail = new NavigationPage((Page)Activator.CreateInstance(typeof(Home)));
         }
 
-		private async void OnMenuItemSelected(object sender, SelectedItemChangedEventArgs e)
+		private void OnMenuItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
 
 			var item = (MasterPageItem)e.SelectedItem;
 			Type page = item.TargetType;
-            if(item.Title=="Permohonan")
+            if (item.Title=="Logout")
             {
-                if(await vm.IsNewPermohonan())
-                {
-                    page = typeof(AddNewPermohonanView);
-                }
+                vm.Logout();
+            }
+            else
+            {
+
+                Detail = new NavigationPage((Page)Activator.CreateInstance(page));
+                //  Detail = (Page)Activator.CreateInstance(page);
+                IsPresented = false;
             }
 
 
-		    Detail = new NavigationPage((Page)Activator.CreateInstance(page));
-		 //  Detail = (Page)Activator.CreateInstance(page);
-			IsPresented = false;
 		}
 
 		private void profileGesture_Clicked(object sender, EventArgs e)
@@ -100,14 +100,13 @@ namespace MobileApp.Views
 
     public class MainPageViewModel:BaseViewModel
     {
-        public async Task<bool> IsNewPermohonan()
+        internal async void Logout()
         {
-            var result = await PermohonanService.GetLastPermohonan();
-            if (result == null)
-                return true;
-            else
-                return false;
-
+            var app = await Helper.GetBaseApp();
+            if(app!=null)
+            {
+                app.ChangeScreen(new Views.Accounts.LoginView());
+            }
         }
     }
 }

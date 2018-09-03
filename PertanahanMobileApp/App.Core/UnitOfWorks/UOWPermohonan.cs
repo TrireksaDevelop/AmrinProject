@@ -77,7 +77,16 @@ namespace AppCore.UnitOfWorks
 
             using (var db = new OcphDbContext())
             {
-                return db.Permohonans.Where(O => O.IdPemohon == pemohon.Id).ToList();
+
+                var results = from a in db.Permohonans.Where(O => O.IdPemohon == pemohon.Id)
+                              join b in db.Layanans.Select() on a.IdLayanan equals b.Id
+                              join c in db.Kategories.Select() on b.IdKategoriLayanan equals c.Id
+                              select new permohonan {
+                                   Id = a.Id, IdLayanan=a.IdLayanan, IdPemohon=a.IdPemohon, Status=a.Status,
+                                    Layanan = new layanan { Id=b.Id, IdKategoriLayanan=b.IdKategoriLayanan, Kategori=c, Nama=b.Nama }
+                              };
+
+                return results.ToList();
             }
         }
 

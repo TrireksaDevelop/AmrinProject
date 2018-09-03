@@ -10,7 +10,10 @@ namespace MobileApp.Services
 {
     public class PermohonanServices : IPermohonanServices
     {
+        private bool isInstance;
+
         private permohonan lastPermohonan { get; set; }
+        private List<permohonan> list { get; set; }
 
         public async Task<bool> CreateNewPermohonan(permohonan item)
         {
@@ -39,14 +42,59 @@ namespace MobileApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<permohonan> GetLastPermohonan()
+        public async Task<permohonan> GetLastPermohonan()
         {
-            return Task.FromResult(lastPermohonan);
+            try
+            {
+                if(lastPermohonan==null)
+                {
+                    using (var rest = new RestServices())
+                    {
+                        var result = await rest.Get<permohonan>("api/ClientPermohonan/last");
+                        if (result != null)
+                        {
+                            lastPermohonan = result;
+                        }
+                    }
+                }
+                return lastPermohonan;
+            }
+            catch (Exception ex)
+            {
+
+                throw new SystemException(ex.Message);
+            }
+          
         }
 
-        public Task<IEnumerable<permohonan>> GetPermohonans()
+        public async Task<IEnumerable<permohonan>> GetPermohonans()
         {
-            throw new NotImplementedException();
+            try
+            {
+              if(!isInstance)
+                {
+                    isInstance = true;
+                    list = new List<permohonan>();
+                    using (var rest = new RestServices())
+                    {
+                        var result = await rest.Get<List<permohonan>>("api/ClientPermohonan");
+                        if (result != null)
+                        {
+                           foreach(var item in result)
+                            {
+                                list.Add(item);
+                            }
+                        }
+                    }
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+
+                throw new SystemException(ex.Message);
+            }
         }
 
         public Task<ProgressBar> GetProgress()

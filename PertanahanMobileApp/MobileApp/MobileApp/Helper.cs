@@ -11,7 +11,7 @@ namespace MobileApp
 {
   public  class Helper
     {
-        private static string _server = "http://192.168.1.9/";
+        private static string _server = "http://192.168.1.8/";
 
         public static async Task<AuthenticationToken> GetToken()
         {

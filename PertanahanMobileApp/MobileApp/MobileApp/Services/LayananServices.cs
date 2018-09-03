@@ -24,9 +24,15 @@ namespace MobileApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<layanan> GetItemAsync(string id)
+        public async Task<layanan> GetItemAsync(string id)
         {
-            throw new NotImplementedException();
+            if(!isInstance)
+            {
+                await GetItemsAsync();
+               
+            }
+            var ida = Convert.ToInt32(id);
+            return list.Where(O => O.Id == ida).FirstOrDefault();
         }
 
         public async Task<IEnumerable<layanan>> GetItemsAsync(bool forceRefresh = false)
@@ -42,8 +48,6 @@ namespace MobileApp.Services
                     return list;
                 }
             }
-
-
         }
 
         public Task<bool> UpdateItemAsync(layanan item)
