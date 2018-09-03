@@ -3,7 +3,7 @@
 // eg: `inputs` can be set in DOM using `data-parsley-inputs="input, textarea"`
 // eg: `data-parsley-stop-on-first-failing-constraint="false"`
 
-var Defaults = {
+var ParsleyDefaults = {
   // ### General
 
   // Default data-namespace for DOM API
@@ -50,11 +50,11 @@ var Defaults = {
 
   // Return the `$element` that will receive these above success or error classes
   // Could also be (and given directly from DOM) a valid selector like `'#div'`
-  classHandler: function (Field) {},
+  classHandler: function (ParsleyField) {},
 
   // Return the `$element` where errors will be appended
   // Could also be (and given directly from DOM) a valid selector like `'#div'`
-  errorsContainer: function (Field) {},
+  errorsContainer: function (ParsleyField) {},
 
   // ul elem that would receive errors' list
   errorsWrapper: '<ul class="parsley-errors-list"></ul>',
@@ -63,4 +63,4 @@ var Defaults = {
   errorTemplate: '<li></li>'
 };
 
-export default Defaults;
+export default ParsleyDefaults;

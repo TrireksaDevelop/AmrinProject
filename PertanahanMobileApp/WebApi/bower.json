@@ -58,12 +58,13 @@
   "resolutions": {
     "jquery": "^2.2.3",
     "fastclick": "^1.0.6",
-    "angular": "1.7.3"
+    "angular": "1.7.3",
+    "angular-ui-router": "1.0.20"
   },
   "dependencies": {
     "bootstrap-daterangepicker": "v2.1.24",
     "angular": "angularjs#v1.6.4-build.5317+sha.0c3620b",
     "angular-route": "v1.7.3",
-    "angular-ui-router": "1.0.20"
+    "angular-ui-router": "0.4.2"
   }
 }

@@ -1,71 +1,71 @@
-import * as echarts from '../../echarts';
-import * as zrUtil from 'zrender/src/core/util';
-import * as featureManager from './featureManager';
+define(function (require) {
 
-var ToolboxModel = echarts.extendComponentModel({
+    var featureManager = require('./featureManager');
+    var zrUtil = require('zrender/core/util');
 
-    type: 'toolbox',
+    var ToolboxModel = require('../../echarts').extendComponentModel({
 
-    layoutMode: {
-        type: 'box',
-        ignoreSize: true
-    },
+        type: 'toolbox',
 
-    mergeDefaultAndTheme: function (option) {
-        ToolboxModel.superApply(this, 'mergeDefaultAndTheme', arguments);
+        layoutMode: {
+            type: 'box',
+            ignoreSize: true
+        },
 
-        zrUtil.each(this.option.feature, function (featureOpt, featureName) {
-            var Feature = featureManager.get(featureName);
-            Feature && zrUtil.merge(featureOpt, Feature.defaultOption);
-        });
-    },
+        mergeDefaultAndTheme: function (option) {
+            ToolboxModel.superApply(this, 'mergeDefaultAndTheme', arguments);
 
-    defaultOption: {
+            zrUtil.each(this.option.feature, function (featureOpt, featureName) {
+                var Feature = featureManager.get(featureName);
+                Feature && zrUtil.merge(featureOpt, Feature.defaultOption);
+            });
+        },
 
-        show: true,
+        defaultOption: {
 
-        z: 6,
+            show: true,
 
-        zlevel: 0,
+            z: 6,
 
-        orient: 'horizontal',
+            zlevel: 0,
 
-        left: 'right',
+            orient: 'horizontal',
 
-        top: 'top',
+            left: 'right',
 
-        // right
-        // bottom
+            top: 'top',
 
-        backgroundColor: 'transparent',
+            // right
+            // bottom
 
-        borderColor: '#ccc',
+            backgroundColor: 'transparent',
 
-        borderRadius: 0,
+            borderColor: '#ccc',
 
-        borderWidth: 0,
+            borderWidth: 0,
 
-        padding: 5,
+            padding: 5,
 
-        itemSize: 15,
+            itemSize: 15,
 
-        itemGap: 8,
+            itemGap: 8,
 
-        showTitle: true,
+            showTitle: true,
 
-        iconStyle: {
-            normal: {
-                borderColor: '#666',
-                color: 'none'
-            },
-            emphasis: {
-                borderColor: '#3E98C5'
+            iconStyle: {
+                normal: {
+                    borderColor: '#666',
+                    color: 'none'
+                },
+                emphasis: {
+                    borderColor: '#3E98C5'
+                }
             }
+            // textStyle: {},
+
+            // feature
         }
-        // textStyle: {},
+    });
 
-        // feature
-    }
+    return ToolboxModel;
 });
-
-export default ToolboxModel;

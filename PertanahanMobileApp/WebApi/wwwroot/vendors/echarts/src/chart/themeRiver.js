@@ -1,14 +1,18 @@
-import * as echarts from '../echarts';
-import * as zrUtil from 'zrender/src/core/util';
+define(function (require) {
 
-import '../component/singleAxis';
-import './themeRiver/ThemeRiverSeries';
-import './themeRiver/ThemeRiverView';
+    var echarts = require('../echarts');
+    var zrUtil = require('zrender/core/util');
 
-import themeRiverLayout from './themeRiver/themeRiverLayout';
-import themeRiverVisual from './themeRiver/themeRiverVisual';
-import dataFilter from '../processor/dataFilter';
 
-echarts.registerLayout(themeRiverLayout);
-echarts.registerVisual(themeRiverVisual);
-echarts.registerProcessor(zrUtil.curry(dataFilter, 'themeRiver'));
+    require('./themeRiver/ThemeRiverSeries');
+    
+    require('./themeRiver/ThemeRiverView');
+
+    echarts.registerLayout(require('./themeRiver/themeRiverLayout'));
+
+    echarts.registerVisualCoding('chart', require('./themeRiver/themeRiverVisual'));
+
+    echarts.registerProcessor(
+        'filter', zrUtil.curry(require('../processor/dataFilter'), 'themeRiver')
+    );    
+});

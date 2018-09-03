@@ -1,66 +1,72 @@
-import * as zrUtil from 'zrender/src/core/util';
-import SeriesModel from '../../model/Series';
-import {seriesModelMixin} from '../helper/whiskerBoxCommon';
+define(function(require) {
 
-var BoxplotSeries = SeriesModel.extend({
+    'use strict';
 
-    type: 'series.boxplot',
+    var zrUtil = require('zrender/core/util');
+    var SeriesModel = require('../../model/Series');
+    var whiskerBoxCommon = require('../helper/whiskerBoxCommon');
 
-    dependencies: ['xAxis', 'yAxis', 'grid'],
+    var BoxplotSeries = SeriesModel.extend({
 
-    // TODO
-    // box width represents group size, so dimension should have 'size'.
+        type: 'series.boxplot',
 
-    /**
-     * @see <https://en.wikipedia.org/wiki/Box_plot>
-     * The meanings of 'min' and 'max' depend on user,
-     * and echarts do not need to know it.
-     * @readOnly
-     */
-    defaultValueDimensions: ['min', 'Q1', 'median', 'Q3', 'max'],
+        dependencies: ['xAxis', 'yAxis', 'grid'],
 
-    /**
-     * @type {Array.<string>}
-     * @readOnly
-     */
-    dimensions: null,
+        // TODO
+        // box width represents group size, so dimension should have 'size'.
 
-    /**
-     * @override
-     */
-    defaultOption: {
-        zlevel: 0,                  // 一级层叠
-        z: 2,                       // 二级层叠
-        coordinateSystem: 'cartesian2d',
-        legendHoverLink: true,
+        /**
+         * @see <https://en.wikipedia.org/wiki/Box_plot>
+         * The meanings of 'min' and 'max' depend on user,
+         * and echarts do not need to know it.
+         * @readOnly
+         */
+        valueDimensions: ['min', 'Q1', 'median', 'Q3', 'max'],
 
-        hoverAnimation: true,
+        /**
+         * @type {Array.<string>}
+         * @readOnly
+         */
+        dimensions: null,
 
-        // xAxisIndex: 0,
-        // yAxisIndex: 0,
+        /**
+         * @override
+         */
+        defaultOption: {
+            zlevel: 0,                  // 一级层叠
+            z: 2,                       // 二级层叠
+            coordinateSystem: 'cartesian2d',
+            legendHoverLink: true,
 
-        layout: null,               // 'horizontal' or 'vertical'
-        boxWidth: [7, 50],       // [min, max] can be percent of band width.
+            hoverAnimation: true,
 
-        itemStyle: {
-            normal: {
-                color: '#fff',
-                borderWidth: 1
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+
+            layout: null,               // 'horizontal' or 'vertical'
+            boxWidth: [7, 50],       // [min, max] can be percent of band width.
+
+            itemStyle: {
+                normal: {
+                    color: '#fff',
+                    borderWidth: 1
+                },
+                emphasis: {
+                    borderWidth: 2,
+                    shadowBlur: 5,
+                    shadowOffsetX: 2,
+                    shadowOffsetY: 2,
+                    shadowColor: 'rgba(0,0,0,0.4)'
+                }
             },
-            emphasis: {
-                borderWidth: 2,
-                shadowBlur: 5,
-                shadowOffsetX: 2,
-                shadowOffsetY: 2,
-                shadowColor: 'rgba(0,0,0,0.4)'
-            }
-        },
 
-        animationEasing: 'elasticOut',
-        animationDuration: 800
-    }
+            animationEasing: 'elasticOut',
+            animationDuration: 800
+        }
+    });
+
+    zrUtil.mixin(BoxplotSeries, whiskerBoxCommon.seriesModelMixin, true);
+
+    return BoxplotSeries;
+
 });
-
-zrUtil.mixin(BoxplotSeries, seriesModelMixin, true);
-
-export default BoxplotSeries;

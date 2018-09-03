@@ -1,83 +1,84 @@
-var echarts = require("echarts");
+define(function (require) {
 
-var _default = echarts.extendComponentView({
-  type: 'bmap',
-  render: function (bMapModel, ecModel, api) {
-    var rendering = true;
-    var bmap = bMapModel.getBMap();
-    var viewportRoot = api.getZr().painter.getViewportRoot();
-    var coordSys = bMapModel.coordinateSystem;
+    return require('echarts').extendComponentView({
+        type: 'bmap',
 
-    var moveHandler = function (type, target) {
-      if (rendering) {
-        return;
-      }
+        render: function (bMapModel, ecModel, api) {
+            var rendering = true;
 
-      var offsetEl = viewportRoot.parentNode.parentNode.parentNode;
-      var mapOffset = [-parseInt(offsetEl.style.left, 10) || 0, -parseInt(offsetEl.style.top, 10) || 0];
-      viewportRoot.style.left = mapOffset[0] + 'px';
-      viewportRoot.style.top = mapOffset[1] + 'px';
-      coordSys.setMapOffset(mapOffset);
-      bMapModel.__mapOffset = mapOffset;
-      api.dispatchAction({
-        type: 'bmapRoam'
-      });
-    };
+            var bmap = bMapModel.getBMap();
+            var viewportRoot = api.getZr().painter.getViewportRoot();
+            var coordSys = bMapModel.coordinateSystem;
+            var moveHandler = function (type, target) {
+                if (rendering) {
+                    return;
+                }
+                var offsetEl = viewportRoot.parentNode.parentNode.parentNode;
+                var mapOffset = [
+                    -parseInt(offsetEl.style.left, 10) || 0,
+                    -parseInt(offsetEl.style.top, 10) || 0
+                ];
+                viewportRoot.style.left = mapOffset[0] + 'px';
+                viewportRoot.style.top = mapOffset[1] + 'px';
 
-    function zoomEndHandler() {
-      if (rendering) {
-        return;
-      }
+                coordSys.setMapOffset(mapOffset);
+                bMapModel.__mapOffset = mapOffset;
 
-      api.dispatchAction({
-        type: 'bmapRoam'
-      });
-    }
+                api.dispatchAction({
+                    type: 'bmapRoam'
+                });
+            };
 
-    bmap.removeEventListener('moving', this._oldMoveHandler); // FIXME
-    // Moveend may be triggered by centerAndZoom method when creating coordSys next time
-    // bmap.removeEventListener('moveend', this._oldMoveHandler);
+            function zoomEndHandler() {
+                if (rendering) {
+                    return;
+                }
+                api.dispatchAction({
+                    type: 'bmapRoam'
+                });
+            }
 
-    bmap.removeEventListener('zoomend', this._oldZoomEndHandler);
-    bmap.addEventListener('moving', moveHandler); // bmap.addEventListener('moveend', moveHandler);
+            bmap.removeEventListener('moving', this._oldMoveHandler);
+            // FIXME
+            // Moveend may be triggered by centerAndZoom method when creating coordSys next time
+            // bmap.removeEventListener('moveend', this._oldMoveHandler);
+            bmap.removeEventListener('zoomend', this._oldZoomEndHandler);
+            bmap.addEventListener('moving', moveHandler);
+            // bmap.addEventListener('moveend', moveHandler);
+            bmap.addEventListener('zoomend', zoomEndHandler);
 
-    bmap.addEventListener('zoomend', zoomEndHandler);
-    this._oldMoveHandler = moveHandler;
-    this._oldZoomEndHandler = zoomEndHandler;
-    var roam = bMapModel.get('roam');
+            this._oldMoveHandler = moveHandler;
+            this._oldZoomEndHandler = zoomEndHandler;
 
-    if (roam && roam !== 'scale') {
-      bmap.enableDragging();
-    } else {
-      bmap.disableDragging();
-    }
+            var roam = bMapModel.get('roam');
+            if (roam && roam !== 'scale') {
+                bmap.enableDragging();
+            }
+            else {
+                bmap.disableDragging();
+            }
+            if (roam && roam !== 'move') {
+                bmap.enableScrollWheelZoom();
+                bmap.enableDoubleClickZoom();
+                bmap.enablePinchToZoom();
+            }
+            else {
+                bmap.disableScrollWheelZoom();
+                bmap.disableDoubleClickZoom();
+                bmap.disablePinchToZoom();
+            }
 
-    if (roam && roam !== 'move') {
-      bmap.enableScrollWheelZoom();
-      bmap.enableDoubleClickZoom();
-      bmap.enablePinchToZoom();
-    } else {
-      bmap.disableScrollWheelZoom();
-      bmap.disableDoubleClickZoom();
-      bmap.disablePinchToZoom();
-    }
+            var originalStyle = bMapModel.__mapStyle;
 
-    var originalStyle = bMapModel.__mapStyle;
-    var newMapStyle = bMapModel.get('mapStyle') || {}; // FIXME, Not use JSON methods
+            var newMapStyle = bMapModel.get('mapStyle') || {};
+            // FIXME, Not use JSON methods
+            var mapStyleStr = JSON.stringify(newMapStyle);
+            if (JSON.stringify(originalStyle) !== mapStyleStr) {
+                bmap.setMapStyle(newMapStyle);
+                bMapModel.__mapStyle = JSON.parse(mapStyleStr);
+            }
 
-    var mapStyleStr = JSON.stringify(newMapStyle);
-
-    if (JSON.stringify(originalStyle) !== mapStyleStr) {
-      // FIXME May have blank tile when dragging if setMapStyle
-      if (Object.keys(newMapStyle).length) {
-        bmap.setMapStyle(newMapStyle);
-      }
-
-      bMapModel.__mapStyle = JSON.parse(mapStyleStr);
-    }
-
-    rendering = false;
-  }
+            rendering = false;
+        }
+    });
 });
-
-module.exports = _default;

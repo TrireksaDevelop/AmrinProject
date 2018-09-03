@@ -163,7 +163,7 @@ describe('title', function() {
     }, {
         name: 'itemGap',
         cases: [{
-            name: 'should have default itemGap as 10px',
+            name: 'should have default itemGap as 5px',
             test: 'equalOption',
             option1: {
                 series: [],
@@ -177,7 +177,7 @@ describe('title', function() {
                 title: {
                     text: 'title',
                     subtext: 'subtext',
-                    itemGap: 10
+                    itemGap: 5
                 }
             }
         }]
@@ -345,15 +345,16 @@ describe('title', function() {
             option1: {
                 series: [],
                 title: {
-                    text: 'this is title'
+                    text: 'this is title',
+                    borderColor: '#f00'
                 }
             },
             option2: {
                 series: [],
                 title: {
                     text: 'this is title',
-                    borderColor: '#ccc',
-                    borderWidth: 0
+                    borderColor: '#f00',
+                    borderWidth: 1
                 }
             }
         }, {

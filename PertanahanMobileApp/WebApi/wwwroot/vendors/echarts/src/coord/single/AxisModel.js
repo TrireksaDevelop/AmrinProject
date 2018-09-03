@@ -1,89 +1,78 @@
-import * as zrUtil from 'zrender/src/core/util';
-import ComponentModel from '../../model/Component';
-import axisModelCreator from '../axisModelCreator';
-import axisModelCommonMixin from '../axisModelCommonMixin';
+define(function (require) {
 
-var AxisModel = ComponentModel.extend({
+    var ComponentModel = require('../../model/Component');
+    var axisModelCreator = require('../axisModelCreator');
+    var zrUtil =  require('zrender/core/util');
 
-    type: 'singleAxis',
+    var AxisModel = ComponentModel.extend({
 
-    layoutMode: 'box',
+        type: 'singleAxis',
 
-    /**
-     * @type {module:echarts/coord/single/SingleAxis}
-     */
-    axis: null,
+        layoutMode: 'box',
 
-    /**
-     * @type {module:echarts/coord/single/Single}
-     */
-    coordinateSystem: null,
+        /**
+         * @type {module:echarts/coord/single/SingleAxis}
+         */
+        axis: null,
 
-    /**
-     * @override
-     */
-    getCoordSysModel: function () {
-        return this;
+        /**
+         * @type {module:echarts/coord/single/Single}
+         */
+        coordinateSystem: null
+
+    });
+
+    var defaultOption = {
+
+        left: '5%',
+        top: '5%',
+        right: '5%',
+        bottom: '5%',
+
+        type: 'value',
+
+        position: 'bottom',
+
+        orient: 'horizontal',
+        // singleIndex: 0,
+
+        axisLine: {
+            show: true,
+            lineStyle: {
+                width: 2,
+                type: 'solid'
+            }
+        },
+
+        axisTick: {
+            show: true,
+            length: 6,
+            lineStyle: {
+                width: 2
+            }
+        },
+
+        axisLabel: {
+            show: true,
+            interval: 'auto'
+        },
+
+        splitLine: {
+            show: true,
+            lineStyle: {
+                type: 'dashed',
+                opacity: 0.2
+            }
+        }
+    };
+
+    function getAxisType(axisName, option) {
+        return option.type || (option.data ? 'category' : 'value');
     }
 
+    zrUtil.merge(AxisModel.prototype, require('../axisModelCommonMixin'));
+
+    axisModelCreator('single', AxisModel, getAxisType, defaultOption);
+
+    return AxisModel;
 });
-
-var defaultOption = {
-
-    left: '5%',
-    top: '5%',
-    right: '5%',
-    bottom: '5%',
-
-    type: 'value',
-
-    position: 'bottom',
-
-    orient: 'horizontal',
-
-    axisLine: {
-        show: true,
-        lineStyle: {
-            width: 2,
-            type: 'solid'
-        }
-    },
-
-    // Single coordinate system and single axis is the,
-    // which is used as the parent tooltip model.
-    // same model, so we set default tooltip show as true.
-    tooltip: {
-        show: true
-    },
-
-    axisTick: {
-        show: true,
-        length: 6,
-        lineStyle: {
-            width: 2
-        }
-    },
-
-    axisLabel: {
-        show: true,
-        interval: 'auto'
-    },
-
-    splitLine: {
-        show: true,
-        lineStyle: {
-            type: 'dashed',
-            opacity: 0.2
-        }
-    }
-};
-
-function getAxisType(axisName, option) {
-    return option.type || (option.data ? 'category' : 'value');
-}
-
-zrUtil.merge(AxisModel.prototype, axisModelCommonMixin);
-
-axisModelCreator('single', AxisModel, getAxisType, defaultOption);
-
-export default AxisModel;

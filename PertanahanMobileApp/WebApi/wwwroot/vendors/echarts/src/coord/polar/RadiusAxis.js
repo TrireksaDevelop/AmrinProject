@@ -1,37 +1,34 @@
-import * as zrUtil from 'zrender/src/core/util';
-import Axis from '../Axis';
+define(function (require) {
+    'use strict';
 
-function RadiusAxis(scale, radiusExtent) {
+    var zrUtil = require('zrender/core/util');
+    var Axis = require('../Axis');
 
-    Axis.call(this, 'radius', scale, radiusExtent);
+    function RadiusAxis(scale, radiusExtent) {
 
-    /**
-     * Axis type
-     *  - 'category'
-     *  - 'value'
-     *  - 'time'
-     *  - 'log'
-     * @type {string}
-     */
-    this.type = 'category';
-}
+        Axis.call(this, 'radius', scale, radiusExtent);
 
-RadiusAxis.prototype = {
+        /**
+         * Axis type
+         *  - 'category'
+         *  - 'value'
+         *  - 'time'
+         *  - 'log'
+         * @type {string}
+         */
+        this.type = 'category';
+    }
 
-    constructor: RadiusAxis,
+    RadiusAxis.prototype = {
 
-    /**
-     * @override
-     */
-    pointToData: function (point, clamp) {
-        return this.polar.pointToData(point, clamp)[this.dim === 'radius' ? 0 : 1];
-    },
+        constructor: RadiusAxis,
 
-    dataToRadius: Axis.prototype.dataToCoord,
+        dataToRadius: Axis.prototype.dataToCoord,
 
-    radiusToData: Axis.prototype.coordToData
-};
+        radiusToData: Axis.prototype.coordToData
+    };
 
-zrUtil.inherits(RadiusAxis, Axis);
+    zrUtil.inherits(RadiusAxis, Axis);
 
-export default RadiusAxis;
+    return RadiusAxis;
+});

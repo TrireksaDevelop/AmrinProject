@@ -1,18 +1,17 @@
 // Utilities
-var autoprefixer = require('autoprefixer');
-var cssnano = require('cssnano');
 var fs = require('fs');
 
 // Gulp
 var gulp = require('gulp');
 
 // Gulp plugins
-var concat = require('gulp-concat');
 var gutil = require('gulp-util');
+var concat = require('gulp-concat');
 var header = require('gulp-header');
-var postcss = require('gulp-postcss');
-var rename = require('gulp-rename');
+var autoprefixer = require('gulp-autoprefixer');
 var runSequence = require('run-sequence');
+var minify = require('gulp-cssnano');
+var rename = require('gulp-rename');
 
 // Misc/global vars
 var pkg = JSON.parse(fs.readFileSync('package.json'));
@@ -24,12 +23,12 @@ var opts = {
   concatName: 'animate.css',
 
   autoprefixer: {
-    browsers: ['> 1%', 'last 2 versions', 'Firefox ESR'],
-    cascade: false,
+    browsers: ['last 2 versions'],
+    cascade: false
   },
 
   minRename: {
-    suffix: '.min',
+    suffix: '.min'
   },
 
   banner: [
@@ -40,33 +39,33 @@ var opts = {
     ' * Licensed under the MIT license - http://opensource.org/licenses/MIT',
     ' *',
     ' * Copyright (c) <%= new Date().getFullYear() %> <%= author.name %>',
-    ' */\n\n',
-  ].join('\n'),
+    ' */\n\n'
+  ].join('\n')
 };
 
 // ----------------------------
 // Gulp task definitions
 // ----------------------------
 
+gulp.task('default', function() {
+  runSequence('createCSS', 'addHeader');
+});
+
 gulp.task('createCSS', function() {
-  return gulp
-    .src(activatedAnimations)
+  return gulp.src(activatedAnimations)
     .pipe(concat(opts.concatName))
-    .pipe(postcss([autoprefixer(opts.autoprefixer)]))
+    .pipe(autoprefixer(opts.autoprefixer))
     .pipe(gulp.dest(opts.destPath))
-    .pipe(postcss([cssnano({reduceIdents: {keyframes: false}})]))
     .pipe(rename(opts.minRename))
+    .pipe(minify({reduceIdents: {keyframes: false}}))
     .pipe(gulp.dest(opts.destPath));
 });
 
 gulp.task('addHeader', function() {
-  return gulp
-    .src('*.css')
+  return gulp.src('*.css')
     .pipe(header(opts.banner, pkg))
     .pipe(gulp.dest(opts.destPath));
 });
-
-gulp.task('default', gulp.series('createCSS', 'addHeader'));
 
 // ----------------------------
 // Helpers/functions
@@ -75,27 +74,20 @@ gulp.task('default', gulp.series('createCSS', 'addHeader'));
 // Read the config file and return an array of the animations to be activated
 function activateAnimations() {
   var categories = JSON.parse(fs.readFileSync('animate-config.json')),
-    category,
-    files,
-    file,
-    target = [],
+    category, files, file,
+    target = [ 'source/_base.css' ],
     count = 0;
 
   for (category in categories) {
     if (categories.hasOwnProperty(category)) {
       files = categories[category];
 
-      for (file in files) {
-        if (files[file]) {
-          // marked as true
-          target.push('source/' + category + '/' + file + '.css');
-          count += 1;
-        }
+      for (var i = 0; i < files.length; ++i) {
+        target.push('source/' + category + '/' + files[i] + '.css');
+        count += 1;
       }
     }
   }
-  // prepend base CSS
-  target.push('source/_base.css');
 
   if (!count) {
     gutil.log('No animations activated.');

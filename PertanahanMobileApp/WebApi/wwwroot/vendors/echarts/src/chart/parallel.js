@@ -1,7 +1,12 @@
-import * as echarts from '../echarts';
-import '../component/parallel';
-import './parallel/ParallelSeries';
-import './parallel/ParallelView';
-import parallelVisual from './parallel/parallelVisual';
+define(function (require) {
 
-echarts.registerVisual(parallelVisual);
+    var echarts = require('../echarts');
+
+    require('../component/parallel');
+
+    require('./parallel/ParallelSeries');
+    require('./parallel/ParallelView');
+
+    echarts.registerVisualCoding('chart', require('./parallel/parallelVisual'));
+
+});

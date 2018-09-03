@@ -1,8 +1,8 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <script src="lib/esl.js"></script>
-        <script src="lib/config.js"></script>
+        <script src="esl.js"></script>
+        <script src="config.js"></script>
         <script src="lib/jquery.min.js"></script>
         <script src="lib/dat.gui.min.js"></script>
     </head>
@@ -20,21 +20,19 @@
             require([
                 'echarts',
 
-                'extension/dataTool'
+                'extension/dataTool/gexf',
 
-                // 'echarts/chart/graph',
+                'echarts/chart/graph',
 
-                // 'echarts/component/title',
-                // 'echarts/component/legend',
-                // 'echarts/component/geo',
-                // 'echarts/component/tooltip',
-                // 'echarts/component/visualMap'
-            ], function (echarts, dataTool) {
-
-                var gexf = dataTool.gexf;
+                'echarts/component/title',
+                'echarts/component/legend',
+                'echarts/component/geo',
+                'echarts/component/tooltip',
+                'echarts/component/visualMap'
+            ], function (echarts, gexf) {
 
                 var chart = echarts.init(document.getElementById('main'), null, {
-
+                    renderer: 'canvas'
                 });
 
                 $.get('./data/les-miserables.gexf', function (xml) {
@@ -77,10 +75,8 @@
                                 animation: false,
                                 roam: true,
                                 draggable: true,
-                                edgeSymbol: ['none', 'arrow'],
-                                edgeSymbolSize: 5,
                                 force: {
-                                    repulsion: [0, 100]
+                                    repulsion: 100
                                 },
                                 label: {
                                     normal: {

@@ -1,42 +1,42 @@
-import * as echarts from '../../echarts';
-import SymbolDraw from '../helper/SymbolDraw';
-import LargeSymbolDraw from '../helper/LargeSymbolDraw';
+define(function (require) {
 
-echarts.extendChartView({
+    var SymbolDraw = require('../helper/SymbolDraw');
+    var LargeSymbolDraw = require('../helper/LargeSymbolDraw');
 
-    type: 'scatter',
+    require('../../echarts').extendChartView({
 
-    init: function () {
-        this._normalSymbolDraw = new SymbolDraw();
-        this._largeSymbolDraw = new LargeSymbolDraw();
-    },
+        type: 'scatter',
 
-    render: function (seriesModel, ecModel, api) {
-        var data = seriesModel.getData();
-        var largeSymbolDraw = this._largeSymbolDraw;
-        var normalSymbolDraw = this._normalSymbolDraw;
-        var group = this.group;
+        init: function () {
+            this._normalSymbolDraw = new SymbolDraw();
+            this._largeSymbolDraw = new LargeSymbolDraw();
+        },
 
-        var symbolDraw = seriesModel.get('large') && data.count() > seriesModel.get('largeThreshold')
-            ? largeSymbolDraw : normalSymbolDraw;
+        render: function (seriesModel, ecModel, api) {
+            var data = seriesModel.getData();
+            var largeSymbolDraw = this._largeSymbolDraw;
+            var normalSymbolDraw = this._normalSymbolDraw;
+            var group = this.group;
 
-        this._symbolDraw = symbolDraw;
-        symbolDraw.updateData(data);
-        group.add(symbolDraw.group);
+            var symbolDraw = seriesModel.get('large') && data.count() > seriesModel.get('largeThreshold')
+                ? largeSymbolDraw : normalSymbolDraw;
 
-        group.remove(
-            symbolDraw === largeSymbolDraw
-            ? normalSymbolDraw.group : largeSymbolDraw.group
-        );
-    },
+            this._symbolDraw = symbolDraw;
+            symbolDraw.updateData(data);
+            group.add(symbolDraw.group);
 
-    updateLayout: function (seriesModel) {
-        this._symbolDraw.updateLayout(seriesModel);
-    },
+            group.remove(
+                symbolDraw === largeSymbolDraw
+                ? normalSymbolDraw.group : largeSymbolDraw.group
+            );
+        },
 
-    remove: function (ecModel, api) {
-        this._symbolDraw && this._symbolDraw.remove(api, true);
-    },
+        updateLayout: function (seriesModel) {
+            this._symbolDraw.updateLayout(seriesModel);
+        },
 
-    dispose: function () {}
+        remove: function (ecModel, api) {
+            this._symbolDraw && this._symbolDraw.remove(api, true);
+        }
+    });
 });

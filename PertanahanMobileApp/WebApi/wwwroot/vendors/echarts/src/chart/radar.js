@@ -1,20 +1,25 @@
+define(function (require) {
 
-import * as echarts from '../echarts';
-import * as zrUtil from 'zrender/src/core/util';
+    var zrUtil = require('zrender/core/util');
+    var echarts = require('../echarts');
 
-// Must use radar component
-import '../component/radar';
-import './radar/RadarSeries';
-import './radar/RadarView';
+    // Must use radar component
+    require('../component/radar');
 
-import dataColor from '../visual/dataColor';
-import visualSymbol from '../visual/symbol';
-import radarLayout from './radar/radarLayout';
-import dataFilter from '../processor/dataFilter';
-import backwardCompat from './radar/backwardCompat';
+    require('./radar/RadarSeries');
+    require('./radar/RadarView');
 
-echarts.registerVisual(zrUtil.curry(dataColor, 'radar'));
-echarts.registerVisual(zrUtil.curry(visualSymbol, 'radar', 'circle', null));
-echarts.registerLayout(radarLayout);
-echarts.registerProcessor(zrUtil.curry(dataFilter, 'radar'));
-echarts.registerPreprocessor(backwardCompat);
+    echarts.registerVisualCoding(
+        'chart',  zrUtil.curry(require('../visual/dataColor'), 'radar')
+    );
+    echarts.registerVisualCoding('chart', zrUtil.curry(
+        require('../visual/symbol'), 'radar', 'circle', null
+    ));
+    echarts.registerLayout(require('./radar/radarLayout'));
+
+    echarts.registerProcessor(
+        'filter', zrUtil.curry(require('../processor/dataFilter'), 'radar')
+    );
+
+    echarts.registerPreprocessor(require('./radar/backwardCompat'));
+});

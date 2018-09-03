@@ -36,5 +36,6 @@
   },
   "_source": "https://github.com/christianesperar/jqvmap.git",
   "_target": "master",
-  "_originalSource": "https://github.com/christianesperar/jqvmap.git"
+  "_originalSource": "https://github.com/christianesperar/jqvmap.git",
+  "_direct": true
 }

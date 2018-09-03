@@ -24,14 +24,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in Berkas">
+                    <tr ng-repeat="item in Permohonan">
                         <td scope="row">{{$index+1}}</td>
                         <td>1</td>
                         <td>1</td>
                         <td>
                             <a href="" ng-click="EditItem(item)" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-edit fa-2x text-warning"></i></a>
                             <a href="" ng-click="EditItem(item)" data-toggle="modal" data-target=".messagebox"><i class="fa fa-envelope-o fa-2x text-info"></i></a>
-                            <a href="" ng-click="EditItem(item)" data-toggle="modal" data-target=".kelengkapan"><i class="fa fa-list-ul fa-2x text-info"></i></a>
+                            <a href="" ng-click="ShowBerkas(item)" data-toggle="modal" data-target=".kelengkapan"><i class="fa fa-list-ul fa-2x text-info"></i></a>
                         </td>
                     </tr>
 
@@ -116,21 +116,15 @@
                 <h4 class="modal-title" id="myModalLabel2">{{ModalTitle}}</h4>
             </div>
             <form ng-submit="Save(model)" id="demo-form" data-parsley-validate>
-                <div class="modal-body">
-                    <label for="fullname">Nama  </label>
-                    <input type="text" class="form-control" ng-model="model.nama" required />
+                <div ng-repeat="item in Berkas">
+                    <input ng-click="addKelengkapan(item)" type="checkbox" name="hobbies[]" id="{{item.id}}" value="{{item.id}}" data-parsley-mincheck="2" required class="flat" /> {{item.nama}}
+                    <br />
                 </div>
-
-                <div class="modal-body">
-                    <label for="fullname">Petugas</label>
-                    <select class="form-control" ng-options="item as item.nama for item in Petugas track by item.id" ng-model="model.petugas"></select>
-                </div>
-
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" ng-click="update()" class="btn btn-primary">Proses</button>
                 </div>
+
             </form>
         </div>
 

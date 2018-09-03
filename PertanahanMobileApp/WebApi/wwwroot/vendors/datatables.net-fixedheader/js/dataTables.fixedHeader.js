@@ -1,16 +1,16 @@
-/*! FixedHeader 3.1.5
- * ©2009-2018 SpryMedia Ltd - datatables.net/license
+/*! FixedHeader 3.1.2
+ * ©2009-2016 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     FixedHeader
  * @description Fix a table's header or footer, so it is always visible while
  *              scrolling
- * @version     3.1.5
+ * @version     3.1.2
  * @file        dataTables.fixedHeader.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
- * @copyright   Copyright 2009-2018 SpryMedia Ltd.
+ * @copyright   Copyright 2009-2016 SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
  *   MIT license - http://datatables.net/license/mit
@@ -215,10 +215,10 @@ $.extend( FixedHeader.prototype, {
 			.on( 'scroll'+this.s.namespace, function () {
 				that._scroll();
 			} )
-			.on( 'resize'+this.s.namespace, DataTable.util.throttle( function () {
+			.on( 'resize'+this.s.namespace, function () {
 				that.s.position.windowHeight = $(window).height();
 				that.update();
-			}, 50 ) );
+			} );
 
 		var autoHeader = $('.fh-fixedHeader');
 		if ( ! this.c.headerOffset && autoHeader.length ) {
@@ -230,19 +230,11 @@ $.extend( FixedHeader.prototype, {
 			this.c.footerOffset = autoFooter.outerHeight();
 		}
 
-		dt.on( 'column-reorder.dt.dtfc column-visibility.dt.dtfc draw.dt.dtfc column-sizing.dt.dtfc responsive-display.dt.dtfc', function () {
+		dt.on( 'column-reorder.dt.dtfc column-visibility.dt.dtfc draw.dt.dtfc column-sizing.dt.dtfc', function () {
 			that.update();
 		} );
 
 		dt.on( 'destroy.dtfc', function () {
-			if ( that.c.header ) {
-				that._modeChange( 'in-place', 'header', true );
-			}
-
-			if ( that.c.footer && that.dom.tfoot.length ) {
-				that._modeChange( 'in-place', 'footer', true );
-			}
-
 			dt.off( '.dtfc' );
 			$(window).off( that.s.namespace );
 		} );
@@ -288,17 +280,12 @@ $.extend( FixedHeader.prototype, {
 
 			itemDom.floating = $( dt.table().node().cloneNode( false ) )
 				.css( 'table-layout', 'fixed' )
-				.attr( 'aria-hidden', 'true' )
 				.removeAttr( 'id' )
 				.append( itemElement )
 				.appendTo( 'body' );
 
 			// Insert a fake thead/tfoot into the DataTable to stop it jumping around
-			itemDom.placeholder = itemElement.clone( false )
-			itemDom.placeholder
-				.find( '*[id]' )
-				.removeAttr( 'id' );
-
+			itemDom.placeholder = itemElement.clone( false );
 			itemDom.host.prepend( itemDom.placeholder );
 
 			// Clone widths
@@ -412,10 +399,6 @@ $.extend( FixedHeader.prototype, {
 		var focus = $.contains( tablePart[0], document.activeElement ) ?
 			document.activeElement :
 			null;
-		
-		if ( focus ) {
-			focus.blur();
-		}
 
 		if ( mode === 'in-place' ) {
 			// Insert the header back into the table's real header
@@ -427,10 +410,10 @@ $.extend( FixedHeader.prototype, {
 			this._unsize( item );
 
 			if ( item === 'header' ) {
-				itemDom.host.prepend( tablePart );
+				itemDom.host.prepend( this.dom.thead );
 			}
 			else {
-				itemDom.host.append( tablePart );
+				itemDom.host.append( this.dom.tfoot );
 			}
 
 			if ( itemDom.floating ) {
@@ -476,9 +459,7 @@ $.extend( FixedHeader.prototype, {
 
 		// Restore focus if it was lost
 		if ( focus && focus !== document.activeElement ) {
-			setTimeout( function () {
-				focus.focus();
-			}, 10 );
+			focus.focus();
 		}
 
 		this.s.scrollLeft.header = -1;
@@ -590,7 +571,7 @@ $.extend( FixedHeader.prototype, {
  * @type {String}
  * @static
  */
-FixedHeader.version = "3.1.5";
+FixedHeader.version = "3.1.2";
 
 /**
  * Defaults
@@ -650,9 +631,8 @@ DataTable.Api.register( 'fixedHeader.enable()', function ( flag ) {
 	return this.iterator( 'table', function ( ctx ) {
 		var fh = ctx._fixedHeader;
 
-		flag = ( flag !== undefined ? flag : true );
-		if ( fh && flag !== fh.s.enable ) {
-			fh.enable( flag );
+		if ( fh ) {
+			fh.enable( flag !== undefined ? flag : true );
 		}
 	} );
 } );
@@ -661,7 +641,7 @@ DataTable.Api.register( 'fixedHeader.disable()', function ( ) {
 	return this.iterator( 'table', function ( ctx ) {
 		var fh = ctx._fixedHeader;
 
-		if ( fh && fh.s.enable ) {
+		if ( fh ) {
 			fh.enable( false );
 		}
 	} );

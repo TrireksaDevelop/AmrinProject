@@ -1,38 +1,36 @@
 /**
  * Parallel coordinate system creater.
  */
+define(function(require) {
 
-import Parallel from './Parallel';
-import CoordinateSystem from '../../CoordinateSystem';
+    var Parallel = require('./Parallel');
 
-function create(ecModel, api) {
-    var coordSysList = [];
+    function create(ecModel, api) {
+        var coordSysList = [];
 
-    ecModel.eachComponent('parallel', function (parallelModel, idx) {
-        var coordSys = new Parallel(parallelModel, ecModel, api);
+        ecModel.eachComponent('parallel', function (parallelModel, idx) {
+            var coordSys = new Parallel(parallelModel, ecModel, api);
 
-        coordSys.name = 'parallel_' + idx;
-        coordSys.resize(parallelModel, api);
+            coordSys.name = 'parallel_' + idx;
+            coordSys.resize(parallelModel, api);
 
-        parallelModel.coordinateSystem = coordSys;
-        coordSys.model = parallelModel;
+            parallelModel.coordinateSystem = coordSys;
+            coordSys.model = parallelModel;
 
-        coordSysList.push(coordSys);
-    });
+            coordSysList.push(coordSys);
+        });
 
-    // Inject the coordinateSystems into seriesModel
-    ecModel.eachSeries(function (seriesModel) {
-        if (seriesModel.get('coordinateSystem') === 'parallel') {
-            var parallelModel = ecModel.queryComponents({
-                mainType: 'parallel',
-                index: seriesModel.get('parallelIndex'),
-                id: seriesModel.get('parallelId')
-            })[0];
-            seriesModel.coordinateSystem = parallelModel.coordinateSystem;
-        }
-    });
+        // Inject the coordinateSystems into seriesModel
+        ecModel.eachSeries(function (seriesModel) {
+            if (seriesModel.get('coordinateSystem') === 'parallel') {
+                var parallelIndex = seriesModel.get('parallelIndex');
+                seriesModel.coordinateSystem = coordSysList[parallelIndex];
+            }
+        });
 
-    return coordSysList;
-}
+        return coordSysList;
+    }
 
-CoordinateSystem.register('parallel', {create: create});
+    require('../../CoordinateSystem').register('parallel', {create: create});
+
+});

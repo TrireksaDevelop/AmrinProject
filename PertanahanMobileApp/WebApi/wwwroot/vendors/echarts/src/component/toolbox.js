@@ -1,7 +1,11 @@
-import './toolbox/ToolboxModel';
-import './toolbox/ToolboxView';
-import './toolbox/feature/SaveAsImage';
-import './toolbox/feature/MagicType';
-import './toolbox/feature/DataView';
-import './toolbox/feature/DataZoom';
-import './toolbox/feature/Restore';
+define(function (require) {
+
+    require('./toolbox/ToolboxModel');
+    require('./toolbox/ToolboxView');
+
+    require('./toolbox/feature/SaveAsImage');
+    require('./toolbox/feature/MagicType');
+    require('./toolbox/feature/DataView');
+    require('./toolbox/feature/DataZoom');
+    require('./toolbox/feature/Restore');
+});

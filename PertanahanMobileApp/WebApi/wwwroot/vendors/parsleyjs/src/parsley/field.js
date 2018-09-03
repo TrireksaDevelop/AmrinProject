@@ -1,12 +1,11 @@
 import $ from 'jquery';
-import Constraint from './constraint';
-import UI from './ui';
-import Utils from './utils';
+import ConstraintFactory from './factory/constraint';
+import ParsleyUI from './ui';
+import ParsleyUtils from './utils';
 
-var Field = function (field, domOptions, options, parsleyFormInstance) {
-  this.__class__ = 'Field';
+var ParsleyField = function (field, domOptions, options, parsleyFormInstance) {
+  this.__class__ = 'ParsleyField';
 
-  this.element = field;
   this.$element = $(field);
 
   // Set parent if we have one
@@ -28,14 +27,14 @@ var Field = function (field, domOptions, options, parsleyFormInstance) {
 
 var statusMapping = {pending: null, resolved: true, rejected: false};
 
-Field.prototype = {
+ParsleyField.prototype = {
   // # Public API
-  // Validate field and trigger some events for mainly `UI`
+  // Validate field and trigger some events for mainly `ParsleyUI`
   // @returns `true`, an array of the validators that failed, or
   // `null` if validation is not finished. Prefer using whenValidate
   validate: function (options) {
     if (arguments.length >= 1 && !$.isPlainObject(options)) {
-      Utils.warnOnce('Calling validate on a parsley field without passing arguments as an object is deprecated.');
+      ParsleyUtils.warnOnce('Calling validate on a parsley field without passing arguments as an object is deprecated.');
       options = {options};
     }
     var promise = this.whenValidate(options);
@@ -48,12 +47,12 @@ Field.prototype = {
     }
   },
 
-  // Validate field and trigger some events for mainly `UI`
+  // Validate field and trigger some events for mainly `ParsleyUI`
   // @returns a promise that succeeds only when all validations do
   // or `undefined` if field is not in the given `group`.
   whenValidate: function ({force, group} =  {}) {
     // do not validate a field if not the same as given validation group
-    this.refresh();
+    this.refreshConstraints();
     if (group && !this._isInGroup(group))
       return;
 
@@ -88,7 +87,7 @@ Field.prototype = {
   },
 
   _isInGroup: function (group) {
-    if (Array.isArray(this.options.group))
+    if ($.isArray(this.options.group))
       return -1 !== $.inArray(group, this.options.group);
     return this.options.group === group;
   },
@@ -99,7 +98,7 @@ Field.prototype = {
   // See also `whenValid`.
   isValid: function (options) {
     if (arguments.length >= 1 && !$.isPlainObject(options)) {
-      Utils.warnOnce('Calling isValid on a parsley field without passing arguments as an object is deprecated.');
+      ParsleyUtils.warnOnce('Calling isValid on a parsley field without passing arguments as an object is deprecated.');
       var [force, value] = arguments;
       options = {force, value};
     }
@@ -117,7 +116,7 @@ Field.prototype = {
   whenValid: function ({force = false, value, group, _refreshed} = {}) {
     // Recompute options and rebind constraints to have latest changes
     if (!_refreshed)
-      this.refresh();
+      this.refreshConstraints();
     // do not validate a field if not the same as given validation group
     if (group && !this._isInGroup(group))
       return;
@@ -140,14 +139,14 @@ Field.prototype = {
     $.each(groupedConstraints, (_, constraints) => {
       // Process one group of constraints at a time, we validate the constraints
       // and combine the promises together.
-      var promise = Utils.all(
-        $.map(constraints, constraint => this._validateConstraint(value, constraint))
+      var promise = $.when(
+        ...$.map(constraints, constraint => this._validateConstraint(value, constraint))
       );
       promises.push(promise);
       if (promise.state() === 'rejected')
         return false; // Interrupt processing if a group has already failed
     });
-    return Utils.all(promises);
+    return $.when.apply($, promises);
   },
 
   // @returns a promise
@@ -157,7 +156,7 @@ Field.prototype = {
     if (false === result)
       result = $.Deferred().reject();
     // Make sure we return a promise and that we record failures
-    return Utils.all([result]).fail(errorMessage => {
+    return $.when(result).fail(errorMessage => {
       if (!(this.validationResult instanceof Array))
         this.validationResult = [];
       this.validationResult.push({
@@ -186,34 +185,10 @@ Field.prototype = {
     return this._handleWhitespace(value);
   },
 
-  // Reset UI
-  reset: function () {
-    this._resetUI();
-    return this._trigger('reset');
-  },
-
-  // Destroy Parsley instance (+ UI)
-  destroy: function () {
-    // Field case: emit destroy event to clean UI and then destroy stored instance
-    this._destroyUI();
-    this.$element.removeData('Parsley');
-    this.$element.removeData('FieldMultiple');
-    this._trigger('destroy');
-  },
-
-  // Actualize options and rebind constraints
-  refresh: function () {
-    this._refreshConstraints();
-    return this;
-  },
-
-  _refreshConstraints: function () {
+  // Actualize options that could have change since previous validation
+  // Re-bind accordingly constraints (could be some new, removed or updated)
+  refreshConstraints: function () {
     return this.actualizeOptions()._bindConstraints();
-  },
-
-  refreshConstraints: function() {
-    Utils.warnOnce("Parsley's refreshConstraints is deprecated. Please use refresh");
-    return this.refresh();
   },
 
   /**
@@ -227,7 +202,7 @@ Field.prototype = {
   addConstraint: function (name, requirements, priority, isDomConstraint) {
 
     if (window.Parsley._validatorRegistry.validators[name]) {
-      var constraint = new Constraint(this, name, requirements, priority, isDomConstraint);
+      var constraint = new ConstraintFactory(this, name, requirements, priority, isDomConstraint);
 
       // if constraint already exist, delete it and push new version
       if ('undefined' !== this.constraintsByName[constraint.name])
@@ -287,52 +262,53 @@ Field.prototype = {
   // Bind specific HTML5 constraints to be HTML5 compliant
   _bindHtml5Constraints: function () {
     // html5 required
-    if (null !== this.element.getAttribute('required'))
+    if (this.$element.hasClass('required') || this.$element.attr('required'))
       this.addConstraint('required', true, undefined, true);
 
     // html5 pattern
-    if (null !== this.element.getAttribute('pattern'))
-      this.addConstraint('pattern', this.element.getAttribute('pattern'), undefined, true);
+    if ('string' === typeof this.$element.attr('pattern'))
+      this.addConstraint('pattern', this.$element.attr('pattern'), undefined, true);
 
     // range
-    let min = this.element.getAttribute('min');
-    let max = this.element.getAttribute('max');
-    if (null !== min && null !== max)
-      this.addConstraint('range', [min, max], undefined, true);
+    if ('undefined' !== typeof this.$element.attr('min') && 'undefined' !== typeof this.$element.attr('max'))
+      this.addConstraint('range', [this.$element.attr('min'), this.$element.attr('max')], undefined, true);
 
     // HTML5 min
-    else if (null !== min)
-      this.addConstraint('min', min, undefined, true);
+    else if ('undefined' !== typeof this.$element.attr('min'))
+      this.addConstraint('min', this.$element.attr('min'), undefined, true);
 
     // HTML5 max
-    else if (null !== max)
-      this.addConstraint('max', max, undefined, true);
+    else if ('undefined' !== typeof this.$element.attr('max'))
+      this.addConstraint('max', this.$element.attr('max'), undefined, true);
 
 
     // length
-    if (null !== this.element.getAttribute('minlength') && null !== this.element.getAttribute('maxlength'))
-      this.addConstraint('length', [this.element.getAttribute('minlength'), this.element.getAttribute('maxlength')], undefined, true);
+    if ('undefined' !== typeof this.$element.attr('minlength') && 'undefined' !== typeof this.$element.attr('maxlength'))
+      this.addConstraint('length', [this.$element.attr('minlength'), this.$element.attr('maxlength')], undefined, true);
 
     // HTML5 minlength
-    else if (null !== this.element.getAttribute('minlength'))
-      this.addConstraint('minlength', this.element.getAttribute('minlength'), undefined, true);
+    else if ('undefined' !== typeof this.$element.attr('minlength'))
+      this.addConstraint('minlength', this.$element.attr('minlength'), undefined, true);
 
     // HTML5 maxlength
-    else if (null !== this.element.getAttribute('maxlength'))
-      this.addConstraint('maxlength', this.element.getAttribute('maxlength'), undefined, true);
+    else if ('undefined' !== typeof this.$element.attr('maxlength'))
+      this.addConstraint('maxlength', this.$element.attr('maxlength'), undefined, true);
 
 
     // html5 types
-    var type = Utils.getType(this.element);
+    var type = this.$element.attr('type');
+
+    if ('undefined' === typeof type)
+      return this;
 
     // Small special case here for HTML5 number: integer validator if step attribute is undefined or an integer value, number otherwise
     if ('number' === type) {
       return this.addConstraint('type', ['number', {
-        step: this.element.getAttribute('step') || '1',
-        base: min || this.element.getAttribute('value')
+        step: this.$element.attr('step'),
+        base: this.$element.attr('min') || this.$element.attr('value')
       }], undefined, true);
     // Regular other HTML5 supported types
-    } else if (/^(email|url|range|date)$/i.test(type)) {
+    } else if (/^(email|url|range)$/i.test(type)) {
       return this.addConstraint('type', type, undefined, true);
     }
     return this;
@@ -359,20 +335,15 @@ Field.prototype = {
   // Use `data-parsley-whitespace="trim"` to auto trim input value
   _handleWhitespace: function (value) {
     if (true === this.options.trimValue)
-      Utils.warnOnce('data-parsley-trim-value="true" is deprecated, please use data-parsley-whitespace="trim"');
+      ParsleyUtils.warnOnce('data-parsley-trim-value="true" is deprecated, please use data-parsley-whitespace="trim"');
 
     if ('squish' === this.options.whitespace)
       value = value.replace(/\s{2,}/g, ' ');
 
     if (('trim' === this.options.whitespace) || ('squish' === this.options.whitespace) || (true === this.options.trimValue))
-      value = Utils.trimString(value);
+      value = ParsleyUtils.trimString(value);
 
     return value;
-  },
-
-  _isDateInput: function() {
-    var c = this.constraintsByName.type;
-    return c && c.requirements === 'date';
   },
 
   // Internal only.
@@ -400,4 +371,4 @@ Field.prototype = {
 
 };
 
-export default Field;
+export default ParsleyField;

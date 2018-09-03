@@ -1,14 +1,18 @@
-import * as echarts from '../echarts';
-import * as zrUtil from 'zrender/src/core/util';
+define(function (require) {
 
-import './scatter/ScatterSeries';
-import './scatter/ScatterView';
+    var zrUtil = require('zrender/core/util');
+    var echarts = require('../echarts');
 
-import visualSymbol from '../visual/symbol';
-import layoutPoints from '../layout/points';
+    require('./scatter/ScatterSeries');
+    require('./scatter/ScatterView');
 
-// In case developer forget to include grid component
-import '../component/gridSimple';
+    echarts.registerVisualCoding('chart', zrUtil.curry(
+        require('../visual/symbol'), 'scatter', 'circle', null
+    ));
+    echarts.registerLayout(zrUtil.curry(
+        require('../layout/points'), 'scatter'
+    ));
 
-echarts.registerVisual(zrUtil.curry(visualSymbol, 'scatter', 'circle', null));
-echarts.registerLayout(zrUtil.curry(layoutPoints, 'scatter'));
+    // In case developer forget to include grid component
+    require('../component/grid');
+});

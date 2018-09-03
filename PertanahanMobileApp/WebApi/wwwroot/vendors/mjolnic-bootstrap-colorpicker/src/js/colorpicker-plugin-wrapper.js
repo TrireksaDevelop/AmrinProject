@@ -1,6 +1,6 @@
 /*!
- * Bootstrap Colorpicker v2.5.2
- * https://itsjavi.com/bootstrap-colorpicker/
+ * Bootstrap Colorpicker v//@version
+ * http://mjolnic.github.io/bootstrap-colorpicker/
  *
  * Originally written by (c) 2012 Stefan Petre
  * Licensed under the Apache License v2.0
@@ -8,22 +8,18 @@
  *
  */
 
-(function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // AMD. Register as an anonymous module unless amdModuleId is set
-    define(["jquery"], function(jq) {
-      return (factory(jq));
-    });
-  } else if (typeof exports === 'object') {
-    // Node. Does not work with strict CommonJS, but
-    // only CommonJS-like environments that support module.exports,
-    // like Node.
-    module.exports = factory(require("jquery"));
-  } else if (jQuery && !jQuery.fn.colorpicker) {
-    factory(jQuery);
+(function(factory) {
+  "use strict";
+  if (typeof exports === 'object') {
+    module.exports = factory(window.jQuery);
+  } else if (typeof define === 'function' && define.amd) {
+    define(['jquery'], factory);
+  } else if (window.jQuery && !window.jQuery.fn.colorpicker) {
+    factory(window.jQuery);
   }
-}(this, function($) {
+}(function($) {
   'use strict';
+
   //@colorpicker-color
   //@colorpicker-defaults
   //@colorpicker-component

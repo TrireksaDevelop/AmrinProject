@@ -1,34 +1,25 @@
-import * as echarts from '../../echarts';
+define(function (require) {
 
-/**
- * @payload
- * @property {string} parallelAxisId
- * @property {Array.<Array.<number>>} intervals
- */
-var actionInfo = {
-    type: 'axisAreaSelect',
-    event: 'axisAreaSelected',
-    update: 'updateVisual'
-};
+    var echarts = require('../../echarts');
 
-echarts.registerAction(actionInfo, function (payload, ecModel) {
-    ecModel.eachComponent(
-        {mainType: 'parallelAxis', query: payload},
-        function (parallelAxisModel) {
-            parallelAxisModel.axis.model.setActiveIntervals(payload.intervals);
-        }
-    );
-});
+    var actionInfo = {
+        type: 'axisAreaSelect',
+        event: 'axisAreaSelected',
+        update: 'updateVisual'
+    };
 
-/**
- * @payload
- */
-echarts.registerAction('parallelAxisExpand', function (payload, ecModel) {
-    ecModel.eachComponent(
-        {mainType: 'parallel', query: payload},
-        function (parallelModel) {
-            parallelModel.setAxisExpand(payload);
-        }
-    );
+    /**
+     * @payload
+     * @property {string} parallelAxisId
+     * @property {Array.<Array.<number>>} intervals
+     */
+    echarts.registerAction(actionInfo, function (payload, ecModel) {
+        ecModel.eachComponent(
+            {mainType: 'parallelAxis', query: payload},
+            function (parallelAxisModel) {
+                parallelAxisModel.axis.model.setActiveIntervals(payload.intervals);
+            }
+        );
 
+    });
 });

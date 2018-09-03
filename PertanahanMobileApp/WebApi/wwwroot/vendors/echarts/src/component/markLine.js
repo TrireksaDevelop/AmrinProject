@@ -1,9 +1,10 @@
-import * as echarts from '../echarts';
+define(function (require) {
 
-import './marker/MarkLineModel';
-import './marker/MarkLineView';
+    require('./marker/MarkLineModel');
+    require('./marker/MarkLineView');
 
-echarts.registerPreprocessor(function (opt) {
-    // Make sure markLine component is enabled
-    opt.markLine = opt.markLine || {};
+    require('../echarts').registerPreprocessor(function (opt) {
+        // Make sure markLine component is enabled
+        opt.markLine = opt.markLine || {};
+    });
 });

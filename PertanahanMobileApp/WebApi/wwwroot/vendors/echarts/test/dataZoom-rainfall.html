@@ -1,8 +1,8 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <script src="./lib/esl.js"></script>
-        <script src="./lib/config.js"></script>
+        <script src="./esl.js"></script>
+        <script src="./config.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body>
@@ -21,22 +21,35 @@
 
             require([
                 'data/rainfall.json',
-                'echarts'
-                // 'echarts/chart/bar',
-                // 'echarts/chart/line',
-                // 'echarts/component/legend',
-                // 'echarts/component/tooltip',
-                // 'echarts/component/grid',
-                // 'echarts/component/axis',
-                // 'echarts/component/dataZoom',
-                // 'echarts/component/markArea'
+                'echarts',
+                'echarts/chart/bar',
+                'echarts/chart/line',
+                'echarts/component/legend',
+                'echarts/component/tooltip',
+                'echarts/component/grid',
+                'echarts/component/axis',
+                'echarts/component/dataZoom'
             ], function (data, echarts) {
 
-                var chart = echarts.init(document.getElementById('main'));
+                chart = echarts.init(document.getElementById('main'), null, {
+                    renderer: 'canvas'
+                });
+
+                var xAxisData = [];
+                var data1 = [];
+                var data2 = [];
+                var data3 = [];
+
+                for (var i = 0; i < 20; i++) {
+                    xAxisData.push('类目' + i);
+                    data1.push(Math.random() * 2);
+                    data2.push(Math.random() * 2);
+                    data3.push(Math.random() * 2);
+                }
 
                 chart.setOption({
                     tooltip: {
-                        trigger: 'axis'
+                        trigger: 'axis',
                     },
                     legend: {
                         data: ['降水量', '流量']
@@ -47,7 +60,6 @@
                         borderWidth: 1,
                         right: '15%'
                     },
-                    animation: false,
                     xAxis: [
                         {
                             // data: ['类目1', '类目2', '类目3', '类目4', '类目5',]
@@ -100,15 +112,6 @@
                                 normal: {
                                      areaStyle: {}
                                 }
-                            },
-                            markArea: {
-                                data: [
-                                    [{
-                                        xAxis: 500
-                                    }, {
-                                        xAxis: 1500
-                                    }]
-                                ]
                             }
                         },
                         {
@@ -120,17 +123,13 @@
                                 normal: {
                                      areaStyle: {}
                                 }
-                            },
-                            markArea: {
-                                data: [
-                                    [{
-                                        yAxis: 50
-                                    }, {
-                                        yAxis: 100
-                                    }]
-                                ]
                             }
-                        }
+                        },
+                        // {
+                        //     name: 'bar3',
+                        //     type: 'line',
+                        //     data: data3
+                        // }
                     ],
                     dataZoom: [
                         {
@@ -143,8 +142,7 @@
                         {
                             show: true,
                             xAxisIndex: [0],
-                            // handleSize: '50%'
-                            realtime: false,
+                            // realtime: false,
                         },
                         {
                             show: true,

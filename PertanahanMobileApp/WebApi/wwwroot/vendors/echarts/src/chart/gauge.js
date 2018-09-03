@@ -1,2 +1,4 @@
-import './gauge/GaugeSeries';
-import './gauge/GaugeView';
+define(function (require) {
+    require('./gauge/GaugeSeries');
+    require('./gauge/GaugeView');
+});

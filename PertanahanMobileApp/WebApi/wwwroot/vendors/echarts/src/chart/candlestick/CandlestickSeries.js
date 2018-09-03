@@ -1,79 +1,92 @@
-import * as zrUtil from 'zrender/src/core/util';
-import SeriesModel from '../../model/Series';
-import {seriesModelMixin} from '../helper/whiskerBoxCommon';
+define(function(require) {
 
-var CandlestickSeries = SeriesModel.extend({
+    'use strict';
 
-    type: 'series.candlestick',
+    var zrUtil = require('zrender/core/util');
+    var SeriesModel = require('../../model/Series');
+    var whiskerBoxCommon = require('../helper/whiskerBoxCommon');
+    var formatUtil = require('../../util/format');
+    var encodeHTML = formatUtil.encodeHTML;
+    var addCommas = formatUtil.addCommas;
 
-    dependencies: ['xAxis', 'yAxis', 'grid'],
+    var CandlestickSeries = SeriesModel.extend({
 
-    /**
-     * @readOnly
-     */
-    defaultValueDimensions: ['open', 'close', 'lowest', 'highest'],
+        type: 'series.candlestick',
 
-    /**
-     * @type {Array.<string>}
-     * @readOnly
-     */
-    dimensions: null,
+        dependencies: ['xAxis', 'yAxis', 'grid'],
 
-    /**
-     * @override
-     */
-    defaultOption: {
-        zlevel: 0,                  // 一级层叠
-        z: 2,                       // 二级层叠
-        coordinateSystem: 'cartesian2d',
-        legendHoverLink: true,
+        /**
+         * @readOnly
+         */
+        valueDimensions: ['open', 'close', 'lowest', 'highest'],
 
-        hoverAnimation: true,
+        /**
+         * @type {Array.<string>}
+         * @readOnly
+         */
+        dimensions: null,
 
-        // xAxisIndex: 0,
-        // yAxisIndex: 0,
+        /**
+         * @override
+         */
+        defaultOption: {
+            zlevel: 0,                  // 一级层叠
+            z: 2,                       // 二级层叠
+            coordinateSystem: 'cartesian2d',
+            legendHoverLink: true,
 
-        layout: null, // 'horizontal' or 'vertical'
+            hoverAnimation: true,
 
-        itemStyle: {
-            normal: {
-                color: '#c23531', // 阳线 positive
-                color0: '#314656', // 阴线 negative     '#c23531', '#314656'
-                borderWidth: 1,
-                // FIXME
-                // ec2中使用的是lineStyle.color 和 lineStyle.color0
-                borderColor: '#c23531',
-                borderColor0: '#314656'
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+
+            layout: null, // 'horizontal' or 'vertical'
+
+            itemStyle: {
+                normal: {
+                    color: '#c23531', // 阳线 positive
+                    color0: '#314656', // 阴线 negative     '#c23531', '#314656'
+                    borderWidth: 1,
+                    // FIXME
+                    // ec2中使用的是lineStyle.color 和 lineStyle.color0
+                    borderColor: '#c23531',
+                    borderColor0: '#314656'
+                },
+                emphasis: {
+                    borderWidth: 2
+                }
             },
-            emphasis: {
-                borderWidth: 2
-            }
+
+            animationUpdate: false,
+            animationEasing: 'linear',
+            animationDuration: 300
         },
 
-        barMaxWidth: null,
-        barMinWidth: null,
-        barWidth: null,
+        /**
+         * Get dimension for shadow in dataZoom
+         * @return {string} dimension name
+         */
+        getShadowDim: function () {
+            return 'open';
+        },
 
-        animationUpdate: false,
-        animationEasing: 'linear',
-        animationDuration: 300
-    },
+        /**
+         * @override
+         */
+        formatTooltip: function (dataIndex, mutipleSeries) {
+            // It rearly use mutiple candlestick series in one cartesian,
+            // so only consider one series in this default tooltip.
+            var valueHTMLArr = zrUtil.map(this.valueDimensions, function (dim) {
+                return dim + ': ' + addCommas(this._data.get(dim, dataIndex));
+            }, this);
 
-    /**
-     * Get dimension for shadow in dataZoom
-     * @return {string} dimension name
-     */
-    getShadowDim: function () {
-        return 'open';
-    },
+            return encodeHTML(this.name) + '<br />' + valueHTMLArr.join('<br />');
+        }
 
-    brushSelector: function (dataIndex, data, selectors) {
-        var itemLayout = data.getItemLayout(dataIndex);
-        return selectors.rect(itemLayout.brushRect);
-    }
+    });
+
+    zrUtil.mixin(CandlestickSeries, whiskerBoxCommon.seriesModelMixin, true);
+
+    return CandlestickSeries;
 
 });
-
-zrUtil.mixin(CandlestickSeries, seriesModelMixin, true);
-
-export default CandlestickSeries;

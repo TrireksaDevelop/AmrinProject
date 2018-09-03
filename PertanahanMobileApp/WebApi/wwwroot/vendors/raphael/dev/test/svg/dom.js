@@ -292,26 +292,4 @@ test('toBack: when wrapped in <a>', function() {
   equalNodePosition(x.node, paper.canvas, paper.defs, null);
 });
 
-
-// Element#attrs
-// -------------
-
-// #x
-
-// #y
-
-// #rx
-
-// #ry
-
-// #transform
-
-// #title
-
-// #href
-
-//keep adding and testing!
-
-
-
 })();

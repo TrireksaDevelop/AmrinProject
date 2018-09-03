@@ -116,24 +116,45 @@ describe('title.textStyle', function() {
                     }
                 }
             }
-        }]
-    }, {
-        name: 'textStyle.fontWeight',
-        cases: [{
-            name: 'should display default bolder font weight by default',
-            test: 'equalOption',
+        }, {
+            name: 'should display oblique not as normal',
+            test: 'notEqualOption',
             option1: {
                 series: [],
                 title: {
-                    text: 'bolder font'
+                    text: 'oblique vs. normal',
+                    textStyle: {
+                        fontStyle: 'oblique'
+                    }
                 }
             },
             option2: {
                 series: [],
                 title: {
-                    text: 'bolder font',
+                    text: 'oblique vs. normal',
                     textStyle: {
-                        fontWeight: 'bolder'
+                        fontStyle: 'normal'
+                    }
+                }
+            }
+        }]
+    }, {
+        name: 'textStyle.fontWeight',
+        cases: [{
+            name: 'should display default normal font weight',
+            test: 'equalOption',
+            option1: {
+                series: [],
+                title: {
+                    text: 'normal font'
+                }
+            },
+            option2: {
+                series: [],
+                title: {
+                    text: 'normal font',
+                    textStyle: {
+                        fontWeight: 'normal'
                     }
                 }
             }
@@ -159,14 +180,14 @@ describe('title.textStyle', function() {
                 }
             }
         }, {
-            name: 'should display normal font weight',
+            name: 'should display bolder font weight',
             test: 'notEqualOption',
             option1: {
                 series: [],
                 title: {
                     text: 'bolder font vs. normal font',
                     textStyle: {
-                        fontStyle: 'normal'
+                        fontStyle: 'bolder'
                     }
                 }
             },
@@ -175,7 +196,7 @@ describe('title.textStyle', function() {
                 title: {
                     text: 'bolder font vs. normal font',
                     textStyle: {
-                        fontStyle: 'bold'
+                        fontStyle: 'normal'
                     }
                 }
             }

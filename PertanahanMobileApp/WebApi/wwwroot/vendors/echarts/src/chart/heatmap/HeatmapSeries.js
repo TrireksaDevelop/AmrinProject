@@ -1,35 +1,38 @@
-import SeriesModel from '../../model/Series';
-import createListFromArray from '../helper/createListFromArray';
+define(function (require) {
 
-export default SeriesModel.extend({
-    type: 'series.heatmap',
+    var SeriesModel = require('../../model/Series');
+    var createListFromArray = require('../helper/createListFromArray');
 
-    getInitialData: function (option, ecModel) {
-        return createListFromArray(option.data, this, ecModel);
-    },
+    return SeriesModel.extend({
+        type: 'series.heatmap',
 
-    defaultOption: {
+        getInitialData: function (option, ecModel) {
+            return createListFromArray(option.data, this, ecModel);
+        },
 
-        // Cartesian2D or geo
-        coordinateSystem: 'cartesian2d',
+        defaultOption: {
 
-        zlevel: 0,
+            // Cartesian2D or geo
+            coordinateSystem: 'cartesian2d',
 
-        z: 2,
+            zlevel: 0,
 
-        // Cartesian coordinate system
-        // xAxisIndex: 0,
-        // yAxisIndex: 0,
+            z: 2,
 
-        // Geo coordinate system
-        geoIndex: 0,
+            // Cartesian coordinate system
+            xAxisIndex: 0,
+            yAxisIndex: 0,
 
-        blurSize: 30,
+            // Geo coordinate system
+            geoIndex: 0,
 
-        pointSize: 20,
+            blurSize: 30,
 
-        maxOpacity: 1,
+            pointSize: 20,
 
-        minOpacity: 0
-    }
+            maxOpacity: 1,
+
+            minOpacity: 0
+        }
+    });
 });

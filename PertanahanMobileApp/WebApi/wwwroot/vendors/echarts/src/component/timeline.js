@@ -1,13 +1,15 @@
 /**
  * DataZoom component entry
  */
+define(function (require) {
 
-import * as echarts from '../echarts';
-import preprocessor from './timeline/preprocessor';
+    var echarts = require('../echarts');
 
-import './timeline/typeDefaulter';
-import './timeline/timelineAction';
-import './timeline/SliderTimelineModel';
-import './timeline/SliderTimelineView';
+    echarts.registerPreprocessor(require('./timeline/preprocessor'));
 
-echarts.registerPreprocessor(preprocessor);
+    require('./timeline/typeDefaulter');
+    require('./timeline/timelineAction');
+    require('./timeline/SliderTimelineModel');
+    require('./timeline/SliderTimelineView');
+
+});

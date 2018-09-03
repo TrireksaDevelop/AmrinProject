@@ -1,13 +1,17 @@
-import * as echarts from '../echarts';
-import * as zrUtil from 'zrender/src/core/util';
+define(function (require) {
 
-import './chord/ChordSeries';
-import './chord/ChordView';
+    require('./chord/ChordSeries');
+    require('./chord/ChordView');
 
-import chordCircularLayout from './chord/chordCircularLayout';
-import dataColor from '../visual/dataColor';
-import dataFilter from '../processor/dataFilter';
+    var echarts = require('../echarts');
+    var zrUtil = require('zrender/core/util');
+    echarts.registerLayout(require('./chord/chordCircularLayout'));
 
-echarts.registerLayout(chordCircularLayout);
-echarts.registerVisual(zrUtil.curry(dataColor, 'chord'));
-echarts.registerProcessor(zrUtil.curry(dataFilter, 'pie'));
+    echarts.registerVisualCoding(
+        'chart',  zrUtil.curry(require('../visual/dataColor'), 'chord')
+    );
+
+    echarts.registerProcessor(
+        'filter', zrUtil.curry(require('../processor/dataFilter'), 'pie')
+    );
+});
