@@ -18,17 +18,18 @@ namespace MobileApp.Views.Contents
 		public InboxView ()
 		{
 			InitializeComponent ();
-            this.BindingContext = new InboxViewModel();
 		}
 	}
 
     public class InboxViewModel:BaseViewModel
     {
+        public int PermohonanId { get; }
         public ObservableCollection<InboxItem> SourceView { get; set; }
         public Command RefreshCommand { get; }
 
-        public InboxViewModel()
+        public InboxViewModel(int id)
         {
+            PermohonanId = id;
             SourceView = new ObservableCollection<InboxItem>();
             RefreshCommand = new Command(RefreshAction);
             RefreshCommand.Execute(null);
@@ -38,7 +39,7 @@ namespace MobileApp.Views.Contents
         {
             await Task.Delay(300);
             SourceView.Clear();
-            var results = await InboxServices.GetItemsAsync();
+            var results = await InboxServices.GetItemsAsync(PermohonanId);
             foreach(var item in results)
             {
                 SourceView.Add(item);

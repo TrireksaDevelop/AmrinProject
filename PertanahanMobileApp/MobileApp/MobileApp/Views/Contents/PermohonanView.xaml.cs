@@ -23,7 +23,6 @@ namespace MobileApp.Views.Contents
             vm = new PermohonanViewModel();
             BindingContext = vm;
             stepBar.OnClick += StepBar_OnClick;
-
         }
 
         private void StepBar_OnClick(int btn)
@@ -40,7 +39,19 @@ namespace MobileApp.Views.Contents
         {
             Permohonans = new ObservableCollection<permohonan>();
             NewCommand = new Command(NewCommandAction);
+            MoreCommand = new Command(MoreCommandAction);
+
             LoadAsync();
+        }
+
+        private async void MoreCommandAction(object obj)
+        {
+            var main = await Helper.GetMainPageAsync();
+            if (main != null)
+            {
+               await main.Detail.Navigation.PushAsync((Page)Activator.CreateInstance(typeof(InboxView)));
+                main.Detail.BindingContext = new InboxViewModel(CurrentItem.Id);
+            }
         }
 
         private async void NewCommandAction(object obj)
@@ -87,6 +98,14 @@ namespace MobileApp.Views.Contents
                     }
                 }
 
+
+                var message = await InboxServices.GetItemsAsync(CurrentItem.Id);
+                if(message!=null)
+                {
+                    LastMessage = message.Last();
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -127,6 +146,7 @@ namespace MobileApp.Views.Contents
 
         public ObservableCollection<permohonan> Permohonans { get; }
         public Command NewCommand { get; }
+        public Command MoreCommand { get; }
 
         public permohonan CurrentItem { get { return _current; }  set { SetProperty(ref _current, value); } }
 
@@ -141,6 +161,7 @@ namespace MobileApp.Views.Contents
 
 
         private int _steps;
+        private InboxItem _lastMessage;
 
         public int Steps
         {
@@ -148,6 +169,13 @@ namespace MobileApp.Views.Contents
             set {SetProperty(ref _steps ,value); }
         }
 
-
+        public InboxItem LastMessage
+        {
+            get { return _lastMessage; }
+            set
+            {
+              SetProperty(ref _lastMessage ,value);
+            }
+        }
     }
 }

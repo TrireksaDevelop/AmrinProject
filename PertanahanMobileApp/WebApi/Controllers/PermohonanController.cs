@@ -59,8 +59,20 @@ namespace WebApi.Controllers
        
         // PUT: api/Permohonan/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<IActionResult> Put(int id, permohonan item)
         {
+            try
+            {
+                service = new PermohonanService(new UOWPermohonan());
+                bool result = await service.UpdatePermohonan(item);
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException(ex.Message);
+            }
+
         }
         
         // DELETE: api/ApiWithActions/5

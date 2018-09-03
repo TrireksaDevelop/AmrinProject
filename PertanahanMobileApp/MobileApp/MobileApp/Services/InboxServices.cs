@@ -13,12 +13,26 @@ namespace MobileApp.Services
 {
     public class InboxServices : IDataStore<InboxItem>
     {
-        private bool isInstance = false;
         private List<InboxItem> list;
 
-        public Task<bool> AddItemAsync(InboxItem item)
+        public async Task<bool> AddItemAsync(InboxItem item)
         {
-            throw new NotImplementedException();
+            using (var res = new RestServices())
+            {
+                try
+                {
+                    var result = await res.Post<InboxItem>("api/inbox", Helper.Content(item));
+                    if (res != null) {
+                        list.Add(result);
+                        return true;
+                    }
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    throw new SystemException(ex.Message);
+                }
+            }
         }
 
         public Task<bool> DeleteItemAsync(string id)
@@ -31,22 +45,17 @@ namespace MobileApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<InboxItem>> GetItemsAsync(bool forceRefresh = false)
+        public  Task<IEnumerable<InboxItem>> GetItemsAsync(bool forceRefresh = false)
         {
-            if (isInstance)
-                return Task.FromResult(list.AsEnumerable());
-            else
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<InboxItem>> GetItemsAsync(int id)
+        {
+            using (var res = new RestServices())
             {
-                list = new List<InboxItem>() {
-                    new InboxItem{ Message="Apa Khabar ", RecieveDate=DateTime.Now, Sender="Admin", SenderDate=DateTime.Now, Readed=false, SenderInfo="Admin" },
-                      new InboxItem{ Message="Apa Khabar 2", RecieveDate=DateTime.Now, Sender="Admin", SenderDate=DateTime.Now, Readed=false, SenderInfo="Admin" },
-                        new InboxItem{ Message="Apa Khabar 3", RecieveDate=DateTime.Now, Sender="Admin", SenderDate=DateTime.Now, Readed=true, SenderInfo="Admin" },
-                          new InboxItem{ Message="Apa Khabar 4", RecieveDate=DateTime.Now, Sender="Admin", SenderDate=DateTime.Now, Readed=true, SenderInfo="Admin" }
-                };
-
-
-                return Task.FromResult(list.AsEnumerable<InboxItem>());
-
+                list = await res.Get<List<InboxItem>>("api/inbox?id="+id);
+                return list;
             }
         }
 

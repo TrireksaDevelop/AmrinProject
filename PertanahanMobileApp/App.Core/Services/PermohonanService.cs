@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AppCore.ModelDTO;
 using AppCore.UnitOfWorks;
 using AppCore.UnitOfWorks.InterfaceUnitOfWork;
@@ -162,6 +163,44 @@ namespace AppCore.Services
         public bool SetNextStep()
         {
           return  UnitWorkPermohonan.SetNextStep(Permohonan, Permohonan.NextTahapan);
+        }
+
+        public Task<bool> UpdatePermohonan(permohonan item)
+        {
+
+            using (var db = new OcphDbContext())
+            {
+                var trans = db.BeginTransaction();
+                try
+                {
+
+                    var dbKelengkapan = db.Kelengkapans.Where(O => O.IdPermohonan == item.Id).ToList();
+
+                    if (item.Kelengkapans!=null)
+                    {
+                        foreach (var data in item.Kelengkapans)
+                        {
+                            var result = dbKelengkapan.Where(O => O.IdPersyaratan == data.IdPersyaratan && O.IdPermohonan == item.Id).FirstOrDefault();
+                            if (result == null)
+                                if (!db.Kelengkapans.Insert(data))
+                                    throw new SystemException("Data Tidak Tersimpan");
+                        }
+                    }
+                   
+
+
+
+
+                    trans.Commit();
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    throw new SystemException(ex.Message);
+                }
+            }
+
+            return Task.FromResult(true);
         }
     }
 }

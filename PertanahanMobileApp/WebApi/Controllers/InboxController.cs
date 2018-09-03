@@ -1,21 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using AppCore.ModelDTO;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using AppCore;
+using Microsoft.AspNetCore.Authorization;
+using AppCore.Services;
+using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class InboxController : ControllerBase
+    [Produces("application/json")]
+    [Route("api/inbox")]
+    [Authorize]
+    public class InboxController : Controller
     {
-        // GET: api/Inbox
-       
-        // GET: api/Inbox/5
-        [HttpGet("{id}", Name = "Get")]
+        public InboxController(UserManager<IdentityUser> userManager)
+        {
+            UserManagers = userManager;
+        }
+
+        public UserManager<IdentityUser> UserManagers { get; }
+
+
+
+        [HttpGet]
         public IActionResult Get(int id)
         {
             try
@@ -40,7 +47,10 @@ namespace WebApi.Controllers
 
             try
             {
-                if (value.Id <= 0)
+                var id = UserManagers.GetUserId(User);
+                value.Tanggal = DateTime.Now;
+                value.UserId = id;
+                if (value.PermohonanId <= 0)
                     throw new SystemException("Permohonan Tidak Ditemukan");
 
 

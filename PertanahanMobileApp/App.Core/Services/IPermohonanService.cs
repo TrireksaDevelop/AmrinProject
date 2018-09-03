@@ -3,6 +3,7 @@ using AppCore.UnitOfWorks;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AppCore.Services
 {
@@ -18,5 +19,6 @@ namespace AppCore.Services
         pemohon GetPemohon(int Id);
         permohonan GetPermohonan(int Id);
         bool SetNextStep();
+        Task<bool> UpdatePermohonan(permohonan item);
     }
 }

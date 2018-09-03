@@ -71,19 +71,22 @@
                         <StackLayout HorizontalOptions="Start" Spacing="0" >
                             <StackLayout Orientation="Horizontal" Spacing="0">
                                 <Image Source="message.png" HeightRequest="25"/>
-                                <Label TextColor="{StaticResource colorTextAccent}" Margin="0" VerticalOptions="Center" FontSize="12" Text="Chandra saputra" HorizontalOptions="Start"/>
+                                <Label TextColor="{StaticResource colorTextAccent}" Margin="0" VerticalOptions="Center" FontSize="12" Text="{Binding LastMessage.UserName}" HorizontalOptions="Start"/>
                             </StackLayout>
-                            <Label FontSize="12" TextColor="{StaticResource colorPrimary }" Text="Admin" Margin="28,0" HorizontalOptions="Start" VerticalOptions="End"/>
                         </StackLayout>
-                        <Label FontSize="12" Text="17/08/2018 10:30" HorizontalOptions="End"/>
+                        <Label FontSize="12" Text="{Binding LastMessage.Tanggal}" HorizontalOptions="End"/>
                     </Grid>
                     <StackLayout Grid.Row="1" Padding="5">
-                        <Label  Margin="30,3,0,0"  Text="Pesan Yang Diterima" TextColor="{StaticResource colorPrimary}" />
+                        <Label  Margin="30,3,0,0"  Text="{Binding LastMessage.Message }" TextColor="{StaticResource colorPrimary}" />
                     </StackLayout>
                     <StackLayout Orientation="Horizontal" Grid.Row="2" BackgroundColor="#5B5E5D">
                         <Image Source="replay.png" HeightRequest="25"/>
                         <Label  Text="Balas"></Label>
-                        <Label  Text="More"></Label>
+                        <Label  Text="More">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding MoreCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
                     </StackLayout>
                 </Grid>
             </StackLayout>

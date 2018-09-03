@@ -52,6 +52,16 @@ namespace AppCore.ModelDTO
 
 
 
+        private bool isRead;
+        [DbColumn("IsRead")]
+        public bool IsRead
+        {
+            get { return isRead; }
+            set { SetProperty(ref isRead ,value); }
+        }
+
+
+
         private string userName;
 
         public string UserName

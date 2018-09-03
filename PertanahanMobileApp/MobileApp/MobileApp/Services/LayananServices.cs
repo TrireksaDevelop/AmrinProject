@@ -50,6 +50,11 @@ namespace MobileApp.Services
             }
         }
 
+        public Task<IEnumerable<layanan>> GetItemsAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> UpdateItemAsync(layanan item)
         {
             throw new NotImplementedException();

@@ -6,53 +6,61 @@ namespace MobileApp.Models
 {
    public class InboxItem:PropertyChange
     {
-        private string sender;
-
-        public string Sender
+        private int id;
+        public int Id
         {
-            get { return sender; }
-            set { SetProperty(ref sender ,value); }
+            get { return id; }
+            set { SetProperty(ref id, value); }
+        }
+
+        private string userId;
+        public string UserId
+        {
+            get { return userId; }
+            set { SetProperty(ref userId, value); }
         }
 
 
-        public DateTime RecieveDate
-        {
-            get { return recieve; }
-            set { SetProperty(ref recieve, value); }
-        }
 
-        public DateTime SenderDate
-        {
-            get { return senderDate; }
-            set { SetProperty(ref senderDate, value); }
-        }
-
-
+        private string message;
         public string Message
         {
             get { return message; }
             set { SetProperty(ref message, value); }
         }
 
-        public bool Readed
+        private DateTime dateTime;
+        public DateTime Tanggal
         {
-            get { return readed; }
-            set { SetProperty(ref readed, value); }
-        }
-        public string SenderInfo {
-
-            get { return _senderInfo; }
-            set
-            {
-                SetProperty(ref _senderInfo, value);
-            }
+            get { return dateTime; }
+            set { SetProperty(ref dateTime, value); }
         }
 
+        private int permohonanId;
+        public int PermohonanId
+        {
+            get { return permohonanId; }
+            set { permohonanId = value; }
+        }
 
-        private DateTime recieve;
-        private DateTime senderDate;
-        private bool readed;
-        private string _senderInfo;
-        private string message;
+
+
+        private bool isRead;
+        public bool IsRead
+        {
+            get { return isRead; }
+            set { SetProperty(ref isRead, value); }
+        }
+
+
+
+        private string userName;
+
+        public string UserName
+        {
+            get { return userName; }
+            set { SetProperty(ref userName, value); }
+        }
+
     }
 }

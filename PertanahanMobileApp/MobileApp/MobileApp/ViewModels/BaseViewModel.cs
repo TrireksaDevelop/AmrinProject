@@ -12,7 +12,6 @@ namespace MobileApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
         public IDataStore<InboxItem> InboxServices => DependencyService.Get<IDataStore<InboxItem>>() ?? new InboxServices();
         public IDataStore<layanan> LayananServices => DependencyService.Get<IDataStore<layanan>>() ?? new LayananServices();
         public IAccountServices AccountService => DependencyService.Get<IAccountServices>() ?? new AccountServices();
