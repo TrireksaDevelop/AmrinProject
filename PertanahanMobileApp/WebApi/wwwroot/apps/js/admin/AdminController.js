@@ -73,6 +73,8 @@ function UserController(UserServices,$state) {
     var res1 = UserServices.getUser();
     if (res == null)
         $state.go("login");
+
+    var Data = UserServices.getPetugas();
 }
 
 function DashboardController(UserServices) {

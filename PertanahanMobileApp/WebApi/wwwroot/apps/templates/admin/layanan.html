@@ -62,7 +62,7 @@
                                                         </div>
                                                         <div class="x_content">
                                                             <ul class="list-unstyled timeline">
-                                                                <li ng-repeat="tahapan in item.tahapans">
+                                                                <li ng-repeat="tahapan in item.tahapans | orderBy: 'urutan'">
                                                                     <div class="block">
                                                                         <div class="tags">
                                                                             <a href="" class="tag">
