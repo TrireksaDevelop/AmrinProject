@@ -36,6 +36,7 @@ namespace AppCore
         public virtual IRepository<tahapan> Tahapans { get { return new Repository<tahapan>(this); } }
         public virtual IRepository<progress> Progress { get { return new Repository<progress>(this); } }
        public virtual IRepository<tahapanlayanan> TahapanLayanan { get { return new Repository<tahapanlayanan>(this); } }
+        public virtual IRepository<inbox> Inboxs { get { return new Repository<inbox>(this); } }
 
 
     }

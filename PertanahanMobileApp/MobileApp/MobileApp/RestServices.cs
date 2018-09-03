@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -11,22 +12,28 @@ namespace MobileApp
 {
     public class RestServices : HttpClient, IDisposable
     {
-      
-
         public RestServices()
         {
             this.BaseAddress = new Uri(Helper.Server);
+         
+            SetHeader();
         }
 
-        public void Dispose()
+        private async void SetHeader()
         {
-            
+            var token = await Helper.GetToken();
+            if(token!=null)
+            {
+                this.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
+                this.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer",token.token);
+            }
         }
 
         public async Task<T> Post<T>(string uri, object t) where T : class
         {
             try
             {
+                await Task.Delay(200);
                 var result = await PostAsync(uri, Helper.Content(t));
                 var responseText = await result.Content.ReadAsStringAsync();
                 var obj = Activator.CreateInstance<T>();
@@ -49,6 +56,7 @@ namespace MobileApp
         {
             try
             {
+                await Task.Delay(200);
                 var result = await GetAsync(uri);
                 var responseText = await result.Content.ReadAsStringAsync();
                 var obj = Activator.CreateInstance<T>();

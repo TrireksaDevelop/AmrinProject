@@ -11,6 +11,11 @@ namespace MobileApp.Views
 		public AboutPage ()
 		{
 			InitializeComponent ();
+           
 		}
-	}
+
+      
+
+
+    }
 }

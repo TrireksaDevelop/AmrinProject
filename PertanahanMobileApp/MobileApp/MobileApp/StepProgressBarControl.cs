@@ -6,8 +6,13 @@ using Xamarin.Forms;
 
 namespace MobileApp
 {
+
+
+    public delegate void delOnClick(int btn);
+
     public class StepProgressBarControl : StackLayout
     {
+        public event delOnClick OnClick;
         Button _lastStepSelected;
         public static readonly BindableProperty StepsProperty = BindableProperty.Create(nameof(Steps), typeof(int), typeof(StepProgressBarControl), 0);
         public static readonly BindableProperty StepSelectedProperty = BindableProperty.Create(nameof(StepSelected), typeof(int), typeof(StepProgressBarControl), 0, defaultBindingMode: BindingMode.TwoWay);
@@ -88,7 +93,11 @@ namespace MobileApp
         }
         void Handle_Clicked(object sender, System.EventArgs e)
         {
-            SelectElement(sender as Button);
+            var elementSelected = sender as Button;
+            SelectElement(elementSelected);
+            
+            StepSelected = Convert.ToInt32(elementSelected.Text);
+            OnClick?.Invoke(StepSelected);
         }
 
         void SelectElement(Button elementSelected)
@@ -100,6 +109,7 @@ namespace MobileApp
 
             StepSelected = Convert.ToInt32(elementSelected.Text);
             _lastStepSelected = elementSelected;
+           
 
         }
 

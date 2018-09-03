@@ -19,9 +19,14 @@ namespace MobileApp.Views.Accounts
 			InitializeComponent ();
 			BindingContext = new LoginViewModel();
 		}
-	}
 
-	public class LoginViewModel:BaseViewModel
+        private async void ClickGestureRecognizer_Clicked(object sender, EventArgs e)
+        {
+            await this.Navigation.PushModalAsync(new Contents.ChangeUrl());
+        }
+    }
+
+    public class LoginViewModel:BaseViewModel
 	{
 		private LoginDto _model;
 
@@ -31,8 +36,13 @@ namespace MobileApp.Views.Accounts
 		{
 			LoginCommand = new Command(LoginAction);
             RegisterCommand = new Command(RegisterAction);
-			Model = new LoginDto() { Email="test2@gmail.com", Password="Sony@77" };
+            Model = new LoginDto() { Email="test3@gmail.com", Password="Sony@77" };
 		}
+
+        private void ChangeUrlCommandAction(object obj)
+        {
+            throw new NotImplementedException();
+        }
 
         private async void RegisterAction(object obj)
         {

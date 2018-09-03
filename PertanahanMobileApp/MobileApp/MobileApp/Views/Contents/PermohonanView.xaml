@@ -12,15 +12,16 @@
                 <RowDefinition Height="8*"/>
             </Grid.RowDefinitions>
             <StackLayout BackgroundColor="#424544" Padding="10" Spacing="0">
-                <Label Text="000012525" HorizontalOptions="End" FontSize="Large" TextColor="{StaticResource colorPrimary}"></Label>
+                <Label Text="{Binding CurrentItem.Id,StringFormat='{0:D6}'}" HorizontalOptions="End" FontSize="Large" TextColor="{StaticResource colorPrimary}"></Label>
                 <Label Text="ID PENDAFTARAN" HorizontalOptions="End"/>
                 <StackLayout VerticalOptions="Center" Spacing="0">
-                    <Label Text="Layanan Hibah" TextColor="{StaticResource colorPrimary}" FontSize="Large"/>
-                    <Label Text="PERALIHAN"/>
+                    <Label Text="{Binding CurrentItem.Layanan.Nama}" TextColor="{StaticResource colorPrimary}" FontSize="Large"/>
+                    <Label Text="{Binding CurrentItem.Layanan.Kategori.Nama}"/>
                 </StackLayout>
                 <StackLayout  VerticalOptions="FillAndExpand" Padding="0" HorizontalOptions="Center">
                     <StackLayout VerticalOptions="EndAndExpand" >
-                        <local:StepProgressBarControl  StepColor="{StaticResource NavigationPrimary}" Steps="6" StepSelected="1" x:Name="stepBar"/>
+                        <ActivityIndicator IsRunning="{Binding IsBusy}" Color="{StaticResource colorPrimary}"></ActivityIndicator>
+                        <local:StepProgressBarControl  StepColor="{StaticResource NavigationPrimary}" Steps="{Binding Steps}" StepSelected="{Binding StepSelected}" x:Name="stepBar"/>
                         <Label BindingContext="{x:Reference stepBar}"
                FontAttributes="Bold"
                FontSize="Large"
@@ -37,8 +38,8 @@
                 </Grid.ColumnDefinitions>
                 <StackLayout Grid.Column="0" Padding="10" BackgroundColor="#424544">
                     <Label Text="Tahapan Selanjutnya"/>
-                    <Label Text="Layanan Hibah" TextColor="{StaticResource colorPrimary}" FontSize="Large"/>
-                    <Label VerticalOptions="EndAndExpand" FontSize="Micro" Text="Tahapan Selanjutnya Tahapan SelanjutnyaTahapan SelanjutnyaTahapan SelanjutnyaTahapan SelanjutnyaTahapan SelanjutnyaTahapan Selanjutnya"/>
+                    <Label Text="{Binding CurrentItem.NextTahapan.Nama}" TextColor="{StaticResource colorPrimary}" FontSize="Large"/>
+                    <Label VerticalOptions="EndAndExpand" FontSize="Micro" Text="{Binding CurrentItem.NextTahapan.Keterangan}"/>
                 </StackLayout>
                 <StackLayout Grid.Column="1" BackgroundColor="#424544">
                     <Label Text="Permohonan"/>
@@ -46,19 +47,10 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Grid Padding="5" BackgroundColor="{StaticResource colorTextBrown}" RowSpacing="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackLayout VerticalOptions="Center">
-                                            <Label Text="{Binding Layanan.Nama }" FontSize="Micro" TextColor="{StaticResource colorPrimary}"/>
-                                        </StackLayout>
-                                        <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="0">
-                                            <Label HorizontalTextAlignment="End" Text="text" FontSize="Micro" TextColor="{StaticResource colorPrimary}"/>
-                                            <Label Text="{Binding Id}" HorizontalTextAlignment="End" FontSize="Micro" TextColor="{StaticResource colorPrimary}"/>
-                                        </StackLayout>
-                                    </Grid>
+                                    <StackLayout Padding="5" VerticalOptions="Center" Spacing="1">
+                                        <Label Text="{Binding Id,StringFormat='{0:D6}'}"  FontSize="Micro" TextColor="{StaticResource colorPrimary}"/>
+                                        <Label Text="{Binding Layanan.Nama }" FontSize="Micro" TextColor="{StaticResource colorPrimary}"/>
+                                    </StackLayout>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -77,7 +69,7 @@
 
                     <Grid Padding="10" >
                         <StackLayout HorizontalOptions="Start" Spacing="0" >
-                            <StackLayout Orientation="Horizontal" Spacing="5">
+                            <StackLayout Orientation="Horizontal" Spacing="0">
                                 <Image Source="message.png" HeightRequest="25"/>
                                 <Label TextColor="{StaticResource colorTextAccent}" Margin="0" VerticalOptions="Center" FontSize="12" Text="Chandra saputra" HorizontalOptions="Start"/>
                             </StackLayout>
@@ -86,16 +78,17 @@
                         <Label FontSize="12" Text="17/08/2018 10:30" HorizontalOptions="End"/>
                     </Grid>
                     <StackLayout Grid.Row="1" Padding="5">
-                        <Label  Margin="30,0,0,0"  Text="Pesan Yang Diterima" TextColor="{StaticResource colorPrimary}" />
+                        <Label  Margin="30,3,0,0"  Text="Pesan Yang Diterima" TextColor="{StaticResource colorPrimary}" />
                     </StackLayout>
                     <StackLayout Orientation="Horizontal" Grid.Row="2" BackgroundColor="#5B5E5D">
                         <Image Source="replay.png" HeightRequest="25"/>
-                        <Label  Text="Balas" VerticalOptions="CenterAndExpand"></Label>
+                        <Label  Text="Balas"></Label>
+                        <Label  Text="More"></Label>
                     </StackLayout>
                 </Grid>
             </StackLayout>
             <StackLayout Grid.Row="3" Padding="3" BackgroundColor="#424544">
-                <Button Text="Buat  Baru" HorizontalOptions="End"  FontSize="Micro"/>
+                <Button Text="Buat Baru" HorizontalOptions="End" HeightRequest="35" Command="{Binding NewCommand}"  FontSize="Micro"/>
             </StackLayout>
 
         </Grid>

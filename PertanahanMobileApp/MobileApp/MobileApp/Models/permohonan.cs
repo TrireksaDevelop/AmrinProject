@@ -44,10 +44,12 @@ namespace MobileApp.Models
             }
         }
 
-        public List<kelengkapan> Kelengkapans { get; internal set; }
-        public List<progress> Tahapans { get; internal set; }
-        public List<kelengkapan> Persyaratan { get; internal set; }
-        public layanan Layanan { get; internal set; }
+        public List<kelengkapan> Kelengkapans { get; set; }
+        public List<progress> Tahapans { get; set; }
+        public List<kelengkapan> Persyaratan { get; set; }
+        public layanan Layanan { get; set; }
+        public tahapan CurrentTahapan { get; set; }
+        public tahapan NextTahapan { get; set; }
 
         private int _id;
         private int _idpemohon;

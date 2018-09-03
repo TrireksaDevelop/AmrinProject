@@ -37,7 +37,12 @@ namespace MobileApp.Models
         public kategorilayanan Kategori { get; set; }
         public List<tahapan> Tahapans { get; set; }
         public List<persyaratan> Persyaratans { get; set; }
-        public string Keterangan { get; internal set; }
+        public tahapan CurrentTahapan { get; set; }
+        public tahapan NextTahapan { get; set; }
+
+
+
+        public string Keterangan { get; set; }
 
         private int _id;
         private string _nama;
