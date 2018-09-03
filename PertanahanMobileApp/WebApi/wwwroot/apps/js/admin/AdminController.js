@@ -74,7 +74,7 @@ function UserController(UserServices,$state) {
     if (res == null)
         $state.go("login");
 
-    var Data = UserServices.getPetugas();
+    NProgress.done();
 }
 
 function DashboardController(UserServices) {
