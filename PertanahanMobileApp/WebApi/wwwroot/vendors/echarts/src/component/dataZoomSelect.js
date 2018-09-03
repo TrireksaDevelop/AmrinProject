@@ -1,14 +1,17 @@
 /**
  * DataZoom component entry
  */
+define(function (require) {
 
-import './dataZoom/typeDefaulter';
+    require('./dataZoom/typeDefaulter');
 
-import './dataZoom/DataZoomModel';
-import './dataZoom/DataZoomView';
+    require('./dataZoom/DataZoomModel');
+    require('./dataZoom/DataZoomView');
 
-import './dataZoom/SelectZoomModel';
-import './dataZoom/SelectZoomView';
+    require('./dataZoom/SelectZoomModel');
+    require('./dataZoom/SelectZoomView');
 
-import './dataZoom/dataZoomProcessor';
-import './dataZoom/dataZoomAction';
+    require('./dataZoom/dataZoomProcessor');
+    require('./dataZoom/dataZoomAction');
+
+});

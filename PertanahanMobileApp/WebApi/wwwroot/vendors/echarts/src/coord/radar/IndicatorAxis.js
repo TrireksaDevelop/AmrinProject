@@ -1,32 +1,35 @@
-import * as zrUtil from 'zrender/src/core/util';
-import Axis from '../Axis';
+define(function (require) {
 
-function IndicatorAxis(dim, scale, radiusExtent) {
-    Axis.call(this, dim, scale, radiusExtent);
+    var zrUtil = require('zrender/core/util');
+    var Axis = require('../Axis');
 
-    /**
-     * Axis type
-     *  - 'category'
-     *  - 'value'
-     *  - 'time'
-     *  - 'log'
-     * @type {string}
-     */
-    this.type = 'value';
+    function IndicatorAxis(dim, scale, radiusExtent) {
+        Axis.call(this, dim, scale, radiusExtent);
 
-    this.angle = 0;
+        /**
+         * Axis type
+         *  - 'category'
+         *  - 'value'
+         *  - 'time'
+         *  - 'log'
+         * @type {string}
+         */
+        this.type = 'value';
 
-    /**
-     * Indicator name
-     * @type {string}
-     */
-    this.name = '';
-    /**
-     * @type {module:echarts/model/Model}
-     */
-    this.model;
-}
+        this.angle = 0;
 
-zrUtil.inherits(IndicatorAxis, Axis);
+        /**
+         * Indicator name
+         * @type {string}
+         */
+        this.name = '';
+        /**
+         * @type {module:echarts/model/Model}
+         */
+        this.model;
+    }
 
-export default IndicatorAxis;
+    zrUtil.inherits(IndicatorAxis, Axis);
+
+    return IndicatorAxis;
+});

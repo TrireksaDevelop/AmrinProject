@@ -1,12 +1,15 @@
-import * as echarts from '../echarts';
+define(function (require) {
 
-import './candlestick/CandlestickSeries';
-import './candlestick/CandlestickView';
-import preprocessor from './candlestick/preprocessor';
+    var echarts = require('../echarts');
 
-import candlestickVisual from './candlestick/candlestickVisual';
-import candlestickLayout from './candlestick/candlestickLayout';
+    require('./candlestick/CandlestickSeries');
+    require('./candlestick/CandlestickView');
 
-echarts.registerPreprocessor(preprocessor);
-echarts.registerVisual(candlestickVisual);
-echarts.registerLayout(candlestickLayout);
+    echarts.registerPreprocessor(
+        require('./candlestick/preprocessor')
+    );
+
+    echarts.registerVisualCoding('chart', require('./candlestick/candlestickVisual'));
+    echarts.registerLayout(require('./candlestick/candlestickLayout'));
+
+});

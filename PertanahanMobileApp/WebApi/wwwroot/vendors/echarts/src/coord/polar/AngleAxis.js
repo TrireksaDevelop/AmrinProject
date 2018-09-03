@@ -1,39 +1,36 @@
-import * as zrUtil from 'zrender/src/core/util';
-import Axis from '../Axis';
+define(function(require) {
+    'use strict';
 
-function AngleAxis(scale, angleExtent) {
+    var zrUtil = require('zrender/core/util');
+    var Axis = require('../Axis');
 
-    angleExtent = angleExtent || [0, 360];
+    function AngleAxis(scale, angleExtent) {
 
-    Axis.call(this, 'angle', scale, angleExtent);
+        angleExtent = angleExtent || [0, 360];
 
-    /**
-     * Axis type
-     *  - 'category'
-     *  - 'value'
-     *  - 'time'
-     *  - 'log'
-     * @type {string}
-     */
-    this.type = 'category';
-}
+        Axis.call(this, 'angle', scale, angleExtent);
 
-AngleAxis.prototype = {
+        /**
+         * Axis type
+         *  - 'category'
+         *  - 'value'
+         *  - 'time'
+         *  - 'log'
+         * @type {string}
+         */
+        this.type = 'category';
+    }
 
-    constructor: AngleAxis,
+    AngleAxis.prototype = {
 
-    /**
-     * @override
-     */
-    pointToData: function (point, clamp) {
-        return this.polar.pointToData(point, clamp)[this.dim === 'radius' ? 0 : 1];
-    },
+        constructor: AngleAxis,
 
-    dataToAngle: Axis.prototype.dataToCoord,
+        dataToAngle: Axis.prototype.dataToCoord,
 
-    angleToData: Axis.prototype.coordToData
-};
+        angleToData: Axis.prototype.coordToData
+    };
 
-zrUtil.inherits(AngleAxis, Axis);
+    zrUtil.inherits(AngleAxis, Axis);
 
-export default AngleAxis;
+    return AngleAxis;
+});

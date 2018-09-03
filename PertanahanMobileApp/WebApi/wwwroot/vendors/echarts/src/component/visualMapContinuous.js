@@ -1,14 +1,16 @@
 /**
  * DataZoom component entry
  */
+define(function (require) {
 
-import * as echarts from '../echarts';
-import preprocessor from './visualMap/preprocessor';
+    require('../echarts').registerPreprocessor(
+        require('./visualMap/preprocessor')
+    );
 
-import './visualMap/typeDefaulter';
-import './visualMap/visualEncoding';
-import './visualMap/ContinuousModel';
-import './visualMap/ContinuousView';
-import './visualMap/visualMapAction';
+    require('./visualMap/typeDefaulter');
+    require('./visualMap/visualCoding');
+    require('./visualMap/ContinuousModel');
+    require('./visualMap/ContinuousView');
+    require('./visualMap/visualMapAction');
 
-echarts.registerPreprocessor(preprocessor);
+});

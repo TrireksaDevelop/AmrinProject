@@ -1,11 +1,7 @@
-import * as echarts from '../echarts';
+define(function (require) {
 
-import '../coord/single/singleCreator';
-import './axis/SingleAxisView';
-import '../coord/single/AxisModel';
-import './axisPointer';
-import './axisPointer/SingleAxisPointer';
+    require('../coord/single/singleCreator');
+    require('./axis/SingleAxisView');
+    require('../coord/single/AxisModel');
 
-echarts.extendComponentView({
-    type: 'single'
 });

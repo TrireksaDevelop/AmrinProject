@@ -1,11 +1,14 @@
 describe('util/graphic', function() {
 
+    var utHelper = window.utHelper;
     var graphic;
 
     beforeAll(function (done) { // jshint ignore:line
-        window.requireES(['echarts/src/util/graphic'], function (g) {
-            graphic = g;
-            done();
+        utHelper.resetPackageLoader(function () {
+            window.require(['echarts/util/graphic'], function (g) {
+                graphic = g;
+                done();
+            });
         });
     });
 

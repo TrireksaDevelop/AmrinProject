@@ -18,7 +18,7 @@
               global.msCancelAnimationFrame      ;
 
     if(raf && caf) {
-      requestInterval = function(fn) {
+      requestInterval = function(fn, delay) {
         var handle = {value: null};
 
         function loop() {
@@ -265,6 +265,8 @@
     t /= 750;
 
     var a = cw * 0.1875,
+        b = TAU * 11 / 12,
+        c = TAU *  7 / 12,
         i, p, x, y;
 
     ctx.strokeStyle = color;
@@ -715,6 +717,8 @@
       }, 1000 / 60);
     },
     pause: function() {
+      var i;
+
       if(this.interval) {
         cancelInterval(this.interval);
         this.interval = null;

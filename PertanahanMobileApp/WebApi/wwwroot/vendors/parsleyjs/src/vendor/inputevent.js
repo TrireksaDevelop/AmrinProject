@@ -13,7 +13,7 @@ function InputEvent() {
 
   // Slightly odd way construct our object. This way methods are force bound.
   // Used to test for duplicate library.
-  Object.assign(this, {
+  $.extend(this, {
 
     // For browsers that do not support isTrusted, assumes event is native.
     isNativeEvent: evt => {

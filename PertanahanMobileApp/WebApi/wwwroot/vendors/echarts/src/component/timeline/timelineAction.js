@@ -1,38 +1,39 @@
-import * as echarts from '../../echarts';
-import * as zrUtil from 'zrender/src/core/util';
+/**
+ * @file Timeilne action
+ */
+define(function(require) {
 
-echarts.registerAction(
+    var echarts = require('../../echarts');
 
-    {type: 'timelineChange', event: 'timelineChanged', update: 'prepareAndUpdate'},
+    echarts.registerAction(
 
-    function (payload, ecModel) {
+        {type: 'timelineChange', event: 'timelineChanged', update: 'prepareAndUpdate'},
 
-        var timelineModel = ecModel.getComponent('timeline');
-        if (timelineModel && payload.currentIndex != null) {
-            timelineModel.setCurrentIndex(payload.currentIndex);
+        function (payload, ecModel) {
 
-            if (!timelineModel.get('loop', true) && timelineModel.isIndexMax()) {
-                timelineModel.setPlayState(false);
+            var timelineModel = ecModel.getComponent('timeline');
+            if (timelineModel && payload.currentIndex != null) {
+                timelineModel.setCurrentIndex(payload.currentIndex);
+
+                if (!timelineModel.get('loop', true) && timelineModel.isIndexMax()) {
+                    timelineModel.setPlayState(false);
+                }
+            }
+
+            ecModel.resetOption('timeline');
+        }
+    );
+
+    echarts.registerAction(
+
+        {type: 'timelinePlayChange', event: 'timelinePlayChanged', update: 'update'},
+
+        function (payload, ecModel) {
+            var timelineModel = ecModel.getComponent('timeline');
+            if (timelineModel && payload.playState != null) {
+                timelineModel.setPlayState(payload.playState);
             }
         }
+    );
 
-        // Set normalized currentIndex to payload.
-        ecModel.resetOption('timeline');
-
-        return zrUtil.defaults({
-            currentIndex: timelineModel.option.currentIndex
-        }, payload);
-    }
-);
-
-echarts.registerAction(
-
-    {type: 'timelinePlayChange', event: 'timelinePlayChanged', update: 'update'},
-
-    function (payload, ecModel) {
-        var timelineModel = ecModel.getComponent('timeline');
-        if (timelineModel && payload.playState != null) {
-            timelineModel.setPlayState(payload.playState);
-        }
-    }
-);
+});

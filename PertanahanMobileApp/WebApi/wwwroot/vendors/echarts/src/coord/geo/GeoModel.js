@@ -1,156 +1,148 @@
-import * as zrUtil from 'zrender/src/core/util';
-import * as modelUtil from '../../util/model';
-import ComponentModel from '../../model/Component';
-import Model from '../../model/Model';
-import selectableMixin from '../../component/helper/selectableMixin';
-import geoCreator from './geoCreator';
+define(function (require) {
 
-var GeoModel = ComponentModel.extend({
+    'use strict';
+    var modelUtil = require('../../util/model');
+    var ComponentModel = require('../../model/Component');
+    var Model = require('../../model/Model');
+    var zrUtil = require('zrender/core/util');
 
-    type: 'geo',
+    var selectableMixin = require('../../component/helper/selectableMixin');
 
-    /**
-     * @type {module:echarts/coord/geo/Geo}
-     */
-    coordinateSystem: null,
+    var geoCreator = require('./geoCreator');
 
-    layoutMode: 'box',
+    var GeoModel = ComponentModel.extend({
 
-    init: function (option) {
-        ComponentModel.prototype.init.apply(this, arguments);
+        type: 'geo',
 
-        // Default label emphasis `show`
-        modelUtil.defaultEmphasis(option.label, ['show']);
-    },
+        /**
+         * @type {module:echarts/coord/geo/Geo}
+         */
+        coordinateSystem: null,
 
-    optionUpdated: function () {
-        var option = this.option;
-        var self = this;
+        init: function (option) {
+            ComponentModel.prototype.init.apply(this, arguments);
 
-        option.regions = geoCreator.getFilledRegions(option.regions, option.map, option.nameMap);
+            // Default label emphasis `position` and `show`
+            modelUtil.defaultEmphasis(
+                option.label, ['position', 'show', 'textStyle', 'distance', 'formatter']
+            );
+        },
 
-        this._optionModelMap = zrUtil.reduce(option.regions || [], function (optionModelMap, regionOpt) {
-            if (regionOpt.name) {
-                optionModelMap.set(regionOpt.name, new Model(regionOpt, self));
-            }
-            return optionModelMap;
-        }, zrUtil.createHashMap());
+        optionUpdated: function () {
+            var option = this.option;
+            var self = this;
 
-        this.updateSelectedMap(option.regions);
-    },
+            option.regions = geoCreator.getFilledRegions(option.regions, option.map);
 
-    defaultOption: {
+            this._optionModelMap = zrUtil.reduce(option.regions || [], function (obj, regionOpt) {
+                if (regionOpt.name) {
+                    obj[regionOpt.name] = new Model(regionOpt, self);
+                }
+                return obj;
+            }, {});
 
-        zlevel: 0,
+            this.updateSelectedMap(option.regions);
+        },
 
-        z: 0,
+        defaultOption: {
 
-        show: true,
+            zlevel: 0,
 
-        left: 'center',
+            z: 0,
 
-        top: 'center',
+            show: true,
 
+            left: 'center',
 
-        // width:,
-        // height:,
-        // right
-        // bottom
+            top: 'center',
 
-        // Aspect is width / height. Inited to be geoJson bbox aspect
-        // This parameter is used for scale this aspect
-        aspectScale: 0.75,
+            // 自适应
+            // width:,
+            // height:,
+            // right
+            // bottom
 
-        ///// Layout with center and size
-        // If you wan't to put map in a fixed size box with right aspect ratio
-        // This two properties may more conveninet
-        // layoutCenter: [50%, 50%]
-        // layoutSize: 100
+            // Map type
+            map: '',
 
+            // Default on center of map
+            center: null,
 
-        silent: false,
+            zoom: 1,
 
-        // Map type
-        map: '',
+            scaleLimit: null,
 
-        // Define left-top, right-bottom coords to control view
-        // For example, [ [180, 90], [-180, -90] ]
-        boundingCoords: null,
+            // selectedMode: false
 
-        // Default on center of map
-        center: null,
-
-        zoom: 1,
-
-        scaleLimit: null,
-
-        // selectedMode: false
-
-        label: {
-            normal: {
-                show: false,
-                color: '#000'
+            label: {
+                normal: {
+                    show: false,
+                    textStyle: {
+                        color: '#000'
+                    }
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        color: 'rgb(100,0,0)'
+                    }
+                }
             },
-            emphasis: {
-                show: true,
-                color: 'rgb(100,0,0)'
+
+            itemStyle: {
+                normal: {
+                    // color: 各异,
+                    borderWidth: 0.5,
+                    borderColor: '#444',
+                    color: '#eee'
+                },
+                emphasis: {                 // 也是选中样式
+                    color: 'rgba(255,215,0,0.8)'
+                }
+            },
+
+            regions: []
+        },
+
+        /**
+         * Get model of region
+         * @param  {string} name
+         * @return {module:echarts/model/Model}
+         */
+        getRegionModel: function (name) {
+            return this._optionModelMap[name];
+        },
+
+        /**
+         * Format label
+         * @param {string} name Region name
+         * @param {string} [status='normal'] 'normal' or 'emphasis'
+         * @return {string}
+         */
+        getFormattedLabel: function (name, status) {
+            var formatter = this.get('label.' + status + '.formatter');
+            var params = {
+                name: name
+            };
+            if (typeof formatter === 'function') {
+                params.status = status;
+                return formatter(params);
+            }
+            else if (typeof formatter === 'string') {
+                return formatter.replace('{a}', params.seriesName);
             }
         },
 
-        itemStyle: {
-            normal: {
-                // color: 各异,
-                borderWidth: 0.5,
-                borderColor: '#444',
-                color: '#eee'
-            },
-            emphasis: {                 // 也是选中样式
-                color: 'rgba(255,215,0,0.8)'
-            }
+        setZoom: function (zoom) {
+            this.option.zoom = zoom;
         },
 
-        regions: []
-    },
-
-    /**
-     * Get model of region
-     * @param  {string} name
-     * @return {module:echarts/model/Model}
-     */
-    getRegionModel: function (name) {
-        return this._optionModelMap.get(name) || new Model(null, this, this.ecModel);
-    },
-
-    /**
-     * Format label
-     * @param {string} name Region name
-     * @param {string} [status='normal'] 'normal' or 'emphasis'
-     * @return {string}
-     */
-    getFormattedLabel: function (name, status) {
-        var regionModel = this.getRegionModel(name);
-        var formatter = regionModel.get('label.' + status + '.formatter');
-        var params = {
-            name: name
-        };
-        if (typeof formatter === 'function') {
-            params.status = status;
-            return formatter(params);
+        setCenter: function (center) {
+            this.option.center = center;
         }
-        else if (typeof formatter === 'string') {
-            return formatter.replace('{a}', name != null ? name : '');
-        }
-    },
+    });
 
-    setZoom: function (zoom) {
-        this.option.zoom = zoom;
-    },
+    zrUtil.mixin(GeoModel, selectableMixin);
 
-    setCenter: function (center) {
-        this.option.center = center;
-    }
+    return GeoModel;
 });
-
-zrUtil.mixin(GeoModel, selectableMixin);
-
-export default GeoModel;

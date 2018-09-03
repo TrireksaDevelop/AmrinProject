@@ -1,38 +1,35 @@
-import MapDraw from '../helper/MapDraw';
-import * as echarts from '../../echarts';
+define(function (require) {
 
-export default echarts.extendComponentView({
+    'use strict';
 
-    type: 'geo',
+    var MapDraw = require('../helper/MapDraw');
 
-    init: function (ecModel, api) {
-        var mapDraw = new MapDraw(api, true);
-        this._mapDraw = mapDraw;
+    return require('../../echarts').extendComponentView({
 
-        this.group.add(mapDraw.group);
-    },
+        type: 'geo',
 
-    render: function (geoModel, ecModel, api, payload) {
-        // Not render if it is an toggleSelect action from self
-        if (payload && payload.type === 'geoToggleSelect'
-            && payload.from === this.uid
-        ) {
-            return;
+        init: function (ecModel, api) {
+            var mapDraw = new MapDraw(api, true);
+            this._mapDraw = mapDraw;
+
+            this.group.add(mapDraw.group);
+        },
+
+        render: function (geoModel, ecModel, api, payload) {
+            // Not render if it is an toggleSelect action from self
+            if (payload && payload.type === 'geoToggleSelect'
+                && payload.from === this.uid
+            ) {
+                return;
+            }
+
+            var mapDraw = this._mapDraw;
+            if (geoModel.get('show')) {
+                mapDraw.draw(geoModel, ecModel, api, this, payload);
+            }
+            else {
+                this._mapDraw.group.removeAll();
+            }
         }
-
-        var mapDraw = this._mapDraw;
-        if (geoModel.get('show')) {
-            mapDraw.draw(geoModel, ecModel, api, this, payload);
-        }
-        else {
-            this._mapDraw.group.removeAll();
-        }
-
-        this.group.silent = geoModel.get('silent');
-    },
-
-    dispose: function () {
-        this._mapDraw && this._mapDraw.remove();
-    }
-
+    });
 });

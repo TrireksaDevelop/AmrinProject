@@ -1,13 +1,17 @@
-import * as echarts from '../echarts';
-import * as zrUtil from 'zrender/src/core/util';
+define(function (require) {
 
-import './funnel/FunnelSeries';
-import './funnel/FunnelView';
+    var zrUtil = require('zrender/core/util');
+    var echarts = require('../echarts');
 
-import dataColor from '../visual/dataColor';
-import funnelLayout from './funnel/funnelLayout';
-import dataFilter from '../processor/dataFilter';
+    require('./funnel/FunnelSeries');
+    require('./funnel/FunnelView');
 
-echarts.registerVisual(zrUtil.curry(dataColor, 'funnel'));
-echarts.registerLayout(funnelLayout);
-echarts.registerProcessor(zrUtil.curry(dataFilter, 'funnel'));
+    echarts.registerVisualCoding(
+        'chart',  zrUtil.curry(require('../visual/dataColor'), 'funnel')
+    );
+    echarts.registerLayout(require('./funnel/funnelLayout'));
+
+    echarts.registerProcessor(
+        'filter', zrUtil.curry(require('../processor/dataFilter'), 'funnel')
+    );
+});

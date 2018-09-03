@@ -1,16 +1,23 @@
-import * as echarts from '../../echarts';
+/**
+ * @file Data range action
+ */
+define(function(require) {
 
-var actionInfo = {
-    type: 'selectDataRange',
-    event: 'dataRangeSelected',
-    // FIXME use updateView appears wrong
-    update: 'update'
-};
+    var echarts = require('../../echarts');
 
-echarts.registerAction(actionInfo, function (payload, ecModel) {
+    var actionInfo = {
+        type: 'selectDataRange',
+        event: 'dataRangeSelected',
+        // FIXME use updateView appears wrong
+        update: 'update'
+    };
 
-    ecModel.eachComponent({mainType: 'visualMap', query: payload}, function (model) {
-        model.setSelected(payload.selected);
+    echarts.registerAction(actionInfo, function (payload, ecModel) {
+
+        ecModel.eachComponent({mainType: 'visualMap', query: payload}, function (model) {
+            model.setSelected(payload.selected);
+        });
+
     });
 
 });

@@ -1,38 +1,28 @@
-import {simpleLayout, simpleLayoutEdge} from './simpleLayoutHelper';
+define(function (require) {
 
-export default function (ecModel, api) {
-    ecModel.eachSeriesByType('graph', function (seriesModel) {
-        var layout = seriesModel.get('layout');
-        var coordSys = seriesModel.coordinateSystem;
-        if (coordSys && coordSys.type !== 'view') {
-            var data = seriesModel.getData();
-            var dimensions = coordSys.dimensions;
-
-            data.each(dimensions, function () {
-                var hasValue;
-                var args = arguments;
-                var value = [];
-                for (var i = 0; i < dimensions.length; i++) {
-                    if (!isNaN(args[i])) {
-                        hasValue = true;
+    var simpleLayoutHelper = require('./simpleLayoutHelper');
+    var simpleLayoutEdge = require('./simpleLayoutEdge');
+    return function (ecModel, api) {
+        ecModel.eachSeriesByType('graph', function (seriesModel) {
+            var layout = seriesModel.get('layout');
+            var coordSys = seriesModel.coordinateSystem;
+            if (coordSys && coordSys.type !== 'view') {
+                var data = seriesModel.getData();
+                data.each(coordSys.dimensions, function (x, y, idx) {
+                    if (!isNaN(x) && !isNaN(y)) {
+                        data.setItemLayout(idx, coordSys.dataToPoint([x, y]));
                     }
-                    value.push(args[i]);
-                }
-                var idx = args[args.length - 1];
+                    else {
+                        // Also {Array.<number>}, not undefined to avoid if...else... statement
+                        data.setItemLayout(idx, [NaN, NaN]);
+                    }
+                });
 
-                if (hasValue) {
-                    data.setItemLayout(idx, coordSys.dataToPoint(value));
-                }
-                else {
-                    // Also {Array.<number>}, not undefined to avoid if...else... statement
-                    data.setItemLayout(idx, [NaN, NaN]);
-                }
-            });
-
-            simpleLayoutEdge(data.graph);
-        }
-        else if (!layout || layout === 'none') {
-            simpleLayout(seriesModel);
-        }
-    });
-}
+                simpleLayoutEdge(data.graph);
+            }
+            else if (!layout || layout === 'none') {
+                simpleLayoutHelper(seriesModel);
+            }
+        });
+    };
+});

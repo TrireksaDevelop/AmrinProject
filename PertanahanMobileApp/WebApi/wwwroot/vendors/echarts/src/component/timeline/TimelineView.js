@@ -1,5 +1,15 @@
-import ComponentView from '../../view/Component';
+/**
+ * @file Timeline view
+ */
+define(function (require) {
 
-export default ComponentView.extend({
-    type: 'timeline'
+    // var zrUtil = require('zrender/core/util');
+    // var graphic = require('../../util/graphic');
+    var ComponentView = require('../../view/Component');
+
+    return ComponentView.extend({
+
+        type: 'timeline'
+    });
+
 });

@@ -1,10 +1,15 @@
-import * as echarts from '../echarts';
+define(function (require) {
 
-import './lines/LinesSeries';
-import './lines/LinesView';
+    require('./lines/LinesSeries');
+    require('./lines/LinesView');
 
-import linesLayout from './lines/linesLayout';
-import linesVisual from './lines/linesVisual';
+    var zrUtil = require('zrender/core/util');
+    var echarts = require('../echarts');
+    echarts.registerLayout(
+        require('./lines/linesLayout')
+    );
 
-echarts.registerLayout(linesLayout);
-echarts.registerVisual(linesVisual);
+    echarts.registerVisualCoding(
+        'chart', zrUtil.curry(require('../visual/seriesColor'), 'lines', 'lineStyle')
+    );
+});

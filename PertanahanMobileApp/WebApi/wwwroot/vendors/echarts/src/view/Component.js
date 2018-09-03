@@ -1,44 +1,46 @@
-import Group from 'zrender/src/container/Group';
-import * as componentUtil from '../util/component';
-import * as clazzUtil from '../util/clazz';
+define(function (require) {
 
-var Component = function () {
-    /**
-     * @type {module:zrender/container/Group}
-     * @readOnly
-     */
-    this.group = new Group();
+    var Group = require('zrender/container/Group');
+    var componentUtil = require('../util/component');
+    var clazzUtil = require('../util/clazz');
 
-    /**
-     * @type {string}
-     * @readOnly
-     */
-    this.uid = componentUtil.getUID('viewComponent');
-};
+    var Component = function () {
+        /**
+         * @type {module:zrender/container/Group}
+         * @readOnly
+         */
+        this.group = new Group();
 
-Component.prototype = {
-
-    constructor: Component,
-
-    init: function (ecModel, api) {},
-
-    render: function (componentModel, ecModel, api, payload) {},
-
-    dispose: function () {}
-
-};
-
-var componentProto = Component.prototype;
-componentProto.updateView
-    = componentProto.updateLayout
-    = componentProto.updateVisual
-    = function (seriesModel, ecModel, api, payload) {
-        // Do nothing;
+        /**
+         * @type {string}
+         * @readOnly
+         */
+        this.uid = componentUtil.getUID('viewComponent');
     };
-// Enable Component.extend.
-clazzUtil.enableClassExtend(Component);
 
-// Enable capability of registerClass, getClass, hasClass, registerSubTypeDefaulter and so on.
-clazzUtil.enableClassManagement(Component, {registerWhenExtend: true});
+    Component.prototype = {
 
-export default Component;
+        constructor: Component,
+
+        init: function (ecModel, api) {},
+
+        render: function (componentModel, ecModel, api, payload) {},
+
+        dispose: function () {}
+    };
+
+    var componentProto = Component.prototype;
+    componentProto.updateView
+        = componentProto.updateLayout
+        = componentProto.updateVisual
+        = function (seriesModel, ecModel, api, payload) {
+            // Do nothing;
+        };
+    // Enable Component.extend.
+    clazzUtil.enableClassExtend(Component);
+
+    // Enable capability of registerClass, getClass, hasClass, registerSubTypeDefaulter and so on.
+    clazzUtil.enableClassManagement(Component, {registerWhenExtend: true});
+
+    return Component;
+});

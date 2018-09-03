@@ -1,11 +1,10 @@
 import $ from 'jquery';
-import Utils from './utils';
 
-var Multiple = function () {
-  this.__class__ = 'FieldMultiple';
+var ParsleyMultiple = function () {
+  this.__class__ = 'ParsleyFieldMultiple';
 };
 
-Multiple.prototype = {
+ParsleyMultiple.prototype = {
   // Add new `$element` sibling for multiple field
   addElement: function ($element) {
     this.$elements.push($element);
@@ -13,14 +12,14 @@ Multiple.prototype = {
     return this;
   },
 
-  // See `Field._refreshConstraints()`
-  _refreshConstraints: function () {
+  // See `ParsleyField.refreshConstraints()`
+  refreshConstraints: function () {
     var fieldConstraints;
 
     this.constraints = [];
 
     // Select multiple special treatment
-    if (this.element.nodeName === 'SELECT') {
+    if (this.$element.is('select')) {
       this.actualizeOptions()._bindConstraints();
 
       return this;
@@ -35,7 +34,7 @@ Multiple.prototype = {
         continue;
       }
 
-      fieldConstraints = this.$elements[i].data('FieldMultiple')._refreshConstraints().constraints;
+      fieldConstraints = this.$elements[i].data('ParsleyFieldMultiple').refreshConstraints().constraints;
 
       for (var j = 0; j < fieldConstraints.length; j++)
         this.addConstraint(fieldConstraints[j].name, fieldConstraints[j].requirements, fieldConstraints[j].priority, fieldConstraints[j].isDomConstraint);
@@ -44,7 +43,7 @@ Multiple.prototype = {
     return this;
   },
 
-  // See `Field.getValue()`
+  // See `ParsleyField.getValue()`
   getValue: function () {
     // Value could be overriden in DOM
     if ('function' === typeof this.options.value)
@@ -53,25 +52,22 @@ Multiple.prototype = {
       return this.options.value;
 
     // Radio input case
-    if (this.element.nodeName === 'INPUT') {
-      var type = Utils.getType(this.element);
-      if (type === 'radio')
-        return this._findRelated().filter(':checked').val() || '';
+    if (this.$element.is('input[type=radio]'))
+      return this._findRelated().filter(':checked').val() || '';
 
-      // checkbox input case
-      if (type === 'checkbox') {
-        var values = [];
+    // checkbox input case
+    if (this.$element.is('input[type=checkbox]')) {
+      var values = [];
 
-        this._findRelated().filter(':checked').each(function () {
-          values.push($(this).val());
-        });
+      this._findRelated().filter(':checked').each(function () {
+        values.push($(this).val());
+      });
 
-        return values;
-      }
+      return values;
     }
 
     // Select multiple case
-    if (this.element.nodeName === 'SELECT' && null === this.$element.val())
+    if (this.$element.is('select') && null === this.$element.val())
       return [];
 
     // Default case that should never happen
@@ -85,4 +81,4 @@ Multiple.prototype = {
   }
 };
 
-export default Multiple;
+export default ParsleyMultiple;

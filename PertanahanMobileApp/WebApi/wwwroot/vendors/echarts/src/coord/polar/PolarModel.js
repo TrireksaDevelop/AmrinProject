@@ -1,41 +1,46 @@
-import * as echarts from '../../echarts';
-import './AxisModel';
+define(function (require) {
 
-export default echarts.extendComponentModel({
+    'use strict';
 
-    type: 'polar',
+    require('./AxisModel');
 
-    dependencies: ['polarAxis', 'angleAxis'],
+    require('../../echarts').extendComponentModel({
 
-    /**
-     * @type {module:echarts/coord/polar/Polar}
-     */
-    coordinateSystem: null,
+        type: 'polar',
 
-    /**
-     * @param {string} axisType
-     * @return {module:echarts/coord/polar/AxisModel}
-     */
-    findAxisModel: function (axisType) {
-        var foundAxisModel;
-        var ecModel = this.ecModel;
+        dependencies: ['polarAxis', 'angleAxis'],
 
-        ecModel.eachComponent(axisType, function (axisModel) {
-            if (axisModel.getCoordSysModel() === this) {
-                foundAxisModel = axisModel;
-            }
-        }, this);
-        return foundAxisModel;
-    },
+        /**
+         * @type {module:echarts/coord/polar/Polar}
+         */
+        coordinateSystem: null,
 
-    defaultOption: {
+        /**
+         * @param {string} axisType
+         * @return {module:echarts/coord/polar/AxisModel}
+         */
+        findAxisModel: function (axisType) {
+            var angleAxisModel;
+            var ecModel = this.ecModel;
+            ecModel.eachComponent(axisType, function (axisModel) {
+                if (ecModel.getComponent(
+                        'polar', axisModel.getShallow('polarIndex')
+                    ) === this) {
+                    angleAxisModel = axisModel;
+                }
+            }, this);
+            return angleAxisModel;
+        },
 
-        zlevel: 0,
+        defaultOption: {
 
-        z: 0,
+            zlevel: 0,
 
-        center: ['50%', '50%'],
+            z: 0,
 
-        radius: '80%'
-    }
+            center: ['50%', '50%'],
+
+            radius: '80%'
+        }
+    });
 });

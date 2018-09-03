@@ -28,5 +28,6 @@
   },
   "_source": "https://github.com/JohnPozy/flot-spline.git",
   "_target": "^0.8.2",
-  "_originalSource": "flot-spline"
+  "_originalSource": "flot-spline",
+  "_direct": true
 }

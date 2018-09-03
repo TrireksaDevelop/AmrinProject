@@ -9,9 +9,6 @@ var defaults = {
   input: 'input', // children input selector
   container: false, // container selector
   component: '.add-on, .input-group-addon', // children component selector
-  fallbackColor: false, // fallback color value. null = keeps current color.
-  fallbackFormat: 'hex', // fallback color format
-  hexNumberSignPrefix: true, // put a '#' (number sign) before hex strings
   sliders: {
     saturation: {
       maxLeft: 100,
@@ -60,6 +57,6 @@ var defaults = {
     '<div class="colorpicker-selectors"></div>' +
     '</div>',
   align: 'right',
-  customClass: null, // custom class added to the colorpicker element
-  colorSelectors: null // custom color aliases
+  customClass: null,
+  colorSelectors: null
 };

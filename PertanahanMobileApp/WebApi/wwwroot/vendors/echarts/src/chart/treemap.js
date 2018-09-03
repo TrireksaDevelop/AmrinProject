@@ -1,11 +1,12 @@
-import * as echarts from '../echarts';
+define(function (require) {
 
-import './treemap/TreemapSeries';
-import './treemap/TreemapView';
-import './treemap/treemapAction';
+    var echarts = require('../echarts');
 
-import treemapVisual from './treemap/treemapVisual';
-import treemapLayout from './treemap/treemapLayout';
+    require('./treemap/TreemapSeries');
+    require('./treemap/TreemapView');
+    require('./treemap/treemapAction');
 
-echarts.registerVisual(treemapVisual);
-echarts.registerLayout(treemapLayout);
+    echarts.registerVisualCoding('chart', require('./treemap/treemapVisual'));
+
+    echarts.registerLayout(require('./treemap/treemapLayout'));
+});

@@ -1,29 +1,29 @@
-import * as echarts from '../../echarts';
-import SymbolDraw from '../helper/SymbolDraw';
-import EffectSymbol from '../helper/EffectSymbol';
+define(function (require) {
 
-export default echarts.extendChartView({
+    var SymbolDraw = require('../helper/SymbolDraw');
+    var EffectSymbol = require('../helper/EffectSymbol');
 
-    type: 'effectScatter',
+    require('../../echarts').extendChartView({
 
-    init: function () {
-        this._symbolDraw = new SymbolDraw(EffectSymbol);
-    },
+        type: 'effectScatter',
 
-    render: function (seriesModel, ecModel, api) {
-        var data = seriesModel.getData();
-        var effectSymbolDraw = this._symbolDraw;
-        effectSymbolDraw.updateData(data);
-        this.group.add(effectSymbolDraw.group);
-    },
+        init: function () {
+            this._symbolDraw = new SymbolDraw(EffectSymbol);
+        },
 
-    updateLayout: function () {
-        this._symbolDraw.updateLayout();
-    },
+        render: function (seriesModel, ecModel, api) {
+            var data = seriesModel.getData();
+            var effectSymbolDraw = this._symbolDraw;
+            effectSymbolDraw.updateData(data);
+            this.group.add(effectSymbolDraw.group);
+        },
 
-    remove: function (ecModel, api) {
-        this._symbolDraw && this._symbolDraw.remove(api);
-    },
+        updateLayout: function () {
+            this._symbolDraw.updateLayout();
+        },
 
-    dispose: function () {}
+        remove: function (ecModel, api) {
+            this._symbolDraw && this._symbolDraw.remove(api);
+        }
+    });
 });

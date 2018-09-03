@@ -6,7 +6,7 @@ const fs = require("fs");
 const args = process.argv;
 
 let plugins = [
-	new webpack.BannerPlugin(fs.readFileSync('./dev/banner.txt', 'utf8'), { raw: true, entryOnly: true })
+	new webpack.BannerPlugin(fs.readFileSync('./dev/banner.txt', 'utf8'),{ raw: true, entryOnly: true })
 ];
 let externals = [];
 let filename = "raphael";
@@ -36,7 +36,8 @@ module.exports = {
 	output: {
 		filename: filename + ".js",
 		libraryTarget: "umd",
-		library: "Raphael"
+		library: "Raphael",
+		umdNamedDefine: true
 	},
 
 	externals: externals,
@@ -56,9 +57,6 @@ module.exports = {
   	},
 
 	resolve: {
-		modulesDirectories: ["bower_components"],
-		alias: {
-			"eve": "eve-raphael/eve"
-		}
+		modulesDirectories: ["bower_components"]
 	}
 };
