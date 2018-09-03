@@ -4,7 +4,7 @@ angular.module("petugas.controllers", [])
     ;
 
 function BerkasController($scope, BerkasService) {
-
+    $scope.Berkas = BerkasService.Berkas;
 }
 
 function PetugasHomeController($scope) {

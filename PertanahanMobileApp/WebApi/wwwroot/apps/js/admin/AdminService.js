@@ -36,9 +36,24 @@ function UserServices($http, $state,$rootScope) {
         return sessionStorage.getItem("UserName");
     }
 
+    function getPetugas() {
+        $rootScope.DataUser = {};
+        $http({
+            method: 'Get',
+            url: '/Account/PetugasProfile'
+        }).then(function (response) {
+            $rootScope.DataUser = response.data;
+
+            }, function (error) {
+                alert(error.message);
+
+            });
+        return $rootScope.DataUser;
+    }
+
 
     return {
-        logout: logout, getToken: getToken, getHeaders: getHeaders,getUser:getUser
+        logout: logout, getToken: getToken, getHeaders: getHeaders, getUser: getUser, getPetugas: getPetugas
     }
 }
 
