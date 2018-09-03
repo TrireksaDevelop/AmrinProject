@@ -10,6 +10,68 @@ namespace AppCore.UnitOfWorks
 {
     public class UOWPermohonan : IPermohonanUOW
     {
+        public tahapan GetCurrentTahapan(permohonan permohonan)
+        {
+            try
+            {
+                using (var db = new OcphDbContext())
+                {
+                    var lastProggress = db.Progress.Where(O => O.IdPermohonan == permohonan.Id).Last();
+
+                    if(lastProggress==null)
+                    {
+                        return null;
+                    }else
+                    {
+                        var Curenttahapans = from z in db.TahapanLayanan.Where(O => O.Id == permohonan.IdLayanan && O.TahapanId == lastProggress.IdTahapan)
+                                             join y in db.Tahapans.Select() on z.TahapanId equals y.Id
+                                             select y;
+                        return Curenttahapans.FirstOrDefault();
+                    }
+                 
+                }
+            }
+            catch
+            {
+                return null;
+                
+            }
+        }
+
+
+        public tahapan GetNextTahapan(permohonan permohonan)
+        {
+            try
+            {
+                var current = GetCurrentTahapan(permohonan);
+               
+                using (var db = new OcphDbContext())
+                {
+                    int urutan = 1;
+                    if (current != null)
+                    {
+                        var lastTahapan = db.TahapanLayanan.Where(O => O.Id == permohonan.IdLayanan && O.TahapanId == current.Id).FirstOrDefault();
+                        urutan = lastTahapan.Urutan + 1;
+                    }
+                    var Curenttahapans = from z in db.TahapanLayanan.Where(O => O.Id == permohonan.IdLayanan && O.Urutan == urutan)
+                                         join y in db.Tahapans.Select() on z.TahapanId equals y.Id
+                                         select y;
+
+                    return Curenttahapans.FirstOrDefault();
+
+                }
+
+
+
+
+            }
+            catch
+            {
+                return null;
+
+            }
+        }
+
         public List<permohonan> GetDaftarPermohonan(pemohon pemohon)
         {
 
@@ -88,11 +150,20 @@ namespace AppCore.UnitOfWorks
                         throw new SystemException("Permohonan Baru Tidak Dapat Dibuat");
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     trans.Rollback();
                     return null;
                 }
+            }
+        }
+
+        public bool SetNextStep(permohonan p, tahapan nextTahapan)
+        {
+            using (var db = new OcphDbContext())
+            {
+                var result = db.Progress.Insert(new progress { IdPermohonan = p.Id, IdTahapan = nextTahapan.Id });
+                return result;
             }
         }
     }

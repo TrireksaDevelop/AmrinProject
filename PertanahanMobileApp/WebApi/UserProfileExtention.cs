@@ -28,7 +28,22 @@ namespace WebApi
             }
         }
 
-       
+        public static  Task<pemohon> GetPemohon(this IPrincipal user, string uid)
+        {
+            try
+            {
+                ClientService client = new ClientService();
+                var result = client.GetPemohonBy(uid);
+                if (result == null)
+                    throw new SystemException("Anda Tidak Memiliki Akses");
+                return Task.FromResult(result);
+            }
+            catch (Exception ex)
+            {
+
+                throw new SystemException(ex.Message);
+            }
+        }
 
 
     }

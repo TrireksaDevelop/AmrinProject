@@ -11,20 +11,25 @@ namespace AppCore.Services
     {
         private List<progress> _tahapans;
 
-        private progress _currentTahapan;
+        private tahapan _currentTahapan;
 
         public IPermohonanUOW UnitWorkPermohonan { get; set; }
 
         public pemohon Pemohon { get; private set; }
 
-        public permohonan Permohonan { get; private set; }
+        public permohonan Permohonan { get; private  set; }
 
         public PermohonanService(pemohon t,IPermohonanUOW uow)
         {
             Pemohon = t;
             UnitWorkPermohonan = uow;
-            Permohonan = UnitWorkPermohonan.GetDaftarPermohonan(t).Last();
-            _tahapans = UnitWorkPermohonan.GetItemsTahapan(Permohonan);
+            var result= UnitWorkPermohonan.GetDaftarPermohonan(t);
+            if(result.Count>0)
+            {
+                Permohonan = result.Last();
+                _tahapans = UnitWorkPermohonan.GetItemsTahapan(Permohonan);
+            }
+        
         }
 
         public PermohonanService(IPermohonanUOW uOWPermohonan)
@@ -43,51 +48,17 @@ namespace AppCore.Services
                 throw new SystemException("Tentukan permohonan");
         }
 
-        public void SetCurrentTahapan(progress item)
+        
+
+        public tahapan GetCurrentTahapan()
         {
-            _currentTahapan = item;
+           return UnitWorkPermohonan.GetCurrentTahapan(Permohonan);
         }
 
-        public progress GetCurrentTahapan()
+       
+        public tahapan GetNextTahapan()
         {
-            if (_currentTahapan == null)
-                throw new SystemException("Tahapan Belum Dipilih");
-            else
-             return _currentTahapan;
-        }
-
-        public progress GetLastTahapan()
-        {
-            if(_tahapans==null)
-                _tahapans = UnitWorkPermohonan.GetItemsTahapan(Permohonan);
-
-            if (_tahapans.Count<=0)
-            {
-                throw new SystemException("Data Tahapan Tidak Ada");
-            }else 
-            {
-                return _tahapans.Last();
-            }
-        }
-
-        public progress GetNextTahapan()
-        {
-           if(_currentTahapan!=null && _tahapans!=null)
-            {
-                if(_tahapans.Count<=0)
-                    throw new SystemException("Data Tahapan Tidak Ada");
-                else if (_currentTahapan.Id==_tahapans.Last().Id)
-                    throw new SystemException("Sudah Di Tahapan Akhir");
-                else
-                {
-
-                    return _tahapans.Where(O => O.Id == _currentTahapan.Id + 1).FirstOrDefault();
-                }
-            }
-            else
-            {
-                throw new SystemException("Tahapan Awal Belum Dipilih");
-            }
+            return UnitWorkPermohonan.GetNextTahapan(Permohonan);
 
         }
 
@@ -161,6 +132,36 @@ namespace AppCore.Services
                     throw new SystemException("Pemohon Tidak Ditemukan");
 
             }
+        }
+
+        public permohonan GetPermohonan(int Id)
+        {
+            using (var db = new OcphDbContext())
+            {
+                try
+                {
+                    var result = db.Permohonans.Where(O => O.Id == Id).FirstOrDefault();
+                    if (result != null)
+                    {
+
+
+
+                        return result;
+                    }
+                    else
+                        throw new SystemException("Data Tidak Ditemukan");
+                }
+                catch (Exception ex)
+                {
+
+                    throw new SystemException(ex.Message);
+                }
+            }
+        }
+
+        public bool SetNextStep()
+        {
+          return  UnitWorkPermohonan.SetNextStep(Permohonan, Permohonan.NextTahapan);
         }
     }
 }

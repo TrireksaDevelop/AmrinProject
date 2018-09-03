@@ -11,7 +11,6 @@ namespace AppCore
 {
     public class OcphDbContext : MySqlDbConnection, IOcphDbContext
     {
-        private IRepository<permohonan> _permohonans;
 
         public OcphDbContext(string constring)
         {
@@ -30,10 +29,7 @@ namespace AppCore
         public virtual IRepository<kategorilayanan> Kategories { get { return new Repository<kategorilayanan>(this); } }
         public virtual IRepository<kelengkapan> Kelengkapans { get { return new Repository<kelengkapan>(this); } }
         public virtual IRepository<layanan> Layanans { get { return new Repository<layanan>(this); } }
-        public virtual IRepository<permohonan> Permohonans {
-            get { return _permohonans; }
-            set { _permohonans = new Repository<permohonan>(this); }
-        }
+        public virtual IRepository<permohonan> Permohonans { get { return new Repository<permohonan>(this); } }
         public virtual IRepository<persyaratan> Persyaratans{ get { return new Repository<persyaratan>(this); } }
         public virtual IRepository<petugas> Petugas { get { return new Repository<petugas>(this); } }
         public virtual IRepository<petugasdetail> PetugasDetails{ get { return new Repository<petugasdetail>(this); } }

@@ -5,8 +5,6 @@
              Title="Persyaratan"
              x:Class="MobileApp.Views.Contents.PersyaratanView">
     <ContentPage.Content>
-      
-
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -18,10 +16,10 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Spacing="0" Orientation="Horizontal">
-                                <StackLayout Spacing="0" HorizontalOptions="StartAndExpand" HeightRequest="140" VerticalOptions="StartAndExpand">
-                                    <Label Text="Kartu Keluarga" FontSize="Small"  TextColor="{StaticResource colorPrimary}"/>
-                                    <Label FontSize="Micro" Text="Ini Adalah Keterangan Yang Ini Adalah Keterangan Yang Ini Adalah Keterangan Yang Ini Adalah Keterangan Yang Ini Adalah Keterangan Yang Ini Adalah Keterangan Yang  "/>
+                            <StackLayout Margin="10" Spacing="10" Orientation="Horizontal">
+                                <StackLayout Spacing="1" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand">
+                                    <Label Text="{Binding Nama}" FontSize="15"  TextColor="{StaticResource colorPrimary}"/>
+                                    <Label FontSize="Micro" Text="{Binding Keterangan}"/>
                                 </StackLayout>
                             </StackLayout>
                         </ViewCell>

@@ -267,21 +267,25 @@ function LayananServices($http,$state,$rootScope,$q,UserServices,MessageServices
                 headers: UserServices.getHeaders()
             }).then(function (response) {
 
-                angular.forEach(response.data,function (value, index) {
+                angular.forEach(response.data, function (value, index) {
                     service.Layanans.push(value);
                 })
-                
+
                 service.instance = true;
                 def.resolve(response.data);
-                
+                NProgress.done();
+
             }, function (response) {
-                if (response.status = 401)
+                if (response.status == 401)
                     $state.go('login');
 
                 def.reject();
             });
-        } else
+        } else {
             def.resolve(this.Suppliers);
+            NProgress.done();
+        }
+           
 
         return def.promise;
     }
@@ -297,7 +301,7 @@ function LayananServices($http,$state,$rootScope,$q,UserServices,MessageServices
             def.resolve(response.data);
             MessageServices.success("Data Berhasil Disimpan");
         }, function (response) {
-            if (response.status = 401)
+            if (response.status == 401)
                 $state.go('login');
             def.reject();
         });

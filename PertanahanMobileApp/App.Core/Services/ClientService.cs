@@ -37,7 +37,7 @@ namespace AppCore.Services
             Pemohon = GetPemohonBy(userId);
         }
 
-        private pemohon GetPemohonBy(string userId)
+        public pemohon GetPemohonBy(string userId)
         {
             using (var db = new OcphDbContext())
             {
@@ -63,7 +63,7 @@ namespace AppCore.Services
                 var result = db.Permohonans.Where(O => O.IdPemohon == Pemohon.Id).FirstOrDefault();
                 if(result !=null)
                 {
-                    result.Persyaratan = db.Kelengkapans.Where(O => O.IdPermohonan == result.Id).ToList();
+                    result.Kelengkapans = db.Kelengkapans.Where(O => O.IdPermohonan == result.Id).ToList();
                     result.Tahapans = db.Progress.Where(O => O.IdPermohonan == result.Id).ToList();
                     result.Layanan = db.Layanans.Where(O => O.Id == result.IdLayanan).FirstOrDefault();
                 }

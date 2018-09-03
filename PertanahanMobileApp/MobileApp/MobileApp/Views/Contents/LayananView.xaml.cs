@@ -26,7 +26,9 @@ namespace MobileApp.Views.Contents
 
         private async void ToolbarItem_Clicked(object sender, EventArgs e)
         {
-            var result = await DisplayActionSheet("Kategori","Cancel","", "All", "Peralihan","Pemecahan" );
+            var parames = vm.GetKategori();
+
+            var result = await DisplayActionSheet("Kategori","Cancel","", parames.ToArray() );
             vm.Filter(result);
             
         }
@@ -47,10 +49,12 @@ namespace MobileApp.Views.Contents
 
     public class LayananViewModel:BaseViewModel
     {
+        private List<string> kategori { get; set; }
         public ObservableCollection<layanan> SourceView { get; set; }
         public Command RefreshCommand { get; }
         public LayananViewModel()
         {
+            kategori = new List<string>();
             SourceView = new ObservableCollection<layanan>();
             RefreshCommand = new Command(RefreshAction);
             RefreshCommand.Execute(null);
@@ -66,6 +70,14 @@ namespace MobileApp.Views.Contents
                 IsBusy = true;
                 SourceView.Clear();
                 var results = await LayananServices.GetItemsAsync();
+                var group = results.GroupBy(O => O.Kategori.Nama);
+                kategori.Clear();
+                kategori.Add("All");
+                foreach(var d in group)
+                {
+                    kategori.Add(d.Key);
+                }
+
                 foreach (var item in results)
                 {
                     SourceView.Add(item);
@@ -106,6 +118,11 @@ namespace MobileApp.Views.Contents
                 IsBusy = false;
             }
           
+        }
+
+        internal List<string> GetKategori()
+        {
+            return kategori;
         }
     }
 }

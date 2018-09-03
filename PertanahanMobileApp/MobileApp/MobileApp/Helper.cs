@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MobileApp.Views;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,7 +11,7 @@ namespace MobileApp
 {
   public  class Helper
     {
-        private static string _server = "http://192.168.1.2/";
+        private static string _server = "http://192.168.1.9/";
 
         public static async Task<AuthenticationToken> GetToken()
         {
@@ -25,10 +26,10 @@ namespace MobileApp
             return Task.FromResult(app);
         }
 
-        public static async Task<Page> GetMainPageAsync()
+        public static async Task<MainPage> GetMainPageAsync()
         {
             var x = await Task.FromResult(Xamarin.Forms.Application.Current.MainPage);
-            return x as Page;
+            return x as MainPage;
         }
 
         public static AuthenticationToken Token { get; set; }

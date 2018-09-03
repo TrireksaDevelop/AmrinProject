@@ -44,6 +44,29 @@ namespace MobileApp
                 throw new SystemException(ex.Message);
             }
         }
+
+        public async Task<T> Get<T>(string uri) 
+        {
+            try
+            {
+                var result = await GetAsync(uri);
+                var responseText = await result.Content.ReadAsStringAsync();
+                var obj = Activator.CreateInstance<T>();
+                if (result.IsSuccessStatusCode)
+                {
+                    obj = JsonConvert.DeserializeObject<T>(responseText);
+                }
+                else
+                {
+                    throw new SystemException(responseText);
+                }
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException(ex.Message);
+            }
+        }
     }
     
 }

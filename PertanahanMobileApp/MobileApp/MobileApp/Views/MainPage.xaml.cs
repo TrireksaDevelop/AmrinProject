@@ -1,6 +1,8 @@
-﻿using MobileApp.Views.Contents;
+﻿using MobileApp.ViewModels;
+using MobileApp.Views.Contents;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,10 +11,13 @@ namespace MobileApp.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MainPage : MasterDetailPage
 	{
-		private List<MasterPageItem> menuList;
+        private MainPageViewModel vm;
+        private List<MasterPageItem> menuList;
 		public MainPage()
 		{
 			InitializeComponent();
+            vm = new MainPageViewModel();
+            BindingContext = vm;
 			menuList = new List<MasterPageItem>();
 			// Adding menu items to menuList and you can define title ,page and icon  
 			menuList.Add(new MasterPageItem()
@@ -53,23 +58,29 @@ namespace MobileApp.Views
             });
 
 
-
-
-
-
-
             // Setting our list to be ItemSource for ListView in MainPage.xaml  
             navigationDrawerList.ItemsSource = menuList;
-			// Initial navigation, this can be used for our home page  
-			Detail = new NavigationPage((Page)Activator.CreateInstance(typeof(Home)));
-		}
+            // Initial navigation, this can be used for our home page  
+            //	Detail = (Page)Activator.CreateInstance(typeof(Home));
+            Detail = new NavigationPage((Page)Activator.CreateInstance(typeof(Home)));
+        }
 
-		private void OnMenuItemSelected(object sender, SelectedItemChangedEventArgs e)
+		private async void OnMenuItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
+
 			var item = (MasterPageItem)e.SelectedItem;
 			Type page = item.TargetType;
-			Detail = new NavigationPage((Page)Activator.CreateInstance(page));
-		   // Detail = (Page)Activator.CreateInstance(page);
+            if(item.Title=="Permohonan")
+            {
+                if(await vm.IsNewPermohonan())
+                {
+                    page = typeof(AddNewPermohonanView);
+                }
+            }
+
+
+		    Detail = new NavigationPage((Page)Activator.CreateInstance(page));
+		 //  Detail = (Page)Activator.CreateInstance(page);
 			IsPresented = false;
 		}
 
@@ -78,8 +89,25 @@ namespace MobileApp.Views
 
 		}
 
-
+        public void SetPage(Type page)
+        {
+            Detail = new NavigationPage((Page)Activator.CreateInstance(page));
+        }
 
 
 	}
+
+
+    public class MainPageViewModel:BaseViewModel
+    {
+        public async Task<bool> IsNewPermohonan()
+        {
+            var result = await PermohonanService.GetLastPermohonan();
+            if (result == null)
+                return true;
+            else
+                return false;
+
+        }
+    }
 }

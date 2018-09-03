@@ -9,14 +9,14 @@ namespace AppCore.Services
     public interface IPermohonanService
     {
         List<progress> ItemsTahapan();
-        void SetCurrentTahapan(progress item);
-        progress GetCurrentTahapan();
-        progress GetLastTahapan();
-        progress GetNextTahapan();
+        tahapan GetCurrentTahapan();
+        tahapan GetNextTahapan();
         bool CreatePermohonan(layanan t);
         List<permohonan> GetPermohonans();
         void SetCurrentPermohonan(permohonan item);
         List<kelengkapan> GetKelengkapan(permohonan item);
         pemohon GetPemohon(int Id);
+        permohonan GetPermohonan(int Id);
+        bool SetNextStep();
     }
 }
