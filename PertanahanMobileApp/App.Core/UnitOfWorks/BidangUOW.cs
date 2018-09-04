@@ -32,7 +32,8 @@ namespace AppCore.UnitOfWorks
                                    join b in db.TahapanLayanan.Select() on a.Id equals b.TahapanId
                                    join c in db.Layanans.Select() on b.Id equals c.Id
                                    join d in db.Permohonans.Select() on c.Id equals d.IdLayanan
-                                   select new permohonan { Id=d.Id, IdLayanan=d.IdLayanan, IdPemohon=d.IdPemohon, Status=d.Status, Layanan=c  }).ToList();
+                                   join f in db.Pemohons.Select() on d.IdPemohon equals f.Id
+                                   select new permohonan { Id=d.Id, IdLayanan=d.IdLayanan, IdPemohon=d.IdPemohon, Status=d.Status, Layanan=c ,Pemohon=f }).ToList();
 
                     return permohonans;
                 }

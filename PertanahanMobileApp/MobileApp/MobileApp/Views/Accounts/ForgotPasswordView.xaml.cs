@@ -37,7 +37,7 @@ namespace MobileApp.Views.Accounts
             SendCommand = new Command(SendCommandAction);
         }
 
-        private void SendCommandAction(object obj)
+        private async void SendCommandAction(object obj)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace MobileApp.Views.Accounts
                     return;
                 IsBusy = true;
                 if(string.IsNullOrEmpty(Email))
-                    var result = AccountService.ChangePassword(Email);
+                    var result = await AccountService.ChangePassword(Email);
             }
             catch (Exception ex)
             {

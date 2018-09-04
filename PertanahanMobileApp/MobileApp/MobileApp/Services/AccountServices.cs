@@ -14,19 +14,36 @@ namespace MobileApp.Services
 
         public pemohon Pemohon { get => _pemohon; set => SetProperty(ref _pemohon,value); }
 
-        public Task<bool> ChangePassword(string email)
+        public async Task<ChangePasswordModel> ChangePassword(ChangePasswordModel model)
         {
             try
             {
                 using (var res = new RestServices())
                 {
-                    var result = res.Post<bool>("", email);
+                    var result = await res.Post<ChangePasswordModel>("/account/resetpassword", model);
                     return result;
                 } 
             }
             catch (Exception ex)
             {
-                throw;
+                throw new SystemException(ex.Message);
+            }
+        }
+     
+
+        public async Task<ChangePasswordModel> ResetPassword(ChangePasswordModel model)
+        {
+            try
+            {
+                using (var res = new RestServices())
+                {
+                    var result = await res.Post<ChangePasswordModel>("/account/changepassword", model);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException(ex.Message);
             }
         }
 
@@ -112,6 +129,7 @@ namespace MobileApp.Services
             }
         }
 
+      
         public async Task<bool> SaveProfileProfile()
         {
             using (var res = new RestServices())

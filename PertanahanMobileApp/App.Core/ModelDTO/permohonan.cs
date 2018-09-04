@@ -56,6 +56,7 @@ namespace AppCore.ModelDTO
         public layanan Layanan { get;  set; }
         public tahapan CurrentTahapan { get; set; }
         public tahapan NextTahapan { get; set; }
+        public pemohon Pemohon { get; set; }
 
         private int _id;
         private int _idpemohon;
