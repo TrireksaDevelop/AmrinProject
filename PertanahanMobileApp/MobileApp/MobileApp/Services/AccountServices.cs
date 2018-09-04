@@ -20,7 +20,7 @@ namespace MobileApp.Services
             {
                 using (var res = new RestServices())
                 {
-                    var result = await res.Post<ChangePasswordModel>("/account/resetpassword", model);
+                    var result = await res.Post<ChangePasswordModel>("/account/changepassword", model);
                     return result;
                 } 
             }
@@ -37,7 +37,7 @@ namespace MobileApp.Services
             {
                 using (var res = new RestServices())
                 {
-                    var result = await res.Post<ChangePasswordModel>("/account/changepassword", model);
+                    var result = await res.Post<ChangePasswordModel>("/account/resetpassword", model);
                     return result;
                 }
             }
