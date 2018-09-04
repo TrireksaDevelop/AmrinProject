@@ -16,6 +16,7 @@ namespace MobileApp.Views.Accounts
 		public ForgotPasswordView ()
 		{
 			InitializeComponent ();
+            BindingContext = new ForgotPasswordViewModel(Navigation);
 		}
 	}
 
@@ -30,10 +31,12 @@ namespace MobileApp.Views.Accounts
             set { SetProperty(ref email ,value); }
         }
 
+        public INavigation Navigation { get; }
         public Command SendCommand { get; }
 
-        public ForgotPasswordViewModel()
+        public ForgotPasswordViewModel(INavigation navigation)
         {
+            Navigation = navigation;
             SendCommand = new Command(SendCommandAction);
         }
 
@@ -44,8 +47,19 @@ namespace MobileApp.Views.Accounts
                 if (IsBusy)
                     return;
                 IsBusy = true;
-                if(string.IsNullOrEmpty(Email))
-                    var result = await AccountService.ChangePassword(Email);
+                if (!string.IsNullOrEmpty(Email))
+                {
+                    var result = await AccountService.ResetPassword(new Models.ChangePasswordModel { Email = Email });
+                    result.Email = Email;
+                    if(result!=null)
+                    {
+                        await Navigation.PushModalAsync(new ChangePasswordView(result));
+                    }
+                }
+                else
+                {
+                    Helper.ShowMessageError("Input User Anda");
+                }
             }
             catch (Exception ex)
             {

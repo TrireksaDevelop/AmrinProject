@@ -179,7 +179,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult ResetPassword(ChangePasswordModel model)
+        public IActionResult ResetPassword([FromBody]ChangePasswordModel model)
         {
             try
             {
@@ -203,7 +203,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
-        public IActionResult ChangePassword(ChangePasswordModel model)
+        public IActionResult ChangePassword([FromBody]ChangePasswordModel model)
         {
             try
             {

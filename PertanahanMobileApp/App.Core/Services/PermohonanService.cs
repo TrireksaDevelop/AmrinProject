@@ -194,7 +194,7 @@ namespace AppCore.Services
                         }
                     }
 
-                    var dbTahapans = db.Kelengkapans.Where(O => O.IdPermohonan == item.Id).ToList();
+                    var dbTahapans = db.Progress.Where(O => O.IdPermohonan == item.Id).ToList();
 
 
                     if (item.Tahapans!=null )
