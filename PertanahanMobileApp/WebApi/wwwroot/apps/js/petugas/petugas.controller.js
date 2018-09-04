@@ -14,7 +14,7 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
     $scope.Layanan = {};
     $scope.Tampil = false;
     $scope.IdPendaftaran;
-    
+    $scope.Permohonans = [];
     
     if (UserServices.getUser() == "alpritsrupang@gmail.com") {
         $scope.Tampil = true;
@@ -27,6 +27,7 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
         angular.forEach($scope.Permohonan[0], function (value, key) {
             if (value.id == $scope.IdPendaftaran) {
                 $scope.DataPermohonan = value;
+                $scope.DataPermohonan.kelengkapans = [];
                 angular.forEach(LayananServices.Layanans, function (value1, key1) {
                     if (value.idLayanan == value1.id) {
                         $scope.Layanan = value1;
@@ -39,11 +40,18 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
         $scope.DataPermohonan.status = $scope.DataStatus.id;
     }
     $scope.addKelengkapan = function (item) {
-        $scope.DataPermohonan.kelengkapans = [];
-        $scope.DataPermohonan.kelengkapans.push(item);
+        var data = {};
+        data.IdPersyaratan = item.id;
+        data.idPermohonan = $scope.DataPermohonan.id;
+        data.status = "Ada";
+        $scope.DataPermohonan.kelengkapans.push(data);
     }
     $scope.update = function () {
-        $scope.DataPermohonan.tahapans = $scope.DataPermohonan.nextTahapan;
+        $scope.DataPermohonan.tahapans = [];
+        var tahap = {};
+        tahap.idPermohonan = $scope.DataPermohonan.id;
+        tahap.idTahapan = $scope.DataPermohonan.nextTahapan.id;
+        $scope.DataPermohonan.tahapans.push(tahap);
         BerkasService.put($scope.DataPermohonan).then(function (response) {
             angular.forEach($scope.Permohonan, function (value, key) {
                 if (value.id == $scope.DataPermohonan.id) {
@@ -54,6 +62,7 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
             })
         })
         $scope.DataPermohonan = {};
+        $scope.Layanan = {};
     }
 }
 

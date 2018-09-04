@@ -41,8 +41,8 @@ function BerkasService($http, $state, $rootScope, $q, MessageServices, UserServi
 
     function EditItem(item) {
         $http({
-            method: 'put',
-            url: 'api/Permohonan/CompleteStep',
+            method: 'post',
+            url: 'api/Permohonan/UpdatePermohonan',
             data: item,
             headers: UserServices.getHeaders()
         }).then(function (response) {
