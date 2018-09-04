@@ -43,7 +43,7 @@ namespace MobileApp.Views.Accounts
 
         private async void ForgotCommandaction(object obj)
         {
-           await Navigation.PushModalAsync(new ForgotPasswordView());
+           await Navigation.PushModalAsync(new NavigationPage(new ForgotPasswordView()));
         }
 
         private void ChangeUrlCommandAction(object obj)

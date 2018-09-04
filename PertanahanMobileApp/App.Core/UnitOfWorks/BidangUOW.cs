@@ -27,7 +27,8 @@ namespace AppCore.UnitOfWorks
             {
                 using (var db = new OcphDbContext())
                 {
-                    var m = db.Tahapans.Where(O => O.BidangId == bidangTugas.Id);
+                    var list = new List<permohonan>();
+
                     var permohonans = (from a in db.Tahapans.Where(O=>O.BidangId==bidangTugas.Id)
                                    join b in db.TahapanLayanan.Select() on a.Id equals b.TahapanId
                                    join c in db.Layanans.Select() on b.Id equals c.Id
@@ -35,7 +36,13 @@ namespace AppCore.UnitOfWorks
                                    join f in db.Pemohons.Select() on d.IdPemohon equals f.Id
                                    select new permohonan { Id=d.Id, IdLayanan=d.IdLayanan, IdPemohon=d.IdPemohon, Status=d.Status, Layanan=c ,Pemohon=f }).ToList();
 
-                    return permohonans;
+                    var resutl = permohonans.GroupBy(O => O.Id);
+                    foreach(var item in resutl)
+                    {
+                        var a =item.FirstOrDefault();
+                        list.Add(a);
+                    }
+                    return list;
                 }
             }
             catch (Exception)
