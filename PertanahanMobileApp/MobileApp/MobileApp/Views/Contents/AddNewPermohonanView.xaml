@@ -22,16 +22,6 @@
                 </Picker>
 
             </StackLayout>
-            <StackLayout  Padding="10,0">
-                <Label Text="Keterangan" FontSize="Micro" TextColor="{StaticResource colorTextAccent}"></Label>
-                <Entry 
-                    HeightRequest="100"  FontSize="Small"
-                    HorizontalOptions="FillAndExpand"       
-                    Text="{Binding Keterangan}">
-                </Entry>
-
-            </StackLayout>
-
 
             <Button Text="DAFTAR" Command="{Binding DaftarCommand}"/>
 

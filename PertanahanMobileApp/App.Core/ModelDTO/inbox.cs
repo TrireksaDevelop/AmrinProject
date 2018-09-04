@@ -47,7 +47,7 @@ namespace AppCore.ModelDTO
         public int PermohonanId
         {
             get { return permohonanId; }
-            set { permohonanId = value; }
+            set { SetProperty(ref permohonanId ,value); }
         }
 
 

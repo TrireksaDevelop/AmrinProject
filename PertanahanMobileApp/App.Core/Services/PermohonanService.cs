@@ -63,7 +63,7 @@ namespace AppCore.Services
         }
 
         
-        public bool CreatePermohonan(layanan t)
+        public permohonan CreatePermohonan(layanan t)
         {
             if (t == null || t.Id <= 0)
                 throw new ArgumentNullException("layanan", "layanan IsNull atau Id Layanan 0");
@@ -78,7 +78,7 @@ namespace AppCore.Services
                 if(result!=null)
                 {
                     this.Permohonan = itemPermohonan;
-                    return true;
+                    return itemPermohonan;
                 }else
                 {
                     throw new ArgumentNullException("permohonan", "Permohonan Tidak Berhasil Dibuat");

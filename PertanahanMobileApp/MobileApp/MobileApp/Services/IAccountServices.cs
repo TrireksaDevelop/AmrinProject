@@ -12,5 +12,7 @@ namespace MobileApp.Services
         Task<bool> Login(LoginDto model);
         Task<bool> Register(UserRegister model);
         Task<bool> SaveProfileProfile();
+        Task<pemohon> GetProfile();
+       Task<bool> ChangePassword(string email);
     }
 }

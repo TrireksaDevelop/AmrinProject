@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace MobileApp.Models
 {
@@ -52,6 +54,16 @@ namespace MobileApp.Models
                 SetProperty(ref _alamat, value);
             }
         }
+
+        private byte[] foto;
+       
+        public byte[] Foto
+        {
+            get { return foto; }
+            set { SetProperty(ref foto, value); }
+        }
+
+     
 
         private int _id;
         private string _userid;

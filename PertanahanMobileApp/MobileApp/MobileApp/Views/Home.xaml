@@ -10,18 +10,20 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                <Image Source="bpn1.png" WidthRequest="150"/>
+            <StackLayout Margin="10" HorizontalOptions="Center" VerticalOptions="Center">
+                <Image Source="bpn1.png" WidthRequest="100"/>
+                <Label Text="SELAMAT DATANG" FontSize="25" HorizontalOptions="Center"/>
             </StackLayout>
 
             <StackLayout Grid.Row="1" HorizontalOptions="Center"  VerticalOptions="Center">
-                <Label Text="SELAMAT DATANG" FontSize="25" HorizontalOptions="Center"/>
                 <Label Text="APLIKASI MONITORING" FontSize="18" HorizontalOptions="Center"/>
                 <Label Text="PELAYANAN PERTANAHAN" FontSize="18" HorizontalOptions="Center"/>
             </StackLayout>
             <StackLayout Grid.Row="2" HorizontalOptions="Center"  VerticalOptions="End">
-                <Label Text="KANTOR PERTANAHAN DAN AGRARIA" FontSize="18" HorizontalOptions="Center"/>
-                <Label Text="KABUPATEN JAYAPURA" FontSize="18" HorizontalOptions="Center"/>
+                <Label Text="KEMENTERIAN AGRARIA DAN TATA RUANG /" FontSize="15" HorizontalOptions="Center"/>
+                <Label Text="BADAN PERTANAHAN NASIONAL" FontSize="15" HorizontalOptions="Center"/>
+                <Label Text="KANTOR PERTANAHAN" FontSize="15" HorizontalOptions="Center"/>
+                <Label Text="KABUPATEN JAYAPURA" FontSize="15" HorizontalOptions="Center"/>
             </StackLayout>
         </Grid>
     </ContentPage.Content>

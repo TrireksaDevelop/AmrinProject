@@ -47,6 +47,7 @@ namespace MobileApp.Views.Contents
                 if(Valid())
                 {
                     var item = new permohonan { IdLayanan = SelectedItem.Id };
+                    item.Layanan = SelectedItem;
                     bool isCreated = await PermohonanService.CreateNewPermohonan(item);
                     if(isCreated)
                     {

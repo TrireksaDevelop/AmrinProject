@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace MobileApp.Models
 {
@@ -61,6 +63,29 @@ namespace MobileApp.Models
                 SetProperty(ref _jabatan, value);
             }
         }
+
+
+        private byte[] foto;
+        public byte[] Foto
+        {
+            get { return foto; }
+            set { SetProperty(ref foto, value); }
+        }
+
+
+        private ImageSource photo;
+
+        public ImageSource Photo
+        {
+            get {
+                if(Foto!=null && Foto.Length>0)
+                    photo= ImageSource.FromStream(() => new MemoryStream(Foto));
+                return photo;
+            }
+            set { SetProperty(ref photo ,value); }
+        }
+
+
 
         public string Email { get; set; }
         public IEnumerable<bidang> Bidangs { get;  set; }

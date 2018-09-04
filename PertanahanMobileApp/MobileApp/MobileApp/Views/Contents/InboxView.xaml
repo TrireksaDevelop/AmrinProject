@@ -3,8 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" Title="INBOX"
              BackgroundColor="{StaticResource colorPrimaryDark}"
              x:Class="MobileApp.Views.Contents.InboxView">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="plus.png" Clicked="ToolbarItem_Clicked" ></ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding SourceView}" RefreshCommand="{Binding RefreshCommand}" HasUnevenRows="True" IsRefreshing="{Binding IsBusy}">
+        <ListView ItemsSource="{Binding SourceView}" RefreshCommand="{Binding RefreshCommand}" IsPullToRefreshEnabled="True"  HasUnevenRows="True" IsRefreshing="{Binding IsBusy}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell Height="185">
@@ -16,13 +19,13 @@
                                     <RowDefinition Height="60"/>
                                 </Grid.RowDefinitions>
 
-                                <Grid   Padding="10" >
+                                <Grid Padding="10" >
+                                    <ActivityIndicator HorizontalOptions="Center" IsRunning="{Binding IsBusy}" Color="{StaticResource colorPrimary}"/>
                                     <StackLayout HorizontalOptions="Start" Spacing="0" >
                                         <StackLayout Orientation="Horizontal" Spacing="5">
                                             <Image Source="message.png" HeightRequest="25"/>
                                             <Label TextColor="{StaticResource colorTextAccent}" Margin="0" VerticalOptions="Center" FontSize="12" Text="{Binding UserName}" HorizontalOptions="Start"/>
                                         </StackLayout>
-                                        <Label FontSize="12" TextColor="{StaticResource colorPrimary }" Text="Admin" Margin="28,0" HorizontalOptions="Start" VerticalOptions="End"/>
                                     </StackLayout>
                                     <Label FontSize="12" Text="{Binding Tanggal}" HorizontalOptions="End"/>
                                 </Grid>
@@ -30,8 +33,7 @@
                                     <Label  Margin="30,0,0,0"  Text="{Binding Message}" TextColor="{StaticResource colorPrimary}" />
                                 </StackLayout>
                                 <StackLayout Padding="10" Orientation="Horizontal" Grid.Row="2" BackgroundColor="#5B5E5D">
-                                    <Image Source="replay.png" HeightRequest="25"/>
-                                    <Label  Text="Balas" VerticalOptions="CenterAndExpand"></Label>
+                                   
                                 </StackLayout>
                             </Grid>
                         </StackLayout>

@@ -3,6 +3,7 @@ using AppCore.UnitOfWorks.InterfaceUnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AppCore.Services
 {
@@ -76,6 +77,24 @@ namespace AppCore.Services
         public void SetBidangTugas(bidang bidang)
         {
             BidangTugas = bidang;
+        }
+
+        public Task<petugas> UpdateProfile(petugas value)
+        {
+            using (var db = new OcphDbContext())
+            {
+                try
+                {
+                    if (!db.Petugas.Update(O => new { O.Alamat, O.Foto, O.Nama, O.NIP,O.Jabatan}, value, O => O.Id == value.Id))
+                        throw new SystemException("Data Tidak Tersimpan");
+                    return Task.FromResult(value);
+                }
+                catch (Exception ex)
+                {
+                    throw new SystemException(ex.Message);
+                }
+
+            }
         }
     }
 }

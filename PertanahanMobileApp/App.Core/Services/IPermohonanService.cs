@@ -12,7 +12,7 @@ namespace AppCore.Services
         List<progress> ItemsTahapan();
         tahapan GetCurrentTahapan();
         tahapan GetNextTahapan();
-        bool CreatePermohonan(layanan t);
+        permohonan CreatePermohonan(layanan t);
         List<permohonan> GetPermohonans();
         void SetCurrentPermohonan(permohonan item);
         List<kelengkapan> GetKelengkapan(permohonan item);

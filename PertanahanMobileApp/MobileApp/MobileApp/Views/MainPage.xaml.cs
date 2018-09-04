@@ -1,7 +1,9 @@
-﻿using MobileApp.ViewModels;
+﻿using MobileApp.Models;
+using MobileApp.ViewModels;
 using MobileApp.Views.Contents;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -26,12 +28,7 @@ namespace MobileApp.Views
 				Icon = "home1.png",
 				TargetType = typeof(Home)
 			});
-            menuList.Add(new MasterPageItem()
-            {
-                Title = "Inbox",
-                Icon = "ic_move_to_inbox_white_48pt.png",
-                TargetType = typeof(InboxView)
-            });
+        
             menuList.Add(new MasterPageItem()
             {
                 Title = "Permohonan",
@@ -62,6 +59,10 @@ namespace MobileApp.Views
             // Initial navigation, this can be used for our home page  
             //	Detail = (Page)Activator.CreateInstance(typeof(Home));
             Detail = new NavigationPage((Page)Activator.CreateInstance(typeof(Home)));
+
+
+
+
         }
 
 		private void OnMenuItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -86,20 +87,77 @@ namespace MobileApp.Views
 
 		private void profileGesture_Clicked(object sender, EventArgs e)
 		{
-
-		}
+            Detail = new NavigationPage(new Accounts.ProfileView(vm.Pemohon));
+        }
 
         public void SetPage(Type page)
         {
             Detail = new NavigationPage((Page)Activator.CreateInstance(page));
         }
-
-
 	}
 
 
     public class MainPageViewModel:BaseViewModel
     {
+
+        private ImageSource photo;
+
+       public  ImageSource Photo
+        {
+            get
+            {
+                if(photo==null)
+                {
+                    photo = ImageSource.FromFile("user.png");
+                }
+                return photo;
+            }
+            set { SetProperty(ref photo, value); }
+        }
+
+        private pemohon _pemohon;
+
+        public pemohon Pemohon { get => _pemohon; set => SetProperty(ref _pemohon, value); }
+        public Command ProfileCommand { get; }
+
+        public MainPageViewModel()
+        {
+            ProfileCommand = new Command(ProfileCommandAction);
+           Photo = ImageSource.FromFile("user.png"); 
+            LoadAsync();
+        }
+
+        private async void ProfileCommandAction(object obj)
+        {
+            var main = await Helper.GetMainPageAsync();
+            main.Detail = new NavigationPage(new Accounts.ProfileView(Pemohon));
+        }
+
+        private async void LoadAsync()
+        {
+            try
+            {
+                await Task.Delay(300);
+                if (IsBusy)
+                    return;
+                IsBusy = true;
+                Pemohon = await AccountService.GetProfile();
+                if (Pemohon != null && Pemohon.Foto != null && Pemohon.Foto.Length > 0)
+                    Photo = ImageSource.FromStream(() => new MemoryStream(Pemohon.Foto));
+                else
+                    Photo = ImageSource.FromFile("user.png");
+            }
+            catch (Exception ex)
+            {
+                Helper.ShowMessageError(ex.Message);
+                Pemohon = new pemohon();
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
         internal async void Logout()
         {
             var app = await Helper.GetBaseApp();

@@ -43,6 +43,7 @@ namespace MobileApp
             HorizontalOptions = LayoutOptions.FillAndExpand;
             Padding = new Thickness(10, 0);
             Spacing = 0;
+            
             AddStyles();
 
         }

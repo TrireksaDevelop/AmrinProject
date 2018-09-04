@@ -67,17 +67,42 @@ namespace WebApi.Controllers
                     throw new SystemException("Anda Tidak Memiliki Akses");
                 else
                 {
-
                     var profile=await User.GetPetugas(user.Id);
                     return Ok(profile);
                 }
-               
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpGet]
+        [Authorize]
+        public async Task<object> ClientProfile()
+        {
+            try
+            {
+
+         //       var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var id = _userManager.GetUserId(User);
+                if (string.IsNullOrEmpty(id))
+                    throw new SystemException("Anda Tidak Memiliki Akses");
+                else
+                {
+
+                    var profile = await User.GetPemohon(id);
+                    return Ok(profile);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
 
 
         [HttpPost]

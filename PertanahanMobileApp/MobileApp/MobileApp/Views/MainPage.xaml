@@ -17,9 +17,13 @@
                 </Grid.RowDefinitions>
                 <StackLayout BackgroundColor="{StaticResource NavigationPrimary}">
                     <StackLayout Margin="10" HorizontalOptions="Center" >
-                        <control:CircleImage Source="AC_Milan.png" WidthRequest="75"/>
+                        <control:CircleImage Source="{Binding Photo}" WidthRequest="75">
+                            <control:CircleImage.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ProfileCommand}"/>
+                            </control:CircleImage.GestureRecognizers>
+                        </control:CircleImage>
                     </StackLayout>
-                    <Label HorizontalOptions="Center" TextColor="{StaticResource colorPrimary}" Text="Amrin" />
+                    <Label HorizontalOptions="Center" TextColor="{StaticResource colorPrimary}" Text="{Binding Pemohon.Nama}" />
                 </StackLayout>
                 <StackLayout Margin="0" Grid.Row="1" BackgroundColor="{StaticResource colorPrimaryDark}">
                     <ListView x:Name="navigationDrawerList" RowHeight="60" SeparatorVisibility="None" ItemSelected="OnMenuItemSelected">

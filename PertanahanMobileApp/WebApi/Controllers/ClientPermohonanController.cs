@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AppCore.ModelDTO;
 using AppCore.Services;
 using AppCore.UnitOfWorks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClientPermohonanController : ControllerBase
     {
         public UserManager<IdentityUser> UserManagers { get; }
@@ -97,8 +99,21 @@ namespace WebApi.Controllers
 
         // PUT: api/ClientPermohonan/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] pemohon value)
         {
+            try
+            {
+                var service = new ClientService();
+                pemohon result = await service.UpdateProfile(value);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+
+
         }
 
         // DELETE: api/ApiWithActions/5

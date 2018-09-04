@@ -1,15 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:MobileApp"
+             xmlns:local="clr-namespace:MobileApp" Title="Permohonan"
              x:Class="MobileApp.Views.Contents.PermohonanView" BackgroundColor="{StaticResource colorPrimaryDark}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="replay.png" Clicked="ToolbarItem_Clicked" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid RowSpacing="2" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="40*"/>
                 <RowDefinition Height="25*"/>
-                <RowDefinition Height="20*"/>
-                <RowDefinition Height="8*"/>
+                <RowDefinition Height="28*"/>
+                <RowDefinition Height="7*"/>
             </Grid.RowDefinitions>
             <StackLayout BackgroundColor="#424544" Padding="10" Spacing="0">
                 <Label Text="{Binding CurrentItem.Id,StringFormat='{0:D6}'}" HorizontalOptions="End" FontSize="Large" TextColor="{StaticResource colorPrimary}"></Label>
@@ -42,8 +45,8 @@
                     <Label VerticalOptions="EndAndExpand" FontSize="Micro" Text="{Binding CurrentItem.NextTahapan.Keterangan}"/>
                 </StackLayout>
                 <StackLayout Grid.Column="1" BackgroundColor="#424544">
-                    <Label Text="Permohonan"/>
-                    <ListView  ItemsSource="{Binding Permohonans}">
+                    <Label Margin="5,0" Text="Permohonan"/>
+                    <ListView  ItemsSource="{Binding Permohonans}" SelectedItem="{Binding SelectedPermohonan}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
@@ -62,9 +65,9 @@
             <StackLayout Grid.Row="2" BackgroundColor="#424544">
                 <Grid BackgroundColor="#424544">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50*"/>
-                        <RowDefinition Height="75*"/>
                         <RowDefinition Height="30*"/>
+                        <RowDefinition Height="50*"/>
+                        <RowDefinition Height="20*"/>
                     </Grid.RowDefinitions>
 
                     <Grid Padding="10" >
@@ -79,10 +82,8 @@
                     <StackLayout Grid.Row="1" Padding="5">
                         <Label  Margin="30,3,0,0"  Text="{Binding LastMessage.Message }" TextColor="{StaticResource colorPrimary}" />
                     </StackLayout>
-                    <StackLayout Orientation="Horizontal" Grid.Row="2" BackgroundColor="#5B5E5D">
-                        <Image Source="replay.png" HeightRequest="25"/>
-                        <Label  Text="Balas"></Label>
-                        <Label  Text="More">
+                    <StackLayout HeightRequest="25" Padding="3"  Orientation="Horizontal" Grid.Row="2" BackgroundColor="#5B5E5D">
+                        <Label HorizontalOptions="End" TextColor="{StaticResource colorPrimary}"  Text="Lihat Inbox">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding MoreCommand}"/>
                             </Label.GestureRecognizers>

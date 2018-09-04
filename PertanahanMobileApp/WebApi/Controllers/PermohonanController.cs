@@ -37,13 +37,10 @@ namespace WebApi.Controllers
         }
 
 
-
-
         // GET: api/Permohonan/5
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
-
             try
             {
                 service = new PermohonanService(new UOWPermohonan());
@@ -80,8 +77,6 @@ namespace WebApi.Controllers
         public void Delete(int id)
         {
         }
-
-
 
         ///api for admin
         ///

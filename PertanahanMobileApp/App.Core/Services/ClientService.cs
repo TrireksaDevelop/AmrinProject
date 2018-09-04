@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AppCore.Services
 {
@@ -70,6 +71,24 @@ namespace AppCore.Services
 
                 return result;
                          
+            }
+        }
+
+        public Task<pemohon> UpdateProfile(pemohon value)
+        {
+            using (var db = new OcphDbContext())
+            {
+                try
+                {
+                    if (!db.Pemohons.Update(O => new { O.Alamat, O.Foto, O.Nama, O.NIK }, value, O => O.Id == value.Id))
+                        throw new SystemException("Data Tidak Tersimpan");
+                    return Task.FromResult(value);
+                }
+                catch (Exception ex)
+                {
+                    throw new SystemException(ex.Message);
+                }
+
             }
         }
     }

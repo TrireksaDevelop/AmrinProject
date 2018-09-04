@@ -21,7 +21,7 @@ namespace MobileApp.Services
             {
                 using(var rest = new RestServices())
                 {
-                    var result = await rest.Post<permohonan>("api/permohonan", Helper.Content(item));
+                    var result = await rest.Post<permohonan>("api/ClientPermohonan", item);
                     if(result!=null)
                     {
                         lastPermohonan = result;

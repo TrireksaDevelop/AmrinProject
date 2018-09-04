@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:control="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             BackgroundColor="{StaticResource colorPrimaryDark}"
+             x:Class="MobileApp.Views.Accounts.ProfileView">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="70*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
+            <StackLayout Margin="5" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center"  >
+                <control:CircleImage Source="{Binding Photo}" WidthRequest="70">
+                    <control:CircleImage.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="ClickGestureRecognizer_Clicked"/>
+                    </control:CircleImage.GestureRecognizers>
+                </control:CircleImage>
+             
+            </StackLayout>
+            <StackLayout Margin="40" Spacing="2"   Grid.Row="1">
+                <StackLayout  Padding="10,0">
+                    <Entry HeightRequest="50" HorizontalOptions="FillAndExpand"  Text="{Binding Profile.Nama}" Placeholder="Nama"/>
+                    <Entry HeightRequest="50" HorizontalOptions="FillAndExpand"  Text="{Binding Profile.NIK}" Placeholder="NIK"/>
+                    <Entry HeightRequest="50" HorizontalOptions="FillAndExpand"  Text="{Binding Profile.Alamat}" Placeholder="Alamat"/>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout Grid.Row="2" Orientation="Vertical" HorizontalOptions="Start" VerticalOptions="End" Margin="10">
+                <Button Text="Simpan" Command="{Binding SaveCommand}"/>
+            </StackLayout>
+        </Grid>
+
+    </ContentPage.Content>
+</ContentPage>

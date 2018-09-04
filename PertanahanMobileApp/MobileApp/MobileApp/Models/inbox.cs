@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MobileApp.Models
 {
-   public class InboxItem:PropertyChange
+   public class inbox:PropertyChange
     {
         private int id;
         public int Id
@@ -40,7 +40,7 @@ namespace MobileApp.Models
         public int PermohonanId
         {
             get { return permohonanId; }
-            set { permohonanId = value; }
+            set { SetProperty(ref permohonanId ,value); }
         }
 
 

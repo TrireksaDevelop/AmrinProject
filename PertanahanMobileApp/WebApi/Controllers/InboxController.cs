@@ -42,9 +42,8 @@ namespace WebApi.Controllers
 
         // POST: api/Inbox
         [HttpPost]
-        public IActionResult Post([FromBody] inbox value)
+        public IActionResult Post([FromBody]inbox value)
         {
-
             try
             {
                 var id = UserManagers.GetUserId(User);
@@ -52,11 +51,13 @@ namespace WebApi.Controllers
                 value.UserId = id;
                 if (value.PermohonanId <= 0)
                     throw new SystemException("Permohonan Tidak Ditemukan");
-
-
                 var service = new AppCore.Services.InboxServices(value.Id);
+
                 var result = service.AddNewMessage(value);
-                return Ok(result);
+                if (result)
+                    return Ok(value);
+                else
+                    throw new SystemException("Data Tidak Tersimpan");
             }
             catch (Exception ex)
             {

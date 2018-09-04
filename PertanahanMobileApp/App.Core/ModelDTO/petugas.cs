@@ -71,6 +71,15 @@ namespace AppCore.ModelDTO
             }
         }
 
+        private byte[] foto;
+        [DbColumn("Foto")]
+        public byte[] Foto
+        {
+            get { return foto; }
+            set { SetProperty(ref foto ,value); }
+        }
+
+
         public string Email { get; set; }
         public IEnumerable<bidang> Bidangs { get;  set; }
 

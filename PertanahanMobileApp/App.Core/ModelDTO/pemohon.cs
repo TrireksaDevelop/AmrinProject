@@ -61,6 +61,15 @@ namespace AppCore.ModelDTO
             }
         }
 
+
+        private byte[] foto;
+        [DbColumn("Foto")]
+        public byte[] Foto
+        {
+            get { return foto; }
+            set { SetProperty(ref foto, value); }
+        }
+
         private int _id;
         private string _userid;
         private string _nik;

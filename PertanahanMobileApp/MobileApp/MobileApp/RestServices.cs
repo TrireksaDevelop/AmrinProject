@@ -14,6 +14,7 @@ namespace MobileApp
     {
         public RestServices()
         {
+            this.MaxResponseContentBufferSize = 25600000;
             this.BaseAddress = new Uri(Helper.Server);
          
             SetHeader();
@@ -24,7 +25,7 @@ namespace MobileApp
             var token = await Helper.GetToken();
             if(token!=null)
             {
-                this.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
+              //  this.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
                 this.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer",token.token);
             }
         }
@@ -58,6 +59,30 @@ namespace MobileApp
             {
                 await Task.Delay(200);
                 var result = await GetAsync(uri);
+                var responseText = await result.Content.ReadAsStringAsync();
+                var obj = Activator.CreateInstance<T>();
+                if (result.IsSuccessStatusCode)
+                {
+                    obj = JsonConvert.DeserializeObject<T>(responseText);
+                }
+                else
+                {
+                    throw new SystemException(responseText);
+                }
+                return obj;
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException(ex.Message);
+            }
+        }
+
+        public async Task<T> Put<T>(string uri, T t)
+        {
+            try
+            {
+                await Task.Delay(200);
+                var result = await PutAsync(uri, Helper.Content(t));
                 var responseText = await result.Content.ReadAsStringAsync();
                 var obj = Activator.CreateInstance<T>();
                 if (result.IsSuccessStatusCode)

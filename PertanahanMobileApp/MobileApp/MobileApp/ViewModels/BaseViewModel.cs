@@ -12,7 +12,7 @@ namespace MobileApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<InboxItem> InboxServices => DependencyService.Get<IDataStore<InboxItem>>() ?? new InboxServices();
+        public IDataStore<inbox> InboxServices => DependencyService.Get<IDataStore<inbox>>() ?? new InboxServices();
         public IDataStore<layanan> LayananServices => DependencyService.Get<IDataStore<layanan>>() ?? new LayananServices();
         public IAccountServices AccountService => DependencyService.Get<IAccountServices>() ?? new AccountServices();
         public IPermohonanServices PermohonanService => DependencyService.Get<IPermohonanServices>() ?? new PermohonanServices();

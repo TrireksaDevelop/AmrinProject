@@ -20,7 +20,7 @@ namespace MobileApp.Views.Contents
         public PermohonanView ()
 		{
 			InitializeComponent ();
-            vm = new PermohonanViewModel();
+            vm = new PermohonanViewModel(stepBar);
             BindingContext = vm;
             stepBar.OnClick += StepBar_OnClick;
         }
@@ -29,18 +29,32 @@ namespace MobileApp.Views.Contents
         {
             vm.ShowTahapanInfo(btn);
         }
+
+        private void ToolbarItem_Clicked(object sender, EventArgs e)
+        {
+          
+            vm.RefreshCommand.Execute(null);
+        }
     }
 
     public class PermohonanViewModel:BaseViewModel
     {
         private permohonan _current;
 
-        public PermohonanViewModel()
+        public PermohonanViewModel(StepProgressBarControl stepBar)
         {
+            this.StepBar = stepBar;
             Permohonans = new ObservableCollection<permohonan>();
             NewCommand = new Command(NewCommandAction);
             MoreCommand = new Command(MoreCommandAction);
+            RefreshCommand = new Command(RefreshCommandAction);
+            RefreshCommand.Execute(null);
+        }
 
+        private void RefreshCommandAction(object obj)
+        {
+
+            StepBar.Children.Clear();
             LoadAsync();
         }
 
@@ -49,8 +63,7 @@ namespace MobileApp.Views.Contents
             var main = await Helper.GetMainPageAsync();
             if (main != null)
             {
-               await main.Detail.Navigation.PushAsync((Page)Activator.CreateInstance(typeof(InboxView)));
-                main.Detail.BindingContext = new InboxViewModel(CurrentItem.Id);
+               await main.Detail.Navigation.PushAsync(new  InboxView(CurrentItem.Id));
             }
         }
 
@@ -67,10 +80,12 @@ namespace MobileApp.Views.Contents
         {
             try
             {
+                await Task.Delay(300);
                 if (IsBusy)
                     return;
                 IsBusy = true;
-                CurrentItem = await PermohonanService.GetLastPermohonan();
+                if(CurrentItem==null)
+                    CurrentItem = await PermohonanService.GetLastPermohonan();
                 if (CurrentItem != null)
                 {
                     var layanan = await LayananServices.GetItemAsync(CurrentItem.IdLayanan.ToString());
@@ -84,6 +99,8 @@ namespace MobileApp.Views.Contents
                             {
                                 var index = layanan.Tahapans.IndexOf(c);
                                 StepSelected = index + 1;
+                                if (Steps >= StepSelected)
+                                    CurrentItem.NextTahapan = new tahapan { Nama = "Tidak Ada", Keterangan = "Proses Telah Selesai" };
                             }
                         }
                     }
@@ -100,9 +117,9 @@ namespace MobileApp.Views.Contents
 
 
                 var message = await InboxServices.GetItemsAsync(CurrentItem.Id);
-                if(message!=null)
+                if(message!=null && message.Count()>0)
                 {
-                    LastMessage = message.Last();
+                    LastMessage = message.FirstOrDefault();
                 }
 
 
@@ -144,9 +161,11 @@ namespace MobileApp.Views.Contents
             }
         }
 
+        public StepProgressBarControl StepBar { get; }
         public ObservableCollection<permohonan> Permohonans { get; }
         public Command NewCommand { get; }
         public Command MoreCommand { get; }
+        public Command RefreshCommand { get; }
 
         public permohonan CurrentItem { get { return _current; }  set { SetProperty(ref _current, value); } }
 
@@ -161,7 +180,7 @@ namespace MobileApp.Views.Contents
 
 
         private int _steps;
-        private InboxItem _lastMessage;
+        private inbox _lastMessage;
 
         public int Steps
         {
@@ -169,7 +188,7 @@ namespace MobileApp.Views.Contents
             set {SetProperty(ref _steps ,value); }
         }
 
-        public InboxItem LastMessage
+        public inbox LastMessage
         {
             get { return _lastMessage; }
             set
@@ -177,5 +196,21 @@ namespace MobileApp.Views.Contents
               SetProperty(ref _lastMessage ,value);
             }
         }
+
+        private permohonan _SelectedPermohonan;
+
+        public permohonan SelectedPermohonan
+        {
+            get { return _SelectedPermohonan; }
+            set {SetProperty(ref _SelectedPermohonan ,value);
+
+               if(value!=null)
+                {
+                    CurrentItem = value;
+                    RefreshCommand.Execute(null);
+                }
+            }
+        }
+
     }
 }

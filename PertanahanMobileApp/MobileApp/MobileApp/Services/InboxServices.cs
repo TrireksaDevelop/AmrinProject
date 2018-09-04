@@ -11,17 +11,18 @@ using System.Linq;
 [assembly: Xamarin.Forms.Dependency(typeof(MobileApp.Services.InboxServices))]
 namespace MobileApp.Services
 {
-    public class InboxServices : IDataStore<InboxItem>
+    public class InboxServices : IDataStore<inbox>
     {
-        private List<InboxItem> list;
+        private List<inbox> list;
 
-        public async Task<bool> AddItemAsync(InboxItem item)
+        public async Task<bool> AddItemAsync(inbox item)
         {
             using (var res = new RestServices())
             {
                 try
                 {
-                    var result = await res.Post<InboxItem>("api/inbox", Helper.Content(item));
+                    item.Tanggal = DateTime.Now;
+                    var result = await res.Post<inbox>("api/inbox",item);
                     if (res != null) {
                         list.Add(result);
                         return true;
@@ -40,26 +41,26 @@ namespace MobileApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<InboxItem> GetItemAsync(string id)
+        public Task<inbox> GetItemAsync(string id)
         {
             throw new NotImplementedException();
         }
 
-        public  Task<IEnumerable<InboxItem>> GetItemsAsync(bool forceRefresh = false)
+        public  Task<IEnumerable<inbox>> GetItemsAsync(bool forceRefresh = false)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<InboxItem>> GetItemsAsync(int id)
+        public async Task<IEnumerable<inbox>> GetItemsAsync(int id)
         {
             using (var res = new RestServices())
             {
-                list = await res.Get<List<InboxItem>>("api/inbox?id="+id);
-                return list;
+                list = await res.Get<List<inbox>>("api/inbox?id="+id);
+                return list.OrderByDescending(O=>O.Tanggal);
             }
         }
 
-        public Task<bool> UpdateItemAsync(InboxItem item)
+        public Task<bool> UpdateItemAsync(inbox item)
         {
             throw new NotImplementedException();
         }
