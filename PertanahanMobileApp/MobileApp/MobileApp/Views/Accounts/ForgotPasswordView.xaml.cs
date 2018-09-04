@@ -53,7 +53,7 @@ namespace MobileApp.Views.Accounts
                     result.Email = Email;
                     if(result!=null)
                     {
-                        await Navigation.PushModalAsync(new ChangePasswordView(result));
+                        await Navigation.PushModalAsync(new NavigationPage(new ChangePasswordView(result)));
                     }
                 }
                 else
