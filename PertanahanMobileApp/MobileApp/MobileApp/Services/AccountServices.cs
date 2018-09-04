@@ -21,6 +21,7 @@ namespace MobileApp.Services
                 using (var res = new RestServices())
                 {
                     var result = res.Post<bool>("", email);
+                    return result;
                 } 
             }
             catch (Exception ex)

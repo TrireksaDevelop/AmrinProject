@@ -15,34 +15,22 @@ function BerkasService($http, $state, $rootScope, $q, MessageServices, UserServi
     function get() {
 
         if (!this.instance) {
+            NProgress.start();
             $http({
                 method: 'Get',
                 url: 'api/Permohonan/admin',
                 headers: UserServices.getHeaders()
             }).then(function (response) {
-
-                angular.forEach(response.data, function (value, index) {
-                    var urlBerkas = 'api/Persyaratan/' + value.idLayanan + '/layanan';
-                    $http({
-                        method: 'Get',
-                        url: urlBerkas,
-                        headers: UserServices.getHeaders()
-                    }).then(function (response) {
-                        value.Berkas = response.data;
-                        service.Permohonan.push(value);
-                    }, function (error) {
-
-                    })
-                    
-                })
-
+                service.Permohonan.push(response.data);
+               
+                NProgress.done();
                 service.instance = true;
                 def.resolve(response.data);
 
             }, function (response) {
                 if (response.status = 401)
                     $state.go('login');
-
+                NProgress.done();
                 def.reject();
             });
         } else
