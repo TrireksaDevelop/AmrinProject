@@ -45,6 +45,8 @@ namespace MobileApp
             }
         }
 
+        public static string Email { get; internal set; }
+
         internal static void ShowMessageError(string v)
         {
             MessagingCenter.Send(new MessagingCenterAlert

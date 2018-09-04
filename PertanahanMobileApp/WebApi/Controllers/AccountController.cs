@@ -47,7 +47,7 @@ namespace WebApi.Controllers
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
                 var roles = await _userManager.GetRolesAsync(appUser);
                 var token = await GenerateJwtToken(model.Email, appUser);
-                var data = new { roles,token };
+                var data = new { roles, token };
                 return data;
             }
 
@@ -61,13 +61,13 @@ namespace WebApi.Controllers
         {
             try
             {
-               
-               var user= await _userManager.FindByNameAsync(User.Identity.Name);
+
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 if (user == null)
                     throw new SystemException("Anda Tidak Memiliki Akses");
                 else
                 {
-                    var profile=await User.GetPetugas(user.Id);
+                    var profile = await User.GetPetugas(user.Id);
                     return Ok(profile);
                 }
             }
@@ -85,7 +85,7 @@ namespace WebApi.Controllers
             try
             {
 
-         //       var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                //       var user = await _userManager.FindByNameAsync(User.Identity.Name);
                 var id = _userManager.GetUserId(User);
                 if (string.IsNullOrEmpty(id))
                     throw new SystemException("Anda Tidak Memiliki Akses");
@@ -145,6 +145,8 @@ namespace WebApi.Controllers
         {
             try
             {
+
+
                 var role = "pemohon";
                 if (!await _roleManager.RoleExistsAsync(role))
                 {
@@ -163,7 +165,7 @@ namespace WebApi.Controllers
                     await _signInManager.SignInAsync(user, false);
                     await _userManager.AddToRoleAsync(user, role);
                     ClientService service = new ClientService();
-                    service.CreatePemohon(new AppCore.ModelDTO.pemohon { NIK=model.NIK, UserId = user.Id, Nama = model.Nama });
+                    service.CreatePemohon(new AppCore.ModelDTO.pemohon { NIK = model.NIK, UserId = user.Id, Nama = model.Nama });
 
                     return await GenerateJwtToken(model.Email, user);
                 }
@@ -175,6 +177,55 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        public IActionResult ResetPassword(ChangePasswordModel model)
+        {
+            try
+            {
+                var user = _userManager.FindByNameAsync(model.Email).Result;
+
+                if (user == null || !(_userManager.IsEmailConfirmedAsync(user).Result))
+                {
+                    throw new SystemException("Gagal Reset Password, Ulangi");
+                }
+
+                var token = _userManager.GeneratePasswordResetTokenAsync(user).Result;
+                return Ok(new ChangePasswordModel { Token=token });
+
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordModel model)
+        {
+            try
+            {
+                var user = _userManager.FindByNameAsync(model.Email).Result;
+
+                IdentityResult result = _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword).Result;
+                if (result.Succeeded)
+                {
+                  return Ok(model);
+                }
+                else
+                {
+                    throw new SystemException("Error while resetting the password!");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+
 
 
 
@@ -200,7 +251,7 @@ namespace WebApi.Controllers
                 signingCredentials: creds
             );
             var tk = new JwtSecurityTokenHandler();
-            return Task.FromResult( tk.WriteToken(token) as object);
+            return Task.FromResult(tk.WriteToken(token) as object);
         }
 
         public class LoginDto
@@ -230,6 +281,17 @@ namespace WebApi.Controllers
             public string Password { get; set; }
         }
 
+
+        
+
+
+        public class ChangePasswordModel
+        {
+            public string Email { get; set; }
+            public string OldPassword { get; set; }
+            public string NewPassword { get; set; }
+            public string Token { get; set; }
+        }
 
 
         public class UserRegisterDto : RegisterDto

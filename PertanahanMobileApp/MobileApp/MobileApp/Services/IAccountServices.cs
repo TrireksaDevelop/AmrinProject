@@ -13,6 +13,7 @@ namespace MobileApp.Services
         Task<bool> Register(UserRegister model);
         Task<bool> SaveProfileProfile();
         Task<pemohon> GetProfile();
-       Task<bool> ChangePassword(string email);
+        Task<ChangePasswordModel> ResetPassword(ChangePasswordModel email);
+        Task<ChangePasswordModel> ChangePassword(ChangePasswordModel email);
     }
 }
