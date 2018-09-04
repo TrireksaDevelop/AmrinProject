@@ -6,7 +6,7 @@ angular.module("petugas.controllers", [])
 function BerkasController($scope, BerkasService, UserServices, LayananServices) {
     $scope.Permohonan = BerkasService.Permohonan;
     $scope.Berkas = [];
-    $scope.DataPermohonan;
+    $scope.DataPermohonan = {};
     $scope.Pemohon = {};
     $scope.UserPetugas = UserServices.getUser();
     $scope.StatusPermohonan = [{ id: 0, status: "Baru" }, { id: 1, status: "Pengerjaan" }, { id: 2, status: "Selesai" }];
@@ -14,6 +14,7 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
     $scope.Layanan = {};
     $scope.Tampil = false;
     $scope.IdPendaftaran;
+    
     
     if (UserServices.getUser() == "alpritsrupang@gmail.com") {
         $scope.Tampil = true;
@@ -38,6 +39,7 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
         $scope.DataPermohonan.status = $scope.DataStatus.id;
     }
     $scope.addKelengkapan = function (item) {
+        $scope.DataPermohonan.kelengkapans = [];
         $scope.DataPermohonan.kelengkapans.push(item);
     }
     $scope.update = function () {
@@ -47,9 +49,11 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
                 if (value.id == $scope.DataPermohonan.id) {
                     value.kelengkapans = $scope.DataPermohonan.kelengkapans;
                     value.tahapans = $scope.DataPermohonan.tahapans;
+                    
                 }
             })
         })
+        $scope.DataPermohonan = {};
     }
 }
 

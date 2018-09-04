@@ -104,19 +104,19 @@
                                         <div class="col-md-9">
                                             <div class="form-group">
                                                 <div class="col-xs-12 form-group has-feedback">
-                                                    <input type="text" class="form-control has-feedback-left" id="inputSuccess2" placeholder="First Name">
+                                                    <input type="text" class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.nama" disabled>
                                                     <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-xs-12 form-group has-feedback">
-                                                    <input type="text" class="form-control has-feedback-left" id="inputSuccess2" placeholder="First Name">
+                                                    <input type="text" class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.nik" disabled>
                                                     <span class="fa fa-credit-card form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-xs-12 form-group has-feedback">
-                                                    <textarea class="form-control has-feedback-left" id="inputSuccess2"></textarea>
+                                                    <textarea class="form-control has-feedback-left" id="inputSuccess2"  ng-model="DataPermohonan.pemohon.alamat" disabled></textarea>
                                                     <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                                             </div>
@@ -131,7 +131,7 @@
                     <div class="col-md-6 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Biodata Pemohon</h2>
+                                <h2>Kelengkapan Berkas Pemohonan</h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li>
                                         <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -161,13 +161,15 @@
                                         <div class="form-group" ng-repeat="item in Layanan.persyaratans">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input type="checkbox" class="flat"> {{item.nama}}
+                                                    <input type="checkbox" class="flat" ng-click="addKelengkapan(item)"> {{item.nama}}
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-
-
+                                    <div class="col-md-12">
+                                        <label for="fullname">Kategoti Layanan</label>
+                                        <select class="form-control" ng-options="item as item.status for item in StatusPermohonan track by item.id" ng-model="DataStatus"></select>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -179,7 +181,7 @@
                 <div class="pull-right">
                     <button type="button" class="btn btn-primary">Cancel</button>
                     <button class="btn btn-primary" type="reset">Reset</button>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="submit" ng-click="update()" class="btn btn-success">Proses</button>
                 </div>
             </div>
         </div>
