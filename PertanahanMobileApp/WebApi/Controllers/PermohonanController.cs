@@ -55,8 +55,8 @@ namespace WebApi.Controllers
         
        
         // PUT: api/Permohonan/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, permohonan item)
+        [HttpPut("{id}",Name ="Put")]
+        public async Task<IActionResult> Put(int id,permohonan item)
         {
             try
             {
@@ -71,7 +71,24 @@ namespace WebApi.Controllers
             }
 
         }
-        
+
+        [HttpPost("UpdatePermohonan")]
+        public async Task<IActionResult> UpdatePermohonan([FromBody]permohonan item)
+        {
+            try
+            {
+                service = new PermohonanService(new UOWPermohonan());
+                bool result = await service.UpdatePermohonan(item);
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException(ex.Message);
+            }
+
+        }
+
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
@@ -101,7 +118,7 @@ namespace WebApi.Controllers
                         service.SetCurrentPermohonan(item);
                         item.CurrentTahapan = service.GetCurrentTahapan();
                         item.NextTahapan = service.GetNextTahapan();
-                        if (item.NextTahapan != null && item.NextTahapan.Id == profile.Bidangs.FirstOrDefault().Id)
+                        if (item.NextTahapan != null && item.NextTahapan.BidangId == profile.Bidangs.FirstOrDefault().Id)
                             list.Add(item);
                     }
                     return Ok(list);
