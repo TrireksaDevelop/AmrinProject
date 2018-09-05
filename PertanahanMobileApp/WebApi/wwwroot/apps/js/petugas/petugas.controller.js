@@ -16,7 +16,7 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
     $scope.IdPendaftaran;
     $scope.Permohonans = [];
     
-    if (UserServices.getUser() == "alpritsrupang@gmail.com") {
+    if (UserServices.getUser() == "kappi@gmail.com") {
         $scope.Tampil = true;
     } else {
         $scope.Tampil = false;
@@ -26,6 +26,19 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
     $scope.ShowBerkas = function () {
         angular.forEach($scope.Permohonan[0], function (value, key) {
             if (value.id == $scope.IdPendaftaran) {
+                $scope.DataPermohonan = value;
+                $scope.DataPermohonan.kelengkapans = [];
+                angular.forEach(LayananServices.Layanans, function (value1, key1) {
+                    if (value.idLayanan == value1.id) {
+                        $scope.Layanan = value1;
+                    }
+                })
+            }
+        })
+    }
+    $scope.Detail = function (item) {
+        angular.forEach($scope.Permohonan[0], function (value, key) {
+            if (value.id == item.id) {
                 $scope.DataPermohonan = value;
                 $scope.DataPermohonan.kelengkapans = [];
                 angular.forEach(LayananServices.Layanans, function (value1, key1) {

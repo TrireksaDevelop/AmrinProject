@@ -33,7 +33,7 @@
                             <td>
                                 <a href="" ng-click="EditItem(item)" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-edit fa-2x text-warning"></i></a>
                                 <a href="" ng-click="EditItem(item)" data-toggle="modal" data-target=".messagebox"><i class="fa fa-envelope-o fa-2x text-info"></i></a>
-                                <a href="" ng-click="ShowBerkas(item)" data-toggle="modal" data-target=".kelengkapan"><i class="fa fa-list-ul fa-2x text-info"></i></a>
+                                <a href="" ng-click="Detail(item)" data-toggle="modal" data-target=".kelengkapan"><i class="fa fa-list-ul fa-2x text-info"></i></a>
                             </td>
                         </tr>
 
@@ -252,29 +252,47 @@
 
 
     <div class="modal fade kelengkapan" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
-                    <h4 class="modal-title" id="myModalLabel2">{{ModalTitle}}</h4>
+                    <h4 class="modal-title" id="myModalLabel2">Detail</h4>
                 </div>
-                <form ng-submit="Save(model)" id="demo-form" data-parsley-validate>
-                    <div ng-repeat="item in Berkas">
-                        <input ng-click="addKelengkapan(item)" type="checkbox" name="hobbies[]" id="{{item.id}}" value="{{item.id}}" data-parsley-mincheck="2" required class="flat" /> {{item.nama}}
-                        <br />
-                    </div>
-                    <div class="modal-body">
-                        <label for="fullname">Kategoti Layanan</label>
-                        <select class="form-control" ng-options="item as item.status for item in StatusPermohonan track by item.id" ng-model="DataStatus"></select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" ng-click="update()" class="btn btn-primary">Proses</button>
-                    </div>
-
-                </form>
+                <div class="modal-body">
+                    <form class="form-horizontal form-label-left input_mask">
+                        <div class="col-xs-12">
+                            <div class="col-md-3">
+                                <img src="" />
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <div class="col-xs-12 form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.nama" disabled>
+                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12 form-group has-feedback">
+                                        <input type="text" class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.nik" disabled>
+                                        <span class="fa fa-credit-card form-control-feedback left" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12 form-group has-feedback">
+                                        <textarea class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.alamat" disabled></textarea>
+                                        <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" ng-click="update()" class="btn btn-primary">Simpan</button>
+                </div>
             </div>
 
         </div>

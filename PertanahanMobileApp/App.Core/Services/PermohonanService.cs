@@ -203,7 +203,7 @@ namespace AppCore.Services
                         {
                             foreach (var data in item.Tahapans)
                             {
-                                var result = dbTahapans.Where(O => O.Id == data.IdTahapan && O.IdPermohonan == item.Id).FirstOrDefault();
+                                var result = dbTahapans.Where(O => O.IdTahapan == data.IdTahapan && O.IdPermohonan == item.Id).FirstOrDefault();
                                 if (result == null)
                                 {
                                     if (!db.Progress.Insert(data))
