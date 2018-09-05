@@ -206,7 +206,7 @@ namespace AppCore.Services
                                   select new petugas
                                   {
                                       Alamat = a.Alamat,
-                                      Id = b.Id,
+                                      Id = a.Id,
                                       Jabatan = a.Jabatan,
                                       Nama = a.Nama,
                                       NIP = a.NIP, Email=a.Email,

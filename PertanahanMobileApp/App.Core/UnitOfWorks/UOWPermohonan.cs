@@ -23,7 +23,7 @@ namespace AppCore.UnitOfWorks
                         return null;
                     }else
                     {
-                        var Curenttahapans = from z in db.TahapanLayanan.Where(O => O.Id == permohonan.Id && O.TahapanId == lastProggress.IdTahapan)
+                        var Curenttahapans = from z in db.TahapanLayanan.Where(O => O.Id == permohonan.IdLayanan && O.TahapanId == lastProggress.IdTahapan)
                                              join y in db.Tahapans.Select() on z.TahapanId equals y.Id
                                              select y;
                         return Curenttahapans.FirstOrDefault();
@@ -50,10 +50,10 @@ namespace AppCore.UnitOfWorks
                     int urutan = 1;
                     if (current != null)
                     {
-                        var lastTahapan = db.TahapanLayanan.Where(O => O.Id == permohonan.Id && O.TahapanId == current.Id).FirstOrDefault();
+                        var lastTahapan = db.TahapanLayanan.Where(O => O.Id == permohonan.IdLayanan && O.TahapanId == current.Id).FirstOrDefault();
                         urutan = lastTahapan.Urutan + 1;
                     }
-                    var Curenttahapans = from z in db.TahapanLayanan.Where(O => O.Id == permohonan.Id && O.Urutan == urutan)
+                    var Curenttahapans = from z in db.TahapanLayanan.Where(O => O.Id == permohonan.IdLayanan && O.Urutan == urutan)
                                          join y in db.Tahapans.Select() on z.TahapanId equals y.Id
                                          select y;
 

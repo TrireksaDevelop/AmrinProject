@@ -110,17 +110,23 @@ namespace WebApi.Controllers
                 {
                     var service = new PermohonanService(new UOWPermohonan());
                     var adminService = new AdminService(profile, new PermohonanService(new UOWPermohonan()), new BidangUOW(profile));
-                    adminService.SetBidangTugas(profile.Bidangs.FirstOrDefault());
-                    var result = adminService.GetPermohonans();
                     var list = new List<permohonan>();
-                    foreach(var item in result)
+                    foreach (var item in profile.Bidangs)
                     {
-                        service.SetCurrentPermohonan(item);
-                        item.CurrentTahapan = service.GetCurrentTahapan();
-                        item.NextTahapan = service.GetNextTahapan();
-                        if (item.NextTahapan != null && item.NextTahapan.BidangId == profile.Bidangs.FirstOrDefault().Id)
-                            list.Add(item);
+                        adminService.SetBidangTugas(item);
+                        var result = adminService.GetPermohonans();
+               
+                        foreach (var data in result)
+                        {
+                            service.SetCurrentPermohonan(data);
+                            data.CurrentTahapan = service.GetCurrentTahapan();
+                            data.NextTahapan = service.GetNextTahapan();
+                            if (data.NextTahapan != null && data.NextTahapan.BidangId == item.Id)
+                                list.Add(data);
+                        }
                     }
+
+                    
                     return Ok(list);
                 }
                 else
