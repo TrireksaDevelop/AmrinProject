@@ -1,7 +1,7 @@
 //'use strict';
 angular.module('petugas.routes', [])
     .config(function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.when('/petugas', '/petugas');
+     
         $stateProvider
             .state('petugas', {
                 url: '/petugas',
@@ -11,7 +11,7 @@ angular.module('petugas.routes', [])
             .state('berkas', {
                 url: '/berkas',
                 parent: 'petugas',
-                templateUrl: 'apps/templates/petugas/berkas.html',
+                templateUrl: '/apps/templates/petugas/berkas.html',
                 controller: 'BerkasController'
             })
         

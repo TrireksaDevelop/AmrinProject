@@ -79,6 +79,12 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
     }
 }
 
-function PetugasHomeController($scope) {
+function PetugasHomeController($scope, AuthServices) {
+    $scope.Profile = {};
+    AuthServices.getProfile().then(
+        function (response) {
+            $scope.Profile = response;
+        }
 
+    );
 }

@@ -49,17 +49,18 @@ function MessageServices() {
 
 
 
-function AuthServices($http, $state, $rootScope, MessageServices, $q) {
+function AuthServices($http, $state, $rootScope, MessageServices, $q, UserServices) {
     //var def = $q.defer();
 
     var service = {
-        login:login,register:register
+        login: login, register: register, getProfile: getProfile
     };
 
 
     function login(user) {
-    var data = "grant_type=password&username=" + user.Email + "&password=" + user.Password;
-        var data = {};
+        var data = "grant_type=password&username=" + user.Email + "&password=" + user.Password;
+        NProgress.start();
+        data = {};
         data.email = user.Email;
         data.username = user.Email;
         data.password = user.Password;
@@ -75,14 +76,17 @@ function AuthServices($http, $state, $rootScope, MessageServices, $q) {
             sessionStorage.setItem("UserName", user.Email);
             if (result.roles[0] != null || result.roles[1] != undefined) {
                 var state = result.roles[0];
+                NProgress.done();
                 $state.go(state);
             } else {
                 MessageServices.error("Anda Tidak Memiliki Akses");
+                NProgress.done();
                 $state.go("/");
             }
          
         }, function errorCallback(response) {
             MessageServices.error(response.data);
+            NProgress.done();
         });
     }
 
@@ -105,16 +109,18 @@ function AuthServices($http, $state, $rootScope, MessageServices, $q) {
 
 
     function getProfile() {
+        var def = $q.defer();
         $http({
-            method: '',
-
+            method: 'Get',
             url: '/account/PetugasProfile',
-            data: data
+            headers: UserServices.getHeaders()
         }).then(function successCallback(response) {
-         
+            def.resolve(response.data);
         }, function errorCallback(response) {
             MessageServices.error(response.data);
-        });
+            def.reject();
+            });
+        return def.promise;
     }
 
 

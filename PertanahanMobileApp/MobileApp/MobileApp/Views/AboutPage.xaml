@@ -3,28 +3,79 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileApp.Views.AboutPage" BackgroundColor="{StaticResource colorPrimaryDark}"
              xmlns:vm="clr-namespace:MobileApp.ViewModels"
-             Title="{Binding Title}">
-    <Grid>
+             Title="About">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackLayout Margin="10" HorizontalOptions="Center" VerticalOptions="Center">
-            <Image Source="bpn1.png" WidthRequest="100"/>
-            <Label Text="SELAMAT DATANG" FontSize="25" HorizontalOptions="Center"/>
+        <StackLayout Margin="10" HorizontalOptions="Center" VerticalOptions="Center" >
+            <Image Source="bpn1.png" WidthRequest="75"/>
+            <Label Text="KANTOR PERTANAHAN KABUPATEN JAYAPURA" TextColor="{StaticResource colorTextAccent}"  HorizontalOptions="Center"/>
         </StackLayout>
 
         <StackLayout Grid.Row="1" HorizontalOptions="Center"  VerticalOptions="Center">
-            <Label Text="APLIKASI MONITORING" FontSize="18" HorizontalOptions="Center"/>
-            <Label Text="PELAYANAN PERTANAHAN" FontSize="18" HorizontalOptions="Center"/>
+            <Label >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span ForegroundColor="{StaticResource colorPrimary}" Text="Aplikasi Layanan Pertanahan Android mempermudah pendaftaran dan monitorng proses layanan pertanahan pada Kantor Pertanahan" FontAttributes="Bold" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
         </StackLayout>
-        <StackLayout Grid.Row="2" HorizontalOptions="Center"  VerticalOptions="End">
-            <Label Text="KEMENTERIAN AGRARIA DAN TATA RUANG /" FontSize="15" HorizontalOptions="Center"/>
-            <Label Text="BADAN PERTANAHAN NASIONAL" FontSize="15" HorizontalOptions="Center"/>
-            <Label Text="KANTOR PERTANAHAN" FontSize="15" HorizontalOptions="Center"/>
-            <Label Text="KABUPATEN JAYAPURA" FontSize="15" HorizontalOptions="Center"/>
+        <StackLayout Grid.Row="2" HorizontalOptions="Center"  Spacing="5" VerticalOptions="End">
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Untuk informasi lebih lanjut dapat mengubungi kami:" ForegroundColor="{StaticResource colorPrimary}" FontAttributes="Bold" />
+
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Address" ForegroundColor="{StaticResource  colorPrimary}" FontAttributes="Bold" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Jln. Sentani - Depapre, Kompleks Kantor Bupati Gunung Merah Sentani" ForegroundColor="{StaticResource colorTextAccent}" FontAttributes="Bold" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="E-Mail" ForegroundColor="{StaticResource colorPrimary}" FontAttributes="Bold" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="pertanahanjayapura@gmail.com" ForegroundColor="{StaticResource colorTextAccent}" FontAttributes="Bold" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Label HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="2018" ForegroundColor="{StaticResource colorPrimary}" FontAttributes="Bold" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
         </StackLayout>
     </Grid>
 </ContentPage>
+
+    
+    
