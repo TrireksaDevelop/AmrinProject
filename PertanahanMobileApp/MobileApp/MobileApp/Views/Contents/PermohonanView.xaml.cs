@@ -84,14 +84,22 @@ namespace MobileApp.Views.Contents
                 if (IsBusy)
                     return;
                 IsBusy = true;
-                if(CurrentItem==null)
-                    CurrentItem = await PermohonanService.GetLastPermohonan();
+
+                if(lastPermohonan==null)
+                {
+                    lastPermohonan = await PermohonanService.GetLastPermohonan();
+                    CurrentItem = lastPermohonan;
+                }
+
                 if (CurrentItem != null)
                 {
                     var layanan = await LayananServices.GetItemAsync(CurrentItem.IdLayanan.ToString());
                     if (layanan != null)
                     {
-                        Steps = layanan.Tahapans.Count();
+                        StepBar.Steps = 0;
+                        StepBar.Children.Clear();
+                        StepBar.Steps = layanan.Tahapans.Count();
+                        StepSelected = 0;
                         if (CurrentItem.CurrentTahapan != null)
                         {
                             var c = layanan.Tahapans.Where(O => O.Id == CurrentItem.CurrentTahapan.Id).FirstOrDefault();
@@ -99,6 +107,7 @@ namespace MobileApp.Views.Contents
                             {
                                 var index = layanan.Tahapans.IndexOf(c);
                                 StepSelected = index + 1;
+                             
                                 if (Steps >= StepSelected)
                                     CurrentItem.NextTahapan = new tahapan { Nama = "Tidak Ada", Keterangan = "Proses Telah Selesai" };
                             }
@@ -198,6 +207,7 @@ namespace MobileApp.Views.Contents
         }
 
         private permohonan _SelectedPermohonan;
+        private permohonan lastPermohonan;
 
         public permohonan SelectedPermohonan
         {
@@ -206,7 +216,10 @@ namespace MobileApp.Views.Contents
 
                if(value!=null)
                 {
-                    CurrentItem = value;
+                    if (value.Id == lastPermohonan.Id)
+                        CurrentItem = lastPermohonan;
+                    else
+                        CurrentItem = value;
                     RefreshCommand.Execute(null);
                 }
             }

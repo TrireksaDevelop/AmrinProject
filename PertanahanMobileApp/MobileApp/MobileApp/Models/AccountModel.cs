@@ -28,7 +28,7 @@ namespace MobileApp.Models
         public string   Nama { get; set; }
         public Gender Gender { get; set; }
         public string NIK { get; set; }
-
+        public string Alamat { get; set; }
     }
 
 

@@ -17,6 +17,15 @@ namespace MobileApp
         public static readonly BindableProperty StepsProperty = BindableProperty.Create(nameof(Steps), typeof(int), typeof(StepProgressBarControl), 0);
         public static readonly BindableProperty StepSelectedProperty = BindableProperty.Create(nameof(StepSelected), typeof(int), typeof(StepProgressBarControl), 0, defaultBindingMode: BindingMode.TwoWay);
         public static readonly BindableProperty StepColorProperty = BindableProperty.Create(nameof(StepColor), typeof(Xamarin.Forms.Color), typeof(StepProgressBarControl), Color.FromHex("#AA8F66"), defaultBindingMode: BindingMode.TwoWay);
+        public static readonly BindableProperty PassColorProperty = BindableProperty.Create(nameof(PassColor), 
+            typeof(Xamarin.Forms.Color), typeof(StepProgressBarControl), Color.FromHex("#BBDB9B"), defaultBindingMode: BindingMode.TwoWay);
+
+
+        public Color PassColor
+        {
+            get { return (Color)GetValue(PassColorProperty); }
+            set { SetValue(PassColorProperty, value); }
+        }
 
         public Color StepColor
         {
@@ -56,12 +65,17 @@ namespace MobileApp
             {
                 for (int i = 0; i < Steps; i++)
                 {
-                    var button = new Button()
+                    var button = new Button();
+                    button.Text = $"{i + 1}";
+                    button.ClassId = $"{i + 1}";
+
+                    if (i < StepSelected)
                     {
-                        Text = $"{i + 1}",
-                        ClassId = $"{i + 1}",
-                        Style = Resources["unSelectedStyle"] as Style
-                    };
+                       button.Style = Resources["passStyle"] as Style;
+                    }else
+                    {
+                        button.Style = Resources["unSelectedStyle"] as Style;
+                    }
 
                     button.Clicked += Handle_Clicked;
 
@@ -83,8 +97,18 @@ namespace MobileApp
             }
             else if (propertyName == StepSelectedProperty.PropertyName)
             {
-                var children = this.Children.First(p => (!string.IsNullOrEmpty(p.ClassId) && Convert.ToInt32(p.ClassId) == StepSelected));
-                if (children != null) SelectElement(children as Button);
+                if(StepSelected>0)
+                {
+                    var children = this.Children.First(p => (!string.IsNullOrEmpty(p.ClassId) && Convert.ToInt32(p.ClassId) == StepSelected));
+                    if (children != null) SelectElement(children as Button);
+                }
+                var index = 0;
+                foreach (Button b in this.Children.OfType<Button>())
+                {
+                    index++;
+                    if(index<StepSelected)
+                        b.Style = Resources["passStyle"] as Style;
+                }
 
             }
             else if (propertyName == StepColorProperty.PropertyName)
@@ -95,9 +119,9 @@ namespace MobileApp
         void Handle_Clicked(object sender, System.EventArgs e)
         {
             var elementSelected = sender as Button;
-            SelectElement(elementSelected);
+          //  SelectElement(elementSelected);
             
-            StepSelected = Convert.ToInt32(elementSelected.Text);
+        //    StepSelected = Convert.ToInt32(elementSelected.Text);
             OnClick?.Invoke(StepSelected);
         }
 
@@ -143,9 +167,23 @@ namespace MobileApp
             }
             };
 
+            var passStyle = new Style(typeof(Button))
+            {
+                Setters = {
+                    new Setter { Property = BackgroundColorProperty,   Value = Color.FromHex("#BBDB9B")},
+                    new Setter { Property = Button.BorderColorProperty,   Value = StepColor },
+                    new Setter { Property = Button.TextColorProperty,   Value = StepColor },
+                    new Setter { Property = Button.BorderWidthProperty,   Value = 0.5 },
+                    new Setter { Property = Button.BorderRadiusProperty,   Value = 20 },
+                    new Setter { Property = HeightRequestProperty,   Value = 40 },
+                    new Setter { Property = WidthRequestProperty,   Value = 40 }
+            }
+            };
+
             Resources = new ResourceDictionary();
             Resources.Add("unSelectedStyle", unselectedStyle);
             Resources.Add("selectedStyle", selectedStyle);
+            Resources.Add("passStyle", passStyle);
         }
     }
 }

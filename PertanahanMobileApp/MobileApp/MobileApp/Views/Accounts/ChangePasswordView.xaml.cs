@@ -65,9 +65,15 @@ namespace MobileApp.Views.Accounts
 
         private bool IsValid()
         {
-            if (!string.IsNullOrEmpty(NewPassword) && !string.IsNullOrEmpty(ConfirmPassword) && NewPassword == ConfirmPassword)
-                return true;
-            return false;
+            if (string.IsNullOrEmpty(NewPassword) || string.IsNullOrEmpty(ConfirmPassword))
+                throw new SystemException("Lengkapi Data");
+            if (Model.NewPassword.Length< 6)
+                throw new SystemException("Password Minimal 6 Character");
+            if (!Model.NewPassword.Any(char.IsUpper) || !Model.NewPassword.Any(char.IsNumber) || !ContainsOnePunctuationMark(Punctuation, Model.NewPassword))
+                throw new SystemException("Password Harus Mengandung Huruf Besar, Angka, dan Character Khusus");
+            if (Model.NewPassword != Model.OldPassword)
+                throw new SystemException("Password Tidak Sama ");
+            return true;
         }
 
         private string newPassword;
@@ -85,5 +91,25 @@ namespace MobileApp.Views.Accounts
             get { return confirm; }
             set { SetProperty(ref confirm, value); }
         }
+
+        private char[] Punctuation = @" !#$%&'()*+,-./:;<=>?@[\]^_`{|}~".ToCharArray();
+
+        public bool ContainsOnePunctuationMark(char[] chars, string text)
+        {
+            bool found = false;
+            foreach (char c in chars)
+            {
+                if (!found)
+                {
+                    if (text.Contains(c))
+                    {
+                        found = true;
+                    }
+                }
+            }
+
+            return found;
+        }
+
     }
 }

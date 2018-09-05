@@ -164,9 +164,10 @@ namespace WebApi.Controllers
                     await _signInManager.SignInAsync(user, false);
                     await _userManager.AddToRoleAsync(user, role);
                     ClientService service = new ClientService();
-                    service.CreatePemohon(new AppCore.ModelDTO.pemohon { NIK = model.NIK, UserId = user.Id, Nama = model.Nama });
-
-                    return await GenerateJwtToken(model.Email, user);
+                    service.CreatePemohon(new AppCore.ModelDTO.pemohon { NIK = model.NIK,Alamat=model.Alamat, UserId = user.Id, Nama = model.Nama });
+                    var token = await GenerateJwtToken(model.Email, user);
+                    var data = new { role, token };
+                    return data;
                 }
 
                 throw new ApplicationException("UNKNOWN_ERROR");
@@ -298,6 +299,7 @@ namespace WebApi.Controllers
             public string Nama { get; set; }
             public Gender Gender { get; set; }
             public string NIK { get; set; }
+            public string Alamat { get; set; }
         }
 
 

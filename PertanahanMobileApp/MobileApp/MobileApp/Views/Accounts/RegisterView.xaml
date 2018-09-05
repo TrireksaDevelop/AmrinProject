@@ -5,36 +5,45 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="20*"/>
-                <RowDefinition Height="70*"/>
-                <RowDefinition Height="10*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <ActivityIndicator  Color="White" IsRunning="{Binding IsBusy}"></ActivityIndicator>
+           
             <StackLayout Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center"  >
-                <Image Source="bpn1.png" VerticalOptions="Center" WidthRequest="130" HeightRequest="130" />
+                <Image Source="bpn1.png" VerticalOptions="Center" WidthRequest="75" HeightRequest="75" />
             </StackLayout>
+            <ActivityIndicator HorizontalOptions="Center" Grid.Row="1"  Color="White" IsRunning="{Binding IsBusy}"></ActivityIndicator>
             <StackLayout Margin="40" Spacing="2"  Grid.Row="1">
                 <Label  Text="REGISTER" HorizontalOptions="Start"  FontSize="20"/>
                 <StackLayout Orientation="Horizontal"  Padding="10,0">
-                  
                     <Entry 
                     HeightRequest="50" 
                     HorizontalOptions="FillAndExpand"          
                     Text="{Binding Model.Nama}"
                     Placeholder="Nama">
                     </Entry>
-
                 </StackLayout>
+             
                 <StackLayout Orientation="Horizontal"  Padding="10,0">
                   
                     <Entry 
                     HeightRequest="50" 
                     HorizontalOptions="FillAndExpand"          
                     Text="{Binding Model.NIK}"
-                    Placeholder="Jenis Kelamin">
+                    Placeholder="NIK">
                     </Entry>
 
                 </StackLayout>
+                <StackLayout Orientation="Horizontal"  Padding="10,0">
+                    <Entry 
+                    HeightRequest="50" 
+                    HorizontalOptions="FillAndExpand"          
+                    Text="{Binding Model.Alamat}"
+                    Placeholder="Alamat">
+                    </Entry>
+                </StackLayout>
+
                 <StackLayout Orientation="Horizontal"  Padding="10,0">
                  
                     <Entry 
@@ -57,23 +66,21 @@
 
                 </StackLayout>
                 <StackLayout Orientation="Horizontal"  Padding="10,0">
-                  
                     <Entry 
                     HeightRequest="50" IsPassword="True"
                     HorizontalOptions="FillAndExpand"          
-                    Text="{Binding Model.ConfirmPassword}"
+                    Text="{Binding Model.UserName}"
                     Placeholder="Confirm Password">
                     </Entry>
 
                 </StackLayout>
-
                 <Button Text="Register" Command="{Binding RegisterCommand}"/>
             </StackLayout>
             <StackLayout Grid.Row="2" Orientation="Vertical" HorizontalOptions="Start" VerticalOptions="End" Margin="10">
                
                 <Label Text="Have Account ? Login Here">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding  LoginCommand}"/>
+                        <TapGestureRecognizer  Command="{Binding  LoginCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
             </StackLayout>

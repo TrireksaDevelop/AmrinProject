@@ -17,19 +17,17 @@
                         <TapGestureRecognizer Tapped="ClickGestureRecognizer_Clicked"/>
                     </control:CircleImage.GestureRecognizers>
                 </control:CircleImage>
-             
             </StackLayout>
             <StackLayout Margin="40" Spacing="2"   Grid.Row="1">
                 <StackLayout  Padding="10,0">
                     <Entry HeightRequest="50" HorizontalOptions="FillAndExpand"  Text="{Binding Profile.Nama}" Placeholder="Nama"/>
                     <Entry HeightRequest="50" HorizontalOptions="FillAndExpand"  Text="{Binding Profile.NIK}" Placeholder="NIK"/>
-                    <Entry HeightRequest="50" HorizontalOptions="FillAndExpand"  Text="{Binding Profile.Alamat}" Placeholder="Alamat"/>
+                    <Editor HeightRequest="100" HorizontalOptions="FillAndExpand"  Text="{Binding Profile.Alamat}"/>
                 </StackLayout>
             </StackLayout>
             <StackLayout Grid.Row="2" Orientation="Vertical" HorizontalOptions="Start" VerticalOptions="End" Margin="10">
                 <Button Text="Simpan" Command="{Binding SaveCommand}"/>
             </StackLayout>
         </Grid>
-
     </ContentPage.Content>
 </ContentPage>
