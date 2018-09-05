@@ -74,7 +74,7 @@ function PetugasServices($http, $state, $rootScope, $q, UserServices, MessageSer
         if (!this.instance) {
             $http({
                 method: 'Get',
-                url: 'api/Petugas',
+                url: '/api/Petugas',
                 headers: UserServices.getHeaders()
             }).then(function (response) {
 
@@ -168,7 +168,7 @@ function KategoriServices($http, $state, $rootScope, $q, UserServices,MessageSer
         if (!this.instance) {
             $http({
                 method: 'Get',
-                url: 'api/KategoriLayanan',
+                url: '/api/KategoriLayanan',
                 headers: UserServices.getHeaders()
             }).then(function (response) {
 
@@ -377,7 +377,7 @@ function BidangServices($http, $q, UserServices, MessageServices, $state) {
         if (!this.instance) {
             $http({
                 method: 'Get',
-                url: 'api/Bidang',
+                url: '/api/Bidang',
                 headers: UserServices.getHeaders()
             }).then(function (response) {
 
@@ -402,7 +402,7 @@ function BidangServices($http, $q, UserServices, MessageServices, $state) {
     function post(data) {
         $http({
             method: 'Post',
-            url: 'api/Bidang',
+            url: '/api/Bidang',
             data: data,
             headers: UserServices.getHeaders()
         }).then(function (response) {
@@ -422,7 +422,7 @@ function BidangServices($http, $q, UserServices, MessageServices, $state) {
     function deleteItem(item) {
         $http({
             method: 'delete',
-            url: 'api/Bidang/' + item.id,
+            url: '/api/Bidang/' + item.id,
             data: item,
             headers: UserServices.getHeaders()
         }).then(function (response) {
@@ -440,7 +440,7 @@ function BidangServices($http, $q, UserServices, MessageServices, $state) {
     function EditItem(item) {
         $http({
             method: 'put',
-            url: 'api/Bidang/' + item.id,
+            url: '/api/Bidang/' + item.id,
             data: item,
             headers: UserServices.getHeaders()
         }).then(function (response) {
@@ -470,7 +470,7 @@ function TahapanServices($http, $q, UserServices, MessageServices, $state) {
         if (!this.instance) {
             $http({
                 method: 'Get',
-                url: 'api/tahapan',
+                url: '/api/tahapan',
                 headers: UserServices.getHeaders()
             }).then(function (response) {
 
@@ -495,7 +495,7 @@ function TahapanServices($http, $q, UserServices, MessageServices, $state) {
     function post(data) {
         $http({
             method: 'Post',
-            url: 'api/tahapan',
+            url: '/api/tahapan',
             data: data,
             headers: UserServices.getHeaders()
         }).then(function (response) {
@@ -515,7 +515,7 @@ function TahapanServices($http, $q, UserServices, MessageServices, $state) {
     function deleteItem(item) {
         $http({
             method: 'delete',
-            url: 'api/tahapan/' + item.id,
+            url: '/api/tahapan/' + item.id,
             data: item,
             headers: UserServices.getHeaders()
         }).then(function (response) {
@@ -533,7 +533,7 @@ function TahapanServices($http, $q, UserServices, MessageServices, $state) {
     function EditItem(item) {
         $http({
             method: 'put',
-            url: 'api/Tahapan/' + item.id,
+            url: '/api/Tahapan/' + item.id,
             data: item,
             headers: UserServices.getHeaders()
         }).then(function (response) {
@@ -589,7 +589,7 @@ function PersyaratanServices($http, $q, UserServices, MessageServices, $state) {
         let def = $q.defer();
         $http({
             method: 'Post',
-            url: 'api/Persyaratan',
+            url: '/api/Persyaratan',
             data: data,
             headers: UserServices.getHeaders()
         }).then(function (response) {
@@ -610,7 +610,7 @@ function PersyaratanServices($http, $q, UserServices, MessageServices, $state) {
         let def = $q.defer();
         $http({
             method: 'delete',
-            url: 'api/Persyaratan/' + item.id,
+            url: '/api/Persyaratan/' + item.id,
             data: item,
             headers: UserServices.getHeaders()
         }).then(function (response) {
@@ -629,7 +629,7 @@ function PersyaratanServices($http, $q, UserServices, MessageServices, $state) {
         let def = $q.defer();
         $http({
             method: 'put',
-            url: 'api/Persyaratan/' + item.id,
+            url: '/api/Persyaratan/' + item.id,
             data: item,
             headers: UserServices.getHeaders()
         }).then(function (response) {

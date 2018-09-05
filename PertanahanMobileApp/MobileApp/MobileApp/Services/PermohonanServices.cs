@@ -25,6 +25,10 @@ namespace MobileApp.Services
                     if(result!=null)
                     {
                         lastPermohonan = result;
+                        if (list == null)
+                            list = new List<permohonan>();
+
+                        list.Add(lastPermohonan);
                         return true;
                     }
                     return false;

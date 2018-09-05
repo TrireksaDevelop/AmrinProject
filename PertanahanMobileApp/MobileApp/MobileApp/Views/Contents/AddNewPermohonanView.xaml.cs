@@ -68,7 +68,7 @@ namespace MobileApp.Views.Contents
 
         private bool Valid()
         {
-            if(SelectedCategory==null || SelectedItem==null || string.IsNullOrEmpty(Keterangan))
+            if(SelectedCategory==null || SelectedItem==null)
             {
                 return false;
             }

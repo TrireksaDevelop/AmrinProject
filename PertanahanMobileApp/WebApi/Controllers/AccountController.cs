@@ -61,13 +61,12 @@ namespace WebApi.Controllers
         {
             try
             {
-
-                var user = await _userManager.FindByNameAsync(User.Identity.Name);
-                if (user == null)
+                var id = _userManager.GetUserId(User);
+                if (string.IsNullOrEmpty(id))
                     throw new SystemException("Anda Tidak Memiliki Akses");
                 else
                 {
-                    var profile = await User.GetPetugas(user.Id);
+                    var profile = await User.GetPetugas(id);
                     return Ok(profile);
                 }
             }

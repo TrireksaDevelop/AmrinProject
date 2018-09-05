@@ -14,96 +14,52 @@
     <!-- Font Awesome -->
     <link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="~/vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="~/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-
-    <!-- bootstrap-progressbar -->
-    <link href="~/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="~/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
-    <!-- bootstrap-daterangepicker -->
-    <link href="~/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-    <!-- Custom Theme Style -->
-
-    <link href="~/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="~/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="~/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
-    <link href="~/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="~/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="~/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+ 
     <link href="~/build/css/custom.min.css" rel="stylesheet">
-    <style>
-        .body {
-            background-image: url('../apps/images/picture.jpg') !important;
-        }
-    </style>
+  
 </head>
-<body class="nav-md" ng-app="app">
+<body>
     <div class="container body">
-        <a href="/#!login">LOGIN</a>
-        <div class="ui-base">
-            <div ui-view />
+        <div style="margin:10px" class="pull-right">
+            Have Account ?  <a class="btn btn-default" href="/Admin/index#!/login">LOGIN</a>
+        </div>
+
+
+        <style>
+            .center {
+                height: 250px;
+                position: relative;
+            }
+            h3{
+                margin-top:50px;
+            }
+                .center img{
+                    margin: 0;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    -ms-transform: translate(-50%, -50%);
+                    transform: translate(-50%, -50%);
+                }
+        </style>
+        <div style="margin:50px" class="center">
+            <img style="width:200px" src="~/apps/images/logobpn2017.png" />
+           
+        </div>
+        <center>
+            <h1>SELEMAT DATANG</h1>
+            <h3>Aplikasi Layanan Pertanahan Kantor Pertanahan Kabupaten Jayapura</h3>
+            <button class="btn btn-dark">Download Android App</button>
+        </center>
+        <div class="row">
+
+            <center>
+               
+               
+            </center>
         </div>
     </div>
-
-    <script src="~/vendors/jquery/dist/jquery.min.js"></script>
-    <!-- angular -->
-    <script src="~/vendors/angular/angular.js"></script>
-    <script src="~/vendors/angular-route/angular-route.js"></script>
-    <script src="~/vendors/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="~/apps/js/app.js"></script>
-    <script src="~/apps/js/app.config.js"></script>
-    <script src="~/apps/js/admin/AdminController.js"></script>
-    <script src="~/apps/js/admin/AdminRoute.js"></script>
-    <script src="~/apps/js/admin/AdminService.js"></script>
-    <script src="~/apps/js/home/home.Controller.js"></script>
-    <script src="~/apps/js/home/home.Route.js"></script>
-    <script src="~/apps/js/home/home.Service.js"></script>
-    <script src="~/apps/js/petugas/petugas.controller.js"></script>
-    <script src="~/apps/js/petugas/petugas.route.js"></script>
-    <script src="~/apps/js/petugas/petugas.Service.js"></script>
-    <!-- Bootstrap -->
-    <script src="~/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="~/vendors/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="~/vendors/nprogress/nprogress.js"></script>
-    <!-- Chart.js -->
-    <script src="~/vendors/Chart.js/dist/Chart.min.js"></script>
-    <!-- gauge.js -->
-    <script src="~/vendors/gauge.js/dist/gauge.min.js"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="~/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <!-- iCheck -->
-    <script src="~/vendors/iCheck/icheck.min.js"></script>
-    <!-- Skycons -->
-    <script src="~/vendors/skycons/skycons.js"></script>
-    <!-- Flot -->
-    <script src="~/vendors/Flot/jquery.flot.js"></script>
-    <script src="~/vendors/Flot/jquery.flot.pie.js"></script>
-    <script src="~/vendors/Flot/jquery.flot.time.js"></script>
-    <script src="~/vendors/Flot/jquery.flot.stack.js"></script>
-    <script src="~/vendors/Flot/jquery.flot.resize.js"></script>
-    <!-- Flot plugins -->
-    <script src="~/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-    <script src="~/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-    <script src="~/vendors/flot.curvedlines/curvedLines.js"></script>
-    <!-- DateJS -->
-    <script src="~/vendors/DateJS/build/date.js"></script>
-    <!-- JQVMap -->
-    <script src="~/vendors/jqvmap/dist/jquery.vmap.js"></script>
-    <script src="~/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-    <script src="~/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="~/vendors/moment/min/moment.min.js"></script>
-    <script src="~/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <!-- Custom Theme Scripts -->
-
-    <script src="~/vendors/pnotify/dist/pnotify.js"></script>
-    <script src="~/vendors/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="~/vendors/pnotify/dist/pnotify.nonblock.js"></script>
-    <script src="~/build/js/custom.min.js"></script>
+        <script src="~/build/js/custom.min.js"></script>
 </body>
 
 </html>
