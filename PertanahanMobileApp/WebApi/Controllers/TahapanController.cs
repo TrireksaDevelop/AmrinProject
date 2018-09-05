@@ -61,8 +61,15 @@ namespace WebApi.Controllers
 
             try
             {
-                tahapan results = service.SaveChange(value);
-                return Ok(results);
+                if (value != null && value.Bidang != null)
+                {
+                    value.BidangId = value.Bidang.Id;
+                    tahapan results = service.SaveChange(value);
+                    return Ok(results);
+
+                }
+                else
+                    throw new SystemException("Silahkan Lengkapi Data");
             }
             catch (Exception ex)
             {

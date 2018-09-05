@@ -456,12 +456,12 @@ function BidangServices($http, $q, UserServices, MessageServices, $state) {
 
 function TahapanServices($http, $q, UserServices, MessageServices, $state) {
     var def = $q.defer();
-
     var service = {
         instance: false,
         Tahapans: [],
         get: get, post: post, delete: deleteItem, put: EditItem
     }
+
     service.get();
     return service;
 
@@ -537,6 +537,8 @@ function TahapanServices($http, $q, UserServices, MessageServices, $state) {
             data: item,
             headers: UserServices.getHeaders()
         }).then(function (response) {
+            item.bidangId = response.data.bidangId;
+            item.bidang = response.data.bidang;
             MessageServices.success("Data Tersimpan");
             def.resolve(response.data);
         }, function (response) {

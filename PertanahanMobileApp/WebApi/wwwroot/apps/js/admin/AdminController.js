@@ -173,15 +173,22 @@ function LayananController($scope, LayananServices, TahapanServices, Persyaratan
 
 
 
+
 function TahapanController($scope, BidangServices, TahapanServices) {
     $scope.Tahapans = TahapanServices.Tahapans;
     $scope.Bidangs = BidangServices.Bidangs;
     $scope.Save = function (item) {
         if (item.id == undefined) {
-            item.bidangid = item.bidang.id;
-            TahapanServices.post(item).then(function (response) { })
+            item.bidangId = item.bidang.id;
+            TahapanServices.post(item).then(function (response) {
+
+
+            })
         } else
-            TahapanServices.put(item).then(function (response) { })
+            TahapanServices.put(item).then(function (response) {
+
+
+            })
     }
 
     $scope.EditItem = function (item) {
@@ -202,7 +209,10 @@ function PersyaratanController($scope, PersyaratanServices) {
             item.petugasid = item.petugas.id;
             PersyaratanServices.post(item).then(function (response) { })
         } else
-            PersyaratanServices.put(item).then(function (response) { })
+            PersyaratanServices.put(item).then(function (response) {
+
+
+            })
     }
 
     $scope.EditItem = function (item) {
