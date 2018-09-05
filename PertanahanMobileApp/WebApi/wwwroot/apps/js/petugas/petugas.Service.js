@@ -18,7 +18,7 @@ function BerkasService($http, $state, $rootScope, $q, MessageServices, UserServi
             NProgress.start();
             $http({
                 method: 'Get',
-                url: 'api/Permohonan/admin',
+                url: '/api/Permohonan/admin',
                 headers: UserServices.getHeaders()
             }).then(function (response) {
                 service.Permohonan.push(response.data);
