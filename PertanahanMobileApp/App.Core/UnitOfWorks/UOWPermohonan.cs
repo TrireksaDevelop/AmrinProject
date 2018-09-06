@@ -16,7 +16,7 @@ namespace AppCore.UnitOfWorks
             {
                 using (var db = new OcphDbContext())
                 {
-                    var lastProggress = db.Progress.Where(O => O.IdPermohonan == permohonan.Id).Last();
+                    var lastProggress = db.Progress.Where(O => O.IdPermohonan == permohonan.Id).OrderBy(O=>O.Id).Last();
 
                     if(lastProggress==null)
                     {

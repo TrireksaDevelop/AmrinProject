@@ -38,11 +38,12 @@ namespace WebApi.Controllers
 
 
         // GET: api/Permohonan/5
-        [HttpGet("{id}", Name = "Get")]
-        public IActionResult Get(int id)
+        [HttpGet("{id}", Name = "GetPermohonan")]
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
+                await Task.Delay(100);
                 service = new PermohonanService(new UOWPermohonan());
                var result= service.GetPermohonan(id);
                 return Ok(result);

@@ -17,10 +17,10 @@ namespace WebApi.Entities
         private string GetConnection()
         {
             const string databaseName = "dbpertanahan";
-            const string databaseUser = "root";
-            const string databasePass = "";
+            const string databaseUser = "dbpertanahan";
+            const string databasePass = "Ty0286!NTH_6";
 
-            var con= $"Server=localhost;" +
+            var con= $"Server=den1.mysql6.gear.host;" +
                    $"database={databaseName};" +
                    $"uid={databaseUser};" +
                    $"pwd={databasePass};" +

@@ -11,9 +11,16 @@ namespace MobileApp.Services
     public class PermohonanServices : IPermohonanServices
     {
         private bool isInstance;
-
         private permohonan lastPermohonan { get; set; }
         private List<permohonan> list { get; set; }
+
+        public Task Clean()
+        {
+            isInstance = false;
+            lastPermohonan = null;
+            list = null;
+            return Task.FromResult(0);
+        }
 
         public async Task<bool> CreateNewPermohonan(permohonan item)
         {
@@ -71,6 +78,23 @@ namespace MobileApp.Services
           
         }
 
+        public async Task<permohonan> GetPermohonanById(int id)
+        {
+            try
+            {
+                using (var rest = new RestServices())
+                {
+                    var result = await rest.Get<permohonan>("api/ClientPermohonan/"+id);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new SystemException(ex.Message);
+            }
+        }
+
         public async Task<IEnumerable<permohonan>> GetPermohonans()
         {
             try
@@ -110,5 +134,7 @@ namespace MobileApp.Services
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

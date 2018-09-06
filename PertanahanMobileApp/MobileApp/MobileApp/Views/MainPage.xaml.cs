@@ -163,6 +163,7 @@ namespace MobileApp.Views
             var app = await Helper.GetBaseApp();
             if(app!=null)
             {
+                await PermohonanService.Clean();
                 app.ChangeScreen(new Views.Accounts.LoginView());
             }
         }

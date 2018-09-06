@@ -8,11 +8,13 @@ namespace MobileApp.Services
 {
     public interface IPermohonanServices
     {
+        Task<permohonan> GetPermohonanById(int id);
        Task<permohonan> GetLastPermohonan();
       Task<ProgressBar> GetProgress();
         Task<tahapan> NextTahapan();
         Task<IEnumerable<permohonan>> GetPermohonans();
         Task<MessageModel> GetLastMessage();
         Task<bool> CreateNewPermohonan(permohonan item);
+        Task Clean();
     }
 }

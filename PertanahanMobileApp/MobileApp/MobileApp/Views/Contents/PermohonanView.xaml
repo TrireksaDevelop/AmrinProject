@@ -41,8 +41,8 @@
                 </Grid.ColumnDefinitions>
                 <StackLayout Grid.Column="0" Padding="10" BackgroundColor="#424544">
                     <Label Text="Tahapan Selanjutnya"/>
-                    <Label Text="{Binding CurrentItem.NextTahapan.Nama}" TextColor="{StaticResource colorPrimary}" FontSize="Large"/>
-                    <Label VerticalOptions="EndAndExpand" FontSize="Micro" Text="{Binding CurrentItem.NextTahapan.Keterangan}"/>
+                    <Label Text="{Binding NextTahapan.Nama}" TextColor="{StaticResource colorPrimary}" FontSize="Large"/>
+                    <Label VerticalOptions="EndAndExpand" FontSize="Micro" Text="{Binding NextTahapan.Keterangan}"/>
                 </StackLayout>
                 <StackLayout Grid.Column="1" BackgroundColor="#424544">
                     <Label Margin="5,0" Text="Permohonan"/>

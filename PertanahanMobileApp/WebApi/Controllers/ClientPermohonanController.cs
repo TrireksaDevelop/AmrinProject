@@ -12,10 +12,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Produces("application/json")]
+    [Route("api/ClientPermohonan")]
     [Authorize]
-    public class ClientPermohonanController : ControllerBase
+    public class ClientPermohonanController : Controller
     {
         public UserManager<IdentityUser> UserManagers { get; }
 
@@ -56,6 +56,7 @@ namespace WebApi.Controllers
                 var user = await User.GetPemohon(id);
                 var service = new PermohonanService(user, new UOWPermohonan());
                 var result = service.Permohonan;
+                result.Tahapans = service.ItemsTahapan();
                 if (result != null)
                 {
                     result.CurrentTahapan = service.GetCurrentTahapan();
@@ -74,6 +75,34 @@ namespace WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("{id}", Name = "GetClientPermohonan")]
+        public async Task<IActionResult> Get(int id)
+        {
+            try
+            {
+                var Userid = UserManagers.GetUserId(User);
+                var user = await User.GetPemohon(Userid);
+                var service = new PermohonanService(new UOWPermohonan());
+                var result = service.GetPermohonan(id);
+                service.Permohonan = result;
+                result.Tahapans = service.ItemsTahapan();
+                if (result != null)
+                {
+                    result.CurrentTahapan = service.GetCurrentTahapan();
+                    result.NextTahapan = service.GetNextTahapan();
+                    return Ok(result);
+                }
+
+                else
+                    return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         // POST: api/ClientPermohonan
         [HttpPost]

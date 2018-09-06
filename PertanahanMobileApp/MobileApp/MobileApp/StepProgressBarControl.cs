@@ -116,13 +116,22 @@ namespace MobileApp
                 AddStyles();
             }
         }
+
+        internal void Complete()
+        {
+            foreach (Button b in this.Children.OfType<Button>())
+            {
+                b.Style = Resources["passStyle"] as Style;
+            }
+        }
+
         void Handle_Clicked(object sender, System.EventArgs e)
         {
             var elementSelected = sender as Button;
           //  SelectElement(elementSelected);
             
-        //    StepSelected = Convert.ToInt32(elementSelected.Text);
-            OnClick?.Invoke(StepSelected);
+       var data = Convert.ToInt32(elementSelected.Text);
+            OnClick?.Invoke(data);
         }
 
         void SelectElement(Button elementSelected)

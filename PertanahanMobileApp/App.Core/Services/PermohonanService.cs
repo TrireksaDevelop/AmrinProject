@@ -18,7 +18,7 @@ namespace AppCore.Services
 
         public pemohon Pemohon { get; private set; }
 
-        public permohonan Permohonan { get; private  set; }
+        public permohonan Permohonan { get;   set; }
 
         public PermohonanService(pemohon t,IPermohonanUOW uow)
         {
@@ -28,7 +28,7 @@ namespace AppCore.Services
             if(result.Count>0)
             {
                 Permohonan = result.Last();
-                _tahapans = UnitWorkPermohonan.GetItemsTahapan(Permohonan);
+               
             }
         
         }
@@ -136,18 +136,26 @@ namespace AppCore.Services
 
         public permohonan GetPermohonan(int Id)
         {
+
             using (var db = new OcphDbContext())
             {
                 try
                 {
-                    var result = db.Permohonans.Where(O => O.Id == Id).FirstOrDefault();
-                    if (result != null)
-                    {
+                    var results = from a in db.Permohonans.Where(O => O.Id == Id)
+                                  join b in db.Layanans.Select() on a.IdLayanan equals b.Id
+                                  join c in db.Kategories.Select() on b.IdKategoriLayanan equals c.Id
+                                  select new permohonan
+                                  {
+                                      Id = a.Id,
+                                      IdLayanan = a.IdLayanan,
+                                      IdPemohon = a.IdPemohon,
+                                      Status = a.Status,
+                                      Layanan = new layanan { Id = b.Id, IdKategoriLayanan = b.IdKategoriLayanan, Kategori = c, Nama = b.Nama }
+                                  };
 
-
-
-                        return result;
-                    }
+                   var data= results.FirstOrDefault();
+                    if (data != null)
+                        return data;
                     else
                         throw new SystemException("Data Tidak Ditemukan");
                 }

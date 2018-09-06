@@ -96,20 +96,28 @@ namespace MobileApp.Views.Contents
                     var layanan = await LayananServices.GetItemAsync(CurrentItem.IdLayanan.ToString());
                     if (layanan != null)
                     {
+
+                        NextTahapan = null;
+                        if (CurrentItem.Tahapans != null && layanan.Tahapans.Count == CurrentItem.Tahapans.Count)
+                        {
+                            NextTahapan = new tahapan { Nama = "Tidak Ada", Keterangan = "Proses Telah Selesai" };
+                            StepBar.Complete();
+                        }else if (CurrentItem.NextTahapan != null)
+                            NextTahapan = CurrentItem.NextTahapan;
+
                         StepBar.Steps = 0;
                         StepBar.Children.Clear();
+                       StepBar.StepSelected = 0;
                         StepBar.Steps = layanan.Tahapans.Count();
-                        StepSelected = 0;
-                        if (CurrentItem.CurrentTahapan != null)
+                       
+                       if(CurrentItem.CurrentTahapan != null)
                         {
                             var c = layanan.Tahapans.Where(O => O.Id == CurrentItem.CurrentTahapan.Id).FirstOrDefault();
                             if (c != null)
                             {
                                 var index = layanan.Tahapans.IndexOf(c);
-                                StepSelected = index + 1;
-                             
-                                if (Steps >= StepSelected)
-                                    CurrentItem.NextTahapan = new tahapan { Nama = "Tidak Ada", Keterangan = "Proses Telah Selesai" };
+                              StepBar. StepSelected = index + 1;
+                      
                             }
                         }
                     }
@@ -126,12 +134,11 @@ namespace MobileApp.Views.Contents
 
 
                 var message = await InboxServices.GetItemsAsync(CurrentItem.Id);
+                LastMessage = null;
                 if(message!=null && message.Count()>0)
                 {
                     LastMessage = message.FirstOrDefault();
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -213,16 +220,46 @@ namespace MobileApp.Views.Contents
         {
             get { return _SelectedPermohonan; }
             set {SetProperty(ref _SelectedPermohonan ,value);
-
                if(value!=null)
                 {
-                    if (value.Id == lastPermohonan.Id)
-                        CurrentItem = lastPermohonan;
-                    else
-                        CurrentItem = value;
-                    RefreshCommand.Execute(null);
+                    SetCurrentItem(value.Id);
                 }
             }
+        }
+
+        private async Task SetCurrentItem(int id)
+        {
+            try
+            {
+                if (IsBusy)
+                    return;
+                IsBusy = true;
+                await Task.Delay(300);
+                var rest = await PermohonanService.GetPermohonanById(id);
+                if (rest != null)
+                {
+                    CurrentItem = rest;
+                }
+                RefreshCommand.Execute(null);
+            }
+            catch (Exception ex)
+            {
+                Helper.ShowMessageError(ex.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+
+
+        private tahapan nextTahapan;
+
+        public tahapan NextTahapan
+        {
+            get { return nextTahapan; }
+            set {SetProperty(ref nextTahapan ,value); }
         }
 
     }
