@@ -3,7 +3,8 @@ angular.module("petugas.controllers", [])
     .controller('PetugasHomeController', PetugasHomeController)
     ;
 
-function BerkasController($scope, BerkasService, UserServices, LayananServices) {
+function BerkasController($scope, BerkasService, UserServices, LayananServices, MessageServices) {
+    window.location.href= "../Admin/index#!/petugas/berkas";
     $scope.Permohonan = BerkasService.Permohonan;
     $scope.Berkas = [];
     $scope.DataPermohonan = {};
@@ -15,8 +16,14 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
     $scope.Tampil = false;
     $scope.IdPendaftaran;
     $scope.Permohonans = [];
+    $scope.DataHapus = {};
+
+
+    $scope.Init = function () {
+        $scope.Permohonan = BerkasService.Permohonan;
+    }
     
-    if (UserServices.getUser() == "kappi@gmail.com") {
+    if (UserServices.getUser() == "ludvina@gmail.com") {
         $scope.Tampil = true;
     } else {
         $scope.Tampil = false;
@@ -24,6 +31,7 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
     
 
     $scope.ShowBerkas = function () {
+        var a = false;
         angular.forEach($scope.Permohonan[0], function (value, key) {
             if (value.id == $scope.IdPendaftaran) {
                 $scope.DataPermohonan = value;
@@ -31,10 +39,14 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
                 angular.forEach(LayananServices.Layanans, function (value1, key1) {
                     if (value.idLayanan == value1.id) {
                         $scope.Layanan = value1;
+                        a = true;
                     }
                 })
             }
         })
+        if (a == false) {
+            MessageServices.error("Data Tidak ditemukan");
+        }
     }
     $scope.Detail = function (item) {
         angular.forEach($scope.Permohonan[0], function (value, key) {
@@ -60,22 +72,23 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices) 
         $scope.DataPermohonan.kelengkapans.push(data);
     }
     $scope.update = function () {
+        $scope.DataBanding = angular.copy($scope.DataPermohonan);
         $scope.DataPermohonan.tahapans = [];
         var tahap = {};
         tahap.idPermohonan = $scope.DataPermohonan.id;
         tahap.idTahapan = $scope.DataPermohonan.nextTahapan.id;
         $scope.DataPermohonan.tahapans.push(tahap);
         BerkasService.put($scope.DataPermohonan).then(function (response) {
-            angular.forEach($scope.Permohonan, function (value, key) {
-                if (value.id == $scope.DataPermohonan.id) {
-                    value.kelengkapans = $scope.DataPermohonan.kelengkapans;
-                    value.tahapans = $scope.DataPermohonan.tahapans;
-                    
+            angular.forEach($scope.Permohonan[0], function (value, key) {
+                if (value.id == $scope.DataBanding.id) {
+                    var a = $scope.Permohonan[0].indexOf(value, 1);
+                    $scope.Permohonan[0].splice(a, 1);
                 }
             })
         })
         $scope.DataPermohonan = {};
         $scope.Layanan = {};
+        $scope.IdPendaftaran = null;
     }
 }
 
