@@ -90,34 +90,35 @@ namespace MobileApp.Views.Contents
                     lastPermohonan = await PermohonanService.GetLastPermohonan();
                     CurrentItem = lastPermohonan;
                 }
-
+               
                 if (CurrentItem != null)
                 {
+                    CurrentItem = await PermohonanService.GetPermohonanById(CurrentItem.Id);
                     var layanan = await LayananServices.GetItemAsync(CurrentItem.IdLayanan.ToString());
                     if (layanan != null)
                     {
+                        StepBar.Steps = 0;
+                        StepBar.Children.Clear();
+                        StepBar.StepSelected = 0;
+                        StepBar.Steps = layanan.Tahapans.Count();
 
                         NextTahapan = null;
+                        if (CurrentItem.NextTahapan != null)
+                            NextTahapan = CurrentItem.NextTahapan;
+
                         if (CurrentItem.Tahapans != null && layanan.Tahapans.Count == CurrentItem.Tahapans.Count)
                         {
                             NextTahapan = new tahapan { Nama = "Tidak Ada", Keterangan = "Proses Telah Selesai" };
                             StepBar.Complete();
-                        }else if (CurrentItem.NextTahapan != null)
-                            NextTahapan = CurrentItem.NextTahapan;
+                        }
 
-                        StepBar.Steps = 0;
-                        StepBar.Children.Clear();
-                       StepBar.StepSelected = 0;
-                        StepBar.Steps = layanan.Tahapans.Count();
-                       
-                       if(CurrentItem.CurrentTahapan != null)
+                        if (CurrentItem.CurrentTahapan != null && layanan.Tahapans.Count > CurrentItem.Tahapans.Count)
                         {
                             var c = layanan.Tahapans.Where(O => O.Id == CurrentItem.CurrentTahapan.Id).FirstOrDefault();
                             if (c != null)
                             {
                                 var index = layanan.Tahapans.IndexOf(c);
-                              StepBar. StepSelected = index + 1;
-                      
+                                StepBar.StepSelected = index + 1;
                             }
                         }
                     }
@@ -222,7 +223,8 @@ namespace MobileApp.Views.Contents
             set {SetProperty(ref _SelectedPermohonan ,value);
                if(value!=null)
                 {
-                    SetCurrentItem(value.Id);
+                    CurrentItem=value;
+                    RefreshCommand.Execute(null);
                 }
             }
         }
