@@ -22,7 +22,7 @@ namespace AppCore
         {
             //  this.ConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
            // ConnectionString = "Server=den1.mysql6.gear.host;database=dbpertanahan;UID=dbpertanahan;password=Ty0286!NTH_6;CharSet=utf8;Persist Security Info=True";
-            ConnectionString = "Server=den1.mysql6.gear.host;database=dbpertanahan;UID=dbpertanahan;password=Ty0286!NTH_6;CharSet=utf8;Persist Security Info=True";
+            ConnectionString = "Server=localhost;database=dbpertanahan;UID=root;password=;CharSet=utf8;Persist Security Info=True";
 
         }
 

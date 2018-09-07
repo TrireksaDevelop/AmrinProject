@@ -129,29 +129,12 @@ namespace AppCore.UnitOfWorks
 
             using (var db = new OcphDbContext())
             {
-                var trans = db.BeginTransaction();
                 try
                 {
                     //Tahapan
                     itemPermohonan.Id = db.Permohonans.InsertAndGetLastID(itemPermohonan);
-                  
                     if (itemPermohonan.Id > 0)
                     {
-                        var layananService = new LayananService();
-                        var tahapans = layananService.GetTahapans(lay);
-                        List<progress> TahapanDetails = new List<progress>();
-                        foreach (var item in tahapans)
-                        {
-                            var tahap = new progress { IdPermohonan = itemPermohonan.Id, IdTahapan = item.Id };
-                            tahap.Id = db.Progress.InsertAndGetLastID(tahap);
-                            if (tahap.Id <= 0)
-                                throw new SystemException("Tahapan Tidak Tersimpan");
-                            else
-                                TahapanDetails.Add(tahap);
-                        }
-                        itemPermohonan.Tahapans = TahapanDetails;
-
-                         trans.Commit();
                         return itemPermohonan;
                     }
                     else
@@ -161,8 +144,7 @@ namespace AppCore.UnitOfWorks
                 }
                 catch (Exception ex)
                 {
-                    trans.Rollback();
-                    return null;
+                    throw new SystemException(ex.Message);
                 }
             }
         }

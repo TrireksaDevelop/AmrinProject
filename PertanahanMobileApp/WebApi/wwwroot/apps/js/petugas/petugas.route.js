@@ -14,6 +14,12 @@ angular.module('petugas.routes', [])
                 templateUrl: '/apps/templates/petugas/berkas.html',
                 controller: 'BerkasController'
             })
+            .state('home', {
+                url: '/home',
+                parent: 'petugas',
+                templateUrl: '/apps/templates/petugas/home.html',
+                controller: 'PetugasHomeController'
+            })
         
     })
    ;
