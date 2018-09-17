@@ -20,6 +20,12 @@ angular.module('petugas.routes', [])
                 templateUrl: '/apps/templates/petugas/home.html',
                 controller: 'PetugasHomeController'
             })
+            /*.state('message', {
+                url: '/message',
+                parent: 'petugas',
+                templateUrl: '/apps/templates/petugas/message.html',
+                controller: 'MessageController'
+            })*/
         
     })
    ;

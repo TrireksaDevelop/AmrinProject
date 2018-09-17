@@ -28,8 +28,8 @@
                         <tr ng-repeat="item in Permohonan[0]">
                             <td scope="row">{{$index+1}}</td>
                             <td>{{item.id}}</td>
-                            <td>{{item.idPemohon}}</td>
-                            <td>{{item.idLayanan}}</td>
+                            <td>{{item.pemohon.nama}}</td>
+                            <td>{{item.layanan.nama}}</td>
                             <td>
                                 <a href="" ng-click="EditItem(item)" data-toggle="modal" data-target=".bs-example-modal-sm"><i class="fa fa-edit fa-2x text-warning"></i></a>
                                 <a href="" ng-click="EditItem(item)" data-toggle="modal" data-target=".messagebox"><i class="fa fa-envelope-o fa-2x text-info"></i></a>
@@ -116,7 +116,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-xs-12 form-group has-feedback">
-                                                    <textarea class="form-control has-feedback-left" id="inputSuccess2"  ng-model="DataPermohonan.pemohon.alamat" disabled></textarea>
+                                                    <textarea class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.alamat" disabled></textarea>
                                                     <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
                                                 </div>
                                             </div>
@@ -166,135 +166,217 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <label for="fullname">Kategoti Layanan</label>
-                                        <select class="form-control" ng-options="item as item.status for item in StatusPermohonan track by item.id" ng-model="DataStatus"></select>
-                                    </div>
                                 </form>
+
+                            </div>
+                        </div>
+                        <div class="x_panel">
+                            <div class="x_title">
+                                <h2>Command</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                    <li>
+                                        <a class="close-link" data-toggle="modal" data-target=".Addmessagebox"><i class="fa fa-plus"></i></a>
+                                    </li>
+                                </ul>
+                                <div class="clearfix"></div>
+
+                            </div>
+                            <div class="x_content">
+                                <br />
+                                <div ng-repeat="item in DataPermohonan.Message" class="col-md-12">
+                                    <div class="col-md-12">
+                                        <h5><b>{{item.userName}}:</b></h5>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li>
+                                                {{item.tanggal}}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p style="margin-left:30px;">{{item.message}}</p>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="form-group">
-                <div class="pull-right">
-                    <button type="button" class="btn btn-primary">Cancel</button>
-                    <button class="btn btn-primary" type="reset">Reset</button>
-                    <button type="submit" ng-click="update()" class="btn btn-success">Proses</button>
                 </div>
+                <div class="form-group">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-primary">Cancel</button>
+                        <button class="btn btn-primary" type="reset">Reset</button>
+                        <button type="submit" ng-click="update()" class="btn btn-success">Proses</button>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
 
 
-
-    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel2">{{ModalTitle}}</h4>
-                </div>
-                <form ng-submit="Save(model)" id="demo-form" data-parsley-validate>
-                    <div class="modal-body">
-                        <label for="fullname">Nama  </label>
-                        <input type="text" class="form-control" ng-model="model.nama" required />
-                    </div>
-
-                    <div class="modal-body">
-                        <label for="fullname">Petugas</label>
-                        <select class="form-control" ng-options="item as item.nama for item in Petugas track by item.id" ng-model="model.petugas"></select>
-                    </div>
-
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="modal fade messagebox" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel2">{{ModalTitle}}</h4>
-                </div>
-                <form ng-submit="Save(model)" id="demo-form" data-parsley-validate>
-                    <div class="modal-body">
-                        <label for="fullname">Nama  </label>
-                        <input type="text" class="form-control" ng-model="model.nama" required />
-                    </div>
-
-                    <div class="modal-body">
-                        <label for="fullname">Petugas</label>
-                        <select class="form-control" ng-options="item as item.nama for item in Petugas track by item.id" ng-model="model.petugas"></select>
-                    </div>
-
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-    </div>
-
-
-    <div class="modal fade kelengkapan" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel2">Detail</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal form-label-left input_mask">
-                        <div class="col-xs-12">
-                            <div class="col-md-3">
-                                <img src="" />
+            <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">{{ModalTitle}}</h4>
+                        </div>
+                        <form ng-submit="Save(model)" id="demo-form" data-parsley-validate>
+                            <div class="modal-body">
+                                <label for="fullname">Nama  </label>
+                                <input type="text" class="form-control" ng-model="model.nama" required />
                             </div>
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <div class="col-xs-12 form-group has-feedback">
-                                        <input type="text" class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.nama" disabled>
-                                        <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+
+                            <div class="modal-body">
+                                <label for="fullname">Petugas</label>
+                                <select class="form-control" ng-options="item as item.nama for item in Petugas track by item.id" ng-model="model.petugas"></select>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal fade messagebox" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">{{ModalTitle}}</h4>
+                        </div>
+                        <form ng-submit="Save(model)" id="demo-form" data-parsley-validate>
+                            <div class="modal-body">
+                                <label for="fullname">Nama  </label>
+                                <input type="text" class="form-control" ng-model="model.nama" required />
+                            </div>
+
+                            <div class="modal-body">
+                                <label for="fullname">Petugas</label>
+                                <select class="form-control" ng-options="item as item.nama for item in Petugas track by item.id" ng-model="model.petugas"></select>
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+            <div class="modal fade Addmessagebox" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Balas Command</h4>
+                        </div>
+                        <form id="demo-form" data-parsley-validate>
+                            <div class="modal-body">
+                                <label for="fullname">Command  </label>
+                                <textarea class="form-control" ng-model="message" required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" ng-show="Profile.nama=='Ludvina Ameng'" ng-click="KirimCommand()" class="btn btn-primary" data-dismiss="modal">Simpan</button>
+                                <button type="submit" ng-show="Profile.nama!='Ludvina Ameng'" ng-click="KirimCommand()" data-toggle="modal" data-target=".kelengkapan" class="btn btn-primary" data-dismiss="modal">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal fade kelengkapan" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Detail</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal form-label-left input_mask">
+                                <div class="col-xs-12">
+                                    <div class="col-md-3">
+                                        <img data-ng-src="data:image/png;base64,{{DataPermohonan.pemohon.Foto}}" data-err-src="" />
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <div class="col-xs-12 form-group has-feedback">
+                                                <input type="text" class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.nama" disabled>
+                                                <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-12 form-group has-feedback">
+                                                <input type="text" class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.nik" disabled>
+                                                <span class="fa fa-credit-card form-control-feedback left" aria-hidden="true"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-12 form-group has-feedback">
+                                                <textarea class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.alamat" disabled></textarea>
+                                                <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-xs-12 form-group has-feedback">
-                                        <input type="text" class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.nik" disabled>
-                                        <span class="fa fa-credit-card form-control-feedback left" aria-hidden="true"></span>
-                                    </div>
+                            </form>
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2>Command</h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li>
+                                            <a class="close-link" data-toggle="modal" data-target=".Addmessagebox" data-dismiss="modal"><i class="fa fa-plus"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
+
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-xs-12 form-group has-feedback">
-                                        <textarea class="form-control has-feedback-left" id="inputSuccess2" ng-model="DataPermohonan.pemohon.alamat" disabled></textarea>
-                                        <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
+                                <div class="x_content">
+                                    <br />
+                                    <div ng-repeat="item in DataPermohonan.Message" class="col-md-12">
+                                        <div class="col-md-12">
+                                            <h5><b>{{item.userName}}:</b></h5>
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li>
+                                                    {{item.tanggal}}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <p style="margin-left:30px;">{{item.message}}</p>
+                                        </div>
+                                        <div class="clearfix"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" ng-click="update()" class="btn btn-primary">Simpan</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button ng-show="Profile.nama=='Ludvina Ameng'" type="submit" ng-click="update()" class="btn btn-primary">Simpan</button>
+                            <button ng-show="Profile.nama!='Ludvina Ameng'" type="submit" ng-click="update()" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-        </div>
-    </div>
 

@@ -14,7 +14,7 @@ namespace WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/ClientPermohonan")]
-    [Authorize]
+    //[Authorize]
     public class ClientPermohonanController : Controller
     {
         public UserManager<IdentityUser> UserManagers { get; }
