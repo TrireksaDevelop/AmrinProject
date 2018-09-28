@@ -50,6 +50,7 @@ namespace MobileApp.Models
         public layanan Layanan { get; set; }
         public tahapan CurrentTahapan { get; set; }
         public tahapan NextTahapan { get; set; }
+        public byte[] Photo { get;  set; }
 
         private int _id;
         private int _idpemohon;

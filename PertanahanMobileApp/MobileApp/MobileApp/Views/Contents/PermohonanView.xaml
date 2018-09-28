@@ -92,7 +92,9 @@
                 </Grid>
             </StackLayout>
             <StackLayout Grid.Row="3" Padding="3" BackgroundColor="#424544">
+                <Button Text="Sertifikat" IsVisible="{Binding ShowSertifikat}"></Button>
                 <Button Text="Buat Baru" HorizontalOptions="End" HeightRequest="35" Command="{Binding NewCommand}"  FontSize="Micro"/>
+                
             </StackLayout>
 
         </Grid>

@@ -41,17 +41,35 @@ namespace MobileApp.Views.Contents
 	{
 		private permohonan _current;
 
-		public PermohonanViewModel(StepProgressBarControl stepBar)
+        private bool showSertifikat;
+
+        public bool ShowSertifikat
+        {
+            get { return showSertifikat; }
+            set { SetProperty(ref showSertifikat , value); }
+        }
+
+        public PermohonanViewModel(StepProgressBarControl stepBar)
 		{
 			this.StepBar = stepBar;
 			Permohonans = new ObservableCollection<permohonan>();
 			NewCommand = new Command(NewCommandAction);
 			MoreCommand = new Command(MoreCommandAction);
 			RefreshCommand = new Command(RefreshCommandAction);
+            ShowSertifikatCommand = new Command(ShowSertifikatActionAsync);
 			RefreshCommand.Execute(null);
 		}
 
-		private void RefreshCommandAction(object obj)
+        private async void ShowSertifikatActionAsync(object obj)
+        {
+            var main = await Helper.GetMainPageAsync();
+            if (main != null)
+            {
+                await main.Detail.Navigation.PushAsync(new SertifikatView(CurrentItem));
+            }
+        }
+
+        private void RefreshCommandAction(object obj)
 		{
 
 			StepBar.Children.Clear();
@@ -183,8 +201,9 @@ namespace MobileApp.Views.Contents
 		public Command NewCommand { get; }
 		public Command MoreCommand { get; }
 		public Command RefreshCommand { get; }
+        public Command ShowSertifikatCommand { get; }
 
-		public permohonan CurrentItem { get { return _current; }  set { SetProperty(ref _current, value); } }
+        public permohonan CurrentItem { get { return _current; }  set { SetProperty(ref _current, value); } }
 
 
 		private int _StepSelected;

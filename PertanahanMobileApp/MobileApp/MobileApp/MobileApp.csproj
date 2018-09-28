@@ -60,6 +60,9 @@
     <EmbeddedResource Update="Views\Contents\PersyaratanView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Contents\SertifikatView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Contents\TahapanView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
