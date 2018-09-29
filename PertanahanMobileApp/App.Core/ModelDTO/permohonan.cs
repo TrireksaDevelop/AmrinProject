@@ -51,6 +51,15 @@ namespace AppCore.ModelDTO
             }
         }
 
+        private byte[] photo;
+        [DbColumn("Photo")]
+        public byte[] Photo
+        {
+            get { return photo; }
+            set { SetProperty(ref photo ,value); }
+        }
+
+
         public List<kelengkapan> Kelengkapans { get;  set; }
         public List<progress> Tahapans { get;  set; }
         public layanan Layanan { get;  set; }

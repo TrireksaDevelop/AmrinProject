@@ -25,30 +25,20 @@ namespace MobileApp.Views.Contents
     {
         public SertifikatViewModel(byte[] photo)
         {
-            Photo = photo;
+            Gambar= ImageSource.FromStream(() => new MemoryStream(photo));
         }
-        public byte[] Photo { get; }
+
         private ImageSource source;
 
         public ImageSource Gambar
         {
             get {
 
-                source =  ImageSource.FromStream(GetMemmory);
                 return source;
-
             }
             set
             {
-                SetProperty(ref, source, value);
-            }
-        }
-
-        private Stream GetMemmory()
-        {
-            using (var memoryStream = new MemoryStream(Photo, true))
-            {
-                return memoryStream;
+                SetProperty(ref source,  value);
             }
         }
     }

@@ -62,10 +62,17 @@ namespace MobileApp.Views.Contents
 
         private async void ShowSertifikatActionAsync(object obj)
         {
-            var main = await Helper.GetMainPageAsync();
-            if (main != null)
+            if(CurrentItem!=null && CurrentItem.Photo!=null)
             {
-                await main.Detail.Navigation.PushAsync(new SertifikatView(CurrentItem));
+                var main = await Helper.GetMainPageAsync();
+                if (main != null)
+                {
+                    await main.Detail.Navigation.PushAsync(new SertifikatView(CurrentItem));
+                }
+
+            }else
+            {
+                Helper.ShowMessageError("Sertifikat Belum Selesai Di Cetak");
             }
         }
 
@@ -124,10 +131,13 @@ namespace MobileApp.Views.Contents
 						if (CurrentItem.NextTahapan != null)
 							NextTahapan = CurrentItem.NextTahapan;
 
+                        ShowSertifikat = false;
 						if (CurrentItem.Tahapans != null && layanan.Tahapans.Count == CurrentItem.Tahapans.Count)
 						{
 							NextTahapan = new tahapan { Nama = "Tidak Ada", Keterangan = "Proses Telah Selesai" };
-							StepBar.Complete();
+                            ShowSertifikat = true;
+
+                            StepBar.Complete();
 						}
 
 						if (CurrentItem.CurrentTahapan != null && layanan.Tahapans.Count > CurrentItem.Tahapans.Count)

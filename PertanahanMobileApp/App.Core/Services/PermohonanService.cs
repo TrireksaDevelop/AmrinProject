@@ -38,6 +38,8 @@ namespace AppCore.Services
             this.UnitWorkPermohonan= uOWPermohonan;
         }
 
+        
+
         public List<progress> ItemsTahapan()
         {
             if (Permohonan != null)
@@ -146,7 +148,7 @@ namespace AppCore.Services
                                   join c in db.Kategories.Select() on b.IdKategoriLayanan equals c.Id
                                   select new permohonan
                                   {
-                                      Id = a.Id,
+                                      Id = a.Id, Photo=a.Photo,
                                       IdLayanan = a.IdLayanan,
                                       IdPemohon = a.IdPemohon,
                                       Status = a.Status,
@@ -170,6 +172,23 @@ namespace AppCore.Services
         public bool SetNextStep()
         {
           return  UnitWorkPermohonan.SetNextStep(Permohonan, Permohonan.NextTahapan);
+        }
+
+
+        public Task<bool> UpdatePhotoSertifikat(permohonan item)
+        {
+            try
+            {
+                using (var db = new OcphDbContext())
+                {
+                    var updated= db.Permohonans.Update(O => new { O.Photo }, item, O => O.Id == item.Id);
+                    return Task.FromResult(updated);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException(ex.Message);
+            }
         }
 
         public Task<bool> UpdatePermohonan(permohonan item)
@@ -205,18 +224,15 @@ namespace AppCore.Services
                     var dbTahapans = db.Progress.Where(O => O.IdPermohonan == item.Id).ToList();
 
 
-                    if (item.Tahapans!=null )
+                    if (item.Tahapans != null)
                     {
-                        if (item.Tahapans != null)
+                        foreach (var data in item.Tahapans)
                         {
-                            foreach (var data in item.Tahapans)
+                            var result = dbTahapans.Where(O => O.IdTahapan == data.IdTahapan && O.IdPermohonan == item.Id).FirstOrDefault();
+                            if (result == null)
                             {
-                                var result = dbTahapans.Where(O => O.IdTahapan == data.IdTahapan && O.IdPermohonan == item.Id).FirstOrDefault();
-                                if (result == null)
-                                {
-                                    if (!db.Progress.Insert(data))
-                                        throw new SystemException("Data Tidak Tersimpan");
-                                }
+                                if (!db.Progress.Insert(data))
+                                    throw new SystemException("Data Tidak Tersimpan");
                             }
                         }
                     }

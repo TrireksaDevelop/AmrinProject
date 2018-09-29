@@ -82,7 +82,7 @@ namespace AppCore.UnitOfWorks
                               join b in db.Layanans.Select() on a.IdLayanan equals b.Id
                               join c in db.Kategories.Select() on b.IdKategoriLayanan equals c.Id
                               select new permohonan {
-                                   Id = a.Id, IdLayanan=a.IdLayanan, IdPemohon=a.IdPemohon, Status=a.Status,
+                                   Id = a.Id, IdLayanan=a.IdLayanan, IdPemohon=a.IdPemohon, Status=a.Status, Photo=a.Photo,
                                     Layanan = new layanan { Id=b.Id, IdKategoriLayanan=b.IdKategoriLayanan, Kategori=c, Nama=b.Nama }
                               };
 

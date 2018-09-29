@@ -12,7 +12,7 @@
                 <RowDefinition Height="40*"/>
                 <RowDefinition Height="25*"/>
                 <RowDefinition Height="28*"/>
-                <RowDefinition Height="7*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <StackLayout BackgroundColor="#424544" Padding="10" Spacing="0">
                 <Label Text="{Binding CurrentItem.Id,StringFormat='{0:D6}'}" HorizontalOptions="End" FontSize="Large" TextColor="{StaticResource colorPrimary}"></Label>
@@ -91,9 +91,9 @@
                     </StackLayout>
                 </Grid>
             </StackLayout>
-            <StackLayout Grid.Row="3" Padding="3" BackgroundColor="#424544">
-                <Button Text="Sertifikat" IsVisible="{Binding ShowSertifikat}"></Button>
-                <Button Text="Buat Baru" HorizontalOptions="End" HeightRequest="35" Command="{Binding NewCommand}"  FontSize="Micro"/>
+            <StackLayout Orientation="Horizontal" Grid.Row="3" Padding="3" BackgroundColor="#424544">
+                <Button FontSize="Micro" Text="Sertifikat" HeightRequest="35" WidthRequest="100" Command="{Binding ShowSertifikatCommand}" IsVisible="{Binding ShowSertifikat}"></Button>
+                <Button Text="Buat Baru" HeightRequest="35" WidthRequest="100" Command="{Binding NewCommand}"  FontSize="Micro"/>
                 
             </StackLayout>
 

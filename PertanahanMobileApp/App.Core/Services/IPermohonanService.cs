@@ -20,5 +20,7 @@ namespace AppCore.Services
         permohonan GetPermohonan(int Id);
         bool SetNextStep();
         Task<bool> UpdatePermohonan(permohonan item);
+        Task<bool> UpdatePhotoSertifikat(permohonan item);
+
     }
 }

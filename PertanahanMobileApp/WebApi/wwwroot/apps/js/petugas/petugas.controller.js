@@ -5,7 +5,7 @@ angular.module("petugas.controllers", [])
     ;
 
 function BerkasController($scope, BerkasService, UserServices, LayananServices, MessageServices, AuthServices) {
-    window.location.href= "../Admin/index#!/petugas/berkas";
+    window.location.href = "../Admin/index#!/petugas/berkas";
     $scope.Permohonan = BerkasService.Permohonan;
     $scope.Berkas = [];
     $scope.DataPermohonan = {};
@@ -15,11 +15,13 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices, 
     $scope.DataStatus = {};
     $scope.Layanan = {};
     $scope.Tampil = false;
+    $scope.Finish = false;
     $scope.IdPendaftaran;
     $scope.Permohonans = [];
     $scope.DataHapus = {};
     $scope.Profile = {};
     $scope.message;
+    $scope.Foto;
     AuthServices.getProfile().then(
         function (response) {
             $scope.Profile = response;
@@ -31,12 +33,21 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices, 
     $scope.Init = function () {
         $scope.Permohonan = BerkasService.Permohonan;
     }
-    
+
     if (UserServices.getUser() == "ludvina@gmail.com") {
         $scope.Tampil = true;
+        $scope.Finish = false;
+    } else if (UserServices.getUser() == "wayan@gmail.com") {
+        $scope.Finish = true;
+        $scope.Tampil = false;
     } else {
+        $scope.Finish = false;
         $scope.Tampil = false;
     }
+
+    $scope.uploadFile = function () {
+
+    };
 
     $scope.KirimCommand = function () {
         var DataMessage = {};
@@ -93,7 +104,53 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices, 
         data.status = "Ada";
         $scope.DataPermohonan.kelengkapans.push(data);
     }
+    $scope.updateWithfoto = function (item) {
+        OnLoadImage(item);
+    }
+    function OnLoadImage(item) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var gambar = reader.result.split(',');
+            $scope.DataPermohonan.photo = gambar[1];
+            //  $scope.DataPermohonan.photo = reader.result;
+            $scope.DataBanding = angular.copy($scope.DataPermohonan);
+            $scope.DataPermohonan.tahapans = [];
+            var tahap = {};
+            tahap.idPermohonan = $scope.DataPermohonan.id;
+            tahap.idTahapan = $scope.DataPermohonan.nextTahapan.id;
+            $scope.DataPermohonan.tahapans.push(tahap);
+            BerkasService.UploadFoto($scope.DataPermohonan).then(function (response) {
+                BerkasService.put($scope.DataPermohonan).then(function (response) {
+                    angular.forEach($scope.Permohonan[0], function (value, key) {
+                        if (value.id == $scope.DataBanding.id) {
+                            var a = $scope.Permohonan[0].indexOf(value);
+                            $scope.Permohonan[0].splice(a, 1);
+                        }
+                    })
+                    $scope.DataPermohonan = {};
+                    $scope.Layanan = {};
+                    $scope.IdPendaftaran = null;
+                })
+
+                
+            });
+
+        };
+        reader.onerror = onerror;
+
+        reader.readAsDataURL(item);
+
+
+    }
+
+    function onerror (error) {
+
+        console.log('Error: ', error);
+
+    };
+
     $scope.update = function () {
+
         $scope.DataBanding = angular.copy($scope.DataPermohonan);
         $scope.DataPermohonan.tahapans = [];
         var tahap = {};
@@ -114,23 +171,24 @@ function BerkasController($scope, BerkasService, UserServices, LayananServices, 
     }
 }
 
-function PetugasHomeController($scope, AuthServices) {
-    $scope.Profile = {};
-    AuthServices.getProfile().then(
-        function (response) {
-            $scope.Profile = response;
-        }
 
-    );
-}
+    function PetugasHomeController($scope, AuthServices) {
+        $scope.Profile = {};
+        AuthServices.getProfile().then(
+            function (response) {
+                $scope.Profile = response;
+            }
 
-function MessageController($scope, MessageServices, InboxServices) {
-    $scope.Profile = {};
-    AuthServices.getProfile().then(
-        function (response) {
-            $scope.Profile = response;
-        }
+        );
+    }
 
-    );
-    $scope.Message = InboxServices.Message;
-}
+    function MessageController($scope, MessageServices, InboxServices) {
+        $scope.Profile = {};
+        AuthServices.getProfile().then(
+            function (response) {
+                $scope.Profile = response;
+            }
+
+        );
+        $scope.Message = InboxServices.Message;
+    }

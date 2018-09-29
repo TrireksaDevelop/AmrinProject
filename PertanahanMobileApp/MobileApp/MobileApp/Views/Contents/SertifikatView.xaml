@@ -4,8 +4,8 @@
              Title="Foto" BackgroundColor="{StaticResource colorPrimaryDark}"
              x:Class="MobileApp.Views.Contents.SertifikatView">
     <ContentPage.Content>
-        <StackLayout Margin="5">
-            <Image Margin="{Binding Photo}"></Image>
-        </StackLayout>
+        <Grid Margin="5">
+            <Image Aspect="AspectFill" Source="{Binding Gambar}" ></Image>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

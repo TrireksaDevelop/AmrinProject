@@ -1,8 +1,30 @@
 angular.module("petugas.services", [])
     .factory('BerkasService', BerkasService)
-    //.factory('InboxServices', InboxServices)
+    .factory('fileUploadService', fileUploadService)
     ;
 
+function fileUploadService($http, $q) {
+
+    this.uploadFileToUrl = function (file, uploadUrl) {
+        //FormData, object of key/value pair for form fields and values
+        var fileFormData = new FormData();
+        fileFormData.append('file', file);
+
+        var deffered = $q.defer();
+        $http.post(uploadUrl, fileFormData, {
+            transformRequest: angular.identity,
+            headers: { 'Content-Type': undefined }
+
+        }).success(function (response) {
+            deffered.resolve(response);
+
+        }).error(function (response) {
+            deffered.reject(response);
+        });
+
+        return deffered.promise;
+    }
+}
 /*function InboxServices($http, $state, $q, MessageServices, UserServices) {
     let def = $q.defer();
     var service = {
@@ -65,7 +87,7 @@ function BerkasService($http, $state, $rootScope, $q, MessageServices, UserServi
         instance: false,
         Message: {},
         Permohonan: [],
-        get: get, put: EditItem, post: post
+        get: get, put: EditItem, post: post, UploadFoto: WithFoto
     }
     service.get();
     return service;
@@ -112,7 +134,44 @@ function BerkasService($http, $state, $rootScope, $q, MessageServices, UserServi
         return def.promise;
     }
 
+    function WithFoto(item) {
+        var def = $q.defer();
+
+        $http({
+
+            method: 'put',
+
+            headers: {
+
+                "cache-control": "no-cache",
+                'Authorization': 'Bearer ' + UserServices.getToken(),
+
+            },
+
+            processData: false,
+
+            contentType: false,
+
+            mimeType: "multipart/form-data",
+
+            url: '/api/Permohonan/' + item.id,
+
+            data: item
+
+        }).then(function (response) {
+            service.instance = true;
+            def.resolve(response.data);
+        }, function (response) {
+            if (response.status = 401)
+                MessageServices.error("Anda Tidak memiliki Hak Akses");
+            else
+                MessageServices.error(response.data.Message);
+            def.reject();
+        });
+        return def.promise;
+    }
     function EditItem(item) {
+        var def = $q.defer();
         $http({
             method: 'post',
             url: '/api/Permohonan/UpdatePermohonan',

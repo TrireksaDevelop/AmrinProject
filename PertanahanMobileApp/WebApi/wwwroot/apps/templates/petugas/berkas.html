@@ -3,14 +3,15 @@
             <div class="x_title">
                 <h2>DAFTAR BERKAS PENDING<small></small></h2>
                 <!--<ul class="nav navbar-right panel_toolbox">
-                <li>
-                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-                <li>
-                    <a ng-click="ModalTitle = 'Tambah Bidang';model={}" data-toggle="modal" data-target=".bs-example-modal-sm" class="close-link"><i class="fa fa-plus"></i></a>
-                </li>
-            </ul>-->
+        <li>
+            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li>
+            <a ng-click="ModalTitle = 'Tambah Bidang';model={}" data-toggle="modal" data-target=".bs-example-modal-sm" class="close-link"><i class="fa fa-plus"></i></a>
+        </li>
+    </ul>-->
                 <div class="clearfix"></div>
+
             </div>
             <div class="x_content" ng-init="Init()">
                 <table class="table table-hover">
@@ -337,6 +338,14 @@
                                                 <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
                                             </div>
                                         </div>
+                                        <div class="form-group" ng-show="Finish">
+                                            <div class="col-xs-12 form-group has-feedback">
+                                                <div file-canvas>
+                                                    <img style="margin:5px; height:130px; width:100px;" data-ng-src="data:image/png;base64,{{Foto}}" onerror="this.src=''" alt="No Image" />
+                                                    <input style="visibility:hidden" type="file" file-model="Profile.Photo" />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -373,7 +382,8 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             <button ng-show="Profile.nama=='Ludvina Ameng'" type="submit" ng-click="update()" class="btn btn-primary">Simpan</button>
-                            <button ng-show="Profile.nama!='Ludvina Ameng'" type="submit" ng-click="update()" class="btn btn-primary">Simpan</button>
+                            <button ng-show="Profile.nama=='I Wayan Agung Wijaya'" type="submit" ng-click="updateWithfoto(Profile.Photo)" class="btn btn-primary">Update</button>
+                            <button ng-show="Profile.nama!='Ludvina Ameng'" type="submit" ng-click="update()" class="btn btn-primary">Simpan Mana</button>
                         </div>
                     </div>
 

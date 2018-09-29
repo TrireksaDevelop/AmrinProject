@@ -57,12 +57,12 @@ namespace WebApi.Controllers
        
         // PUT: api/Permohonan/5
         [HttpPut("{id}",Name ="Put")]
-        public async Task<IActionResult> Put(int id,permohonan item)
+        public async Task<IActionResult> Put(int id, [FromBody]permohonan item)
         {
             try
             {
                 service = new PermohonanService(new UOWPermohonan());
-                bool result = await service.UpdatePermohonan(item);
+                bool result = await service.UpdatePhotoSertifikat(item);
                 return Ok(result);
 
             }
